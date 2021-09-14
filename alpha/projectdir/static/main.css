@@ -4,3 +4,7 @@
     height: 300px;
     background: purple;
 }
+
+.test p {
+    color: white;
+}
