@@ -1,5 +1,5 @@
 # Team 9 Project Description
-
+---
 > GitHub Repository: https://github.com/shohinsan/sjsu_cmpe_131
 
 | Members | Position |
@@ -9,6 +9,7 @@
 | Thuy Tran | Software Engineer |
 | Thomas Ng | Software Engineer |
 
+### Features To Be Implemented In This Project
 - General Features:
   * Ability for users to sign-up, login/logout
   * Be able to delete Account
@@ -28,44 +29,49 @@
   * Use Podoromo Timer 
   * Track hours worked per day
   * Track Assignments/Projects Worked on/Finished 
-
-#1
+---
+### 1. Ability for users to sign-up, login/logout
 ```
-Ability for users to sign-up, login/logout
 # Use Case Description
 Date: September, 13
-Product Name: 
-Problem Statement:
+Product Name: Labiso Ponderer
+Problem Statement: A place for students to study more effectively through memorizing, searching notes, and managing time
 Non-functional Requirements:
- 
+The system responds to each user input within milliseconds.
+Cross-platform access through the web
+Consider using English, but later add other languages as well. 
 Use Case Name:
 ## Summary
-write summary here
+Creating an account for a new user
 ## Actors
-actor 1
-actor 2
-….
+User
 ## Preconditions
-* precond 1
-* precond 2
+The user doesn’t have an account
 * ….
 ## Triggers
-Explain trigger here
+User needs to sign-up
 ## Primary Sequence
-step 1 action
-step 2 action
-etc
+User clicks “Sign Up” button
+The user enters personal information
+User checks if username is not taken
+User makes unique password
+User verifies password through verification (2nd time)
+User submits
+System eventually creates a new account
 ## Primary Postconditions
-* postcondition
-* postcondition
-* etc
+* User account has been added to website
+* User is able to login
 ## Alternate Sequences
 Only if you have alt seq
-* Step 1 alt. seq.
-* step 2 alt. seq.
-* etc
+System displays an error
+System prompts user to enter different data
+Password entered does not match
+System displays an error to the user
+System prompts user to type password again
 ### Alternate Trigger
+* Would be able to create an account using Google, Facebook, and etc.
 ### Alternate Postconditions
+
 ```
 #2
 ```
