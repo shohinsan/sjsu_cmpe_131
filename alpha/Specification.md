@@ -398,31 +398,29 @@ memorizing, searching notes, and managing time to avoid distractions over period
 ### 13. Create Time Blocks
 ### Non-functional Requirements
 ### Summary
-- s
-### Actors
-- the user
-- the flash card
-
-### Preconditions
-- the user must be signed in.
-- the
-### Triggers
- 
-### Primary Sequence
-- step 1 action
-- step 2 action
-- etc
-### Primary Postconditions
--postcondition
-- postcondition
-- etc
-### Alternate Sequences
-- Only if you have alt seq
-- Step 1 alt. seq.
-- step 2 alt. seq.
-- etc
+- User will be able to add time blocks scheduling out their 
+## Actors
+- User 
+- System
+## Preconditions
+- User is logged on 
+## Triggers
+- User clicks “add time blocks” 
+## Primary Sequence
+- User is prompted with excel type table 
+- User can click and drag cells to create blocks
+- After user creates a cell system will prompt user for details
+- User can detail what each block is for, or just mark busy
+- System saves data of block
+## Primary Postconditions
+- User will now have the ability to see timeblocks (see Visualize Timeblocks) 
+## Alternate Sequences
+- System will warn user about conflicts
+- User can proceed or cancel action 
 ### Alternate Trigger
+- Time blocks conflict/overlap
 ### Alternate Postconditions
+
 
 ---
 
@@ -459,30 +457,25 @@ memorizing, searching notes, and managing time to avoid distractions over period
 ### 15. Track Hours Worked Per Day
 ### Non-functional Requirements
 ### Summary
-- s
-### Actors
-- the user
-- the flash card
-
-### Preconditions
-- the user must be signed in.
-- the
-### Triggers
- 
-### Primary Sequence
-- step 1 action
-- step 2 action
-- etc
-### Primary Postconditions
--postcondition
-- postcondition
-- etc
-### Alternate Sequences
-- Only if you have alt seq
-- Step 1 alt. seq.
-- step 2 alt. seq.
-- etc
+- User is able to add hours studied/worked per day 
+## Actors
+- User
+- System (Pomodoro Timer)
+## Preconditions
+- User is logged in
+- Pomodoro Timer is used
+## Triggers
+- Pomodoro Timer is run 
+## Primary Sequence
+- User will navigate to the hours worked view 
+- System prompts user with a daily calendar view with numbers of hours/minutes worked 
+## Primary Postconditions
+- User will be able to see time worked per day 
+## Alternate Sequences
+Only if you have alt seq
+- System will show calendar view with nothing on it 
 ### Alternate Trigger
+- User never used the Pomodoro timer 
 ### Alternate Postconditions
 
 ---
@@ -490,29 +483,33 @@ memorizing, searching notes, and managing time to avoid distractions over period
 ### 16. Track Assignments/Projects Worked on/Finished
 ### Non-functional Requirements
 ### Summary
-- s
-### Actors
-- the user
-- the flash card
-
-### Preconditions
-- the user must be signed in.
-- the
-### Triggers
- 
-### Primary Sequence
-- step 1 action
-- step 2 action
-- etc
-### Primary Postconditions
--postcondition
-- postcondition
-- etc
-### Alternate Sequences
-- Only if you have alt seq
-- Step 1 alt. seq.
-- step 2 alt. seq.
-- etc
+- The user will have the ability to check off and list their projects/assignments to see what they have done and what still needs to be done
+## Actors
+- User 
+- System
+….
+## Preconditions
+- User has an account 
+- User is logged in 
+## Triggers
+- User initially clicks “assignments” 
+- User clicks “add assignments” 
+- User clicks on an assignment
+## Primary Sequence
+- User is brought to calendar view
+- User clicks add assignments
+- User is prompted with form to enter assignment name, description, and date due 
+- User submits
+- System inputs data into user account 
+- System shows on calendar
+## Primary Postconditions
+- User has assignments listed on their account and their due dates 
+- User can “close” assignments and mark them as done aiding in productivity and time management
+## Alternate Sequences
+- User clicks on an assignment 
+- User is prompted with assignment information 
+- User can close assignment to remove it from the calendar 
+- System add assignment to finished list 
 ### Alternate Trigger
 ### Alternate Postconditions
 
@@ -521,29 +518,26 @@ memorizing, searching notes, and managing time to avoid distractions over period
 ### 17. Visualize Time Blocks
 ### Non-functional Requirements
 ### Summary
-- s
-### Actors
-- the user
-- the flash card
-
-### Preconditions
-- the user must be signed in.
-- the
-### Triggers
- 
-### Primary Sequence
-- step 1 action
-- step 2 action
-- etc
-### Primary Postconditions
--postcondition
-- postcondition
-- etc
-### Alternate Sequences
-- Only if you have alt seq
-- Step 1 alt. seq.
-- step 2 alt. seq.
-- etc
+- User will be able to see the time they allotted for themselves on a calendar 
+## Actors
+- User 
+- System 
+….
+## Preconditions
+- User is logged in 
+- User has created time blocks
+## Triggers
+- User views the calendar
+## Primary Sequence
+- System shows user the calendar view
+- System displays added time blocks on calendar 
+- User is able to click and view details of time block events
+- User can see conflicts and resolve them (see create time blocks)
+## Primary Postconditions
+- Able to see time blocks added to account by user 
+- User can recolor blocks 
+## Alternate Sequences
+- If no time blocks are on account the system won’t display anything
 ### Alternate Trigger
 ### Alternate Postconditions
 
