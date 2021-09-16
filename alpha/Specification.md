@@ -533,75 +533,73 @@ Only if you have alt seq
 ```
 Track hours worked per day 
 # Use Case Description
-Date: September, 13
+Date: September, 15
 Product Name: 
 Problem Statement:
 Non-functional Requirements:
  
 Use Case Name:
 ## Summary
-write summary here
+User is able to add hours studied/worked per day
 ## Actors
-actor 1
-actor 2
+User
+System (Pomodoro Timer)
 ….
 ## Preconditions
-* precond 1
-* precond 2
+* User is logged in
+* Pomodoro Timer is used
 * ….
 ## Triggers
-Explain trigger here
+Pomodoro Timer is run 
 ## Primary Sequence
-step 1 action
-step 2 action
-etc
+User will navigate to the hours worked view 
+System prompts user with a daily calendar view with numbers of hours/minutes worked 
 ## Primary Postconditions
-* postcondition
-* postcondition
-* etc
+* User will be able to see time worked per day 
 ## Alternate Sequences
 Only if you have alt seq
-* Step 1 alt. seq.
-* step 2 alt. seq.
-* etc
+* System will show calendar view with nothing on it 
 ### Alternate Trigger
+* User never used the Pomodoro timer 
 ### Alternate Postconditions
 ```
 #15
 ```
 Track Assignments/Projects Worked on/Finished 
 # Use Case Description
-Date: September, 13
+Date: September, 15
 Product Name: 
 Problem Statement:
 Non-functional Requirements:
  
 Use Case Name:
 ## Summary
-write summary here
+The user will have the ability to check off and list their projects/assignments to see what they have done and what still needs to be done
 ## Actors
-actor 1
-actor 2
+User 
 ….
 ## Preconditions
-* precond 1
-* precond 2
-* ….
+* User has an account 
+* User is logged in 
 ## Triggers
-Explain trigger here
+User initially clicks “assignments” 
+User clicks “add assignments” 
+User clicks on an assignment
 ## Primary Sequence
-step 1 action
-step 2 action
-etc
+User is brought to calendar view
+User clicks add assignments
+User is prompted with form to enter assignment name, description, and date due 
+User submits
+System inputs data into user account 
+System shows on calendar
 ## Primary Postconditions
-* postcondition
-* postcondition
-* etc
+* User has assignments listed on their account and their due dates 
+* User can “close” assignments and mark them as done aiding in productivity and time management
 ## Alternate Sequences
-Only if you have alt seq
-* Step 1 alt. seq.
-* step 2 alt. seq.
-* etc
+User clicks on an assignment 
+User is prompted with assignment information 
+User can close assignment to remove it from the calendar 
+System add assignment to finished list 
 ### Alternate Trigger
 ### Alternate Postconditions
 ``` 
