@@ -7,7 +7,7 @@
 | Shohin Abdulkhamidov | Lead Software Engineer |
 | Adam Nguyen | Software Engineer |
 | Thuy Tran | Software Engineer |
-| Thomas Ng | Software Engineer |
+| Thomas Ng | Software Engineer | Github user: hicbag |
 
 ### Features To Be Implemented In This Project
 - General Features:
@@ -495,38 +495,38 @@ Only if you have alt seq
 ```
 Use Podoromo Timer
 # Use Case Description
-Date: September, 13
+Date: September, 15
 Product Name: 
 Problem Statement:
 Non-functional Requirements:
  
 Use Case Name:
 ## Summary
-write summary here
+User will have the ability to use a Pomodoro timer to help with study sessions
 ## Actors
-actor 1
-actor 2
+User 
+System
 ….
 ## Preconditions
-* precond 1
-* precond 2
+* User is logged in 
 * ….
 ## Triggers
-Explain trigger here
+User navigates to the timer 
 ## Primary Sequence
-step 1 action
-step 2 action
-etc
+User is prompted with a timer 
+User can select short or long break 
+User can click start to start the timer 
+System will run timer for 25 minutes (default time) 
+A second timer will be run for 5 minutes (short break) or 10 minutes (long break) 
+System will reset the timers
 ## Primary Postconditions
-* postcondition
-* postcondition
-* etc
+* User can see how long they’ve studied/worked (see Track Hours worked per day use case) 
 ## Alternate Sequences
 Only if you have alt seq
-* Step 1 alt. seq.
-* step 2 alt. seq.
-* etc
+* User can change the study time or break time 
+* Timer will run for different lengths based off those preferences 
 ### Alternate Trigger
+* User changes the settings 
 ### Alternate Postconditions
 ```
 #14
