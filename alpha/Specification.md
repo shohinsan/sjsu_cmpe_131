@@ -119,30 +119,27 @@ memorizing, searching notes, and managing time to avoid distractions over period
 ### 4. Share Flashcards (Add to their account)
 ### Non-functional Requirements
 ### Summary
-- s
+- Sharing notes with other students
 ### Actors
-- the user
-- the flash card
+- User 1
+- User 2
 
 ### Preconditions
-- the user must be signed in.
-- the
+- User must be signed in.
+- User has flashcards on account
 ### Triggers
- 
+- User 1 clicks Share button from specific note
+- User 2 receives a notification
+- System shows the same Note to User 2
 ### Primary Sequence
-- step 1 action
-- step 2 action
-- etc
+- Click Share Button
+- Shared modal pops out
 ### Primary Postconditions
--postcondition
-- postcondition
-- etc
+- Note has been shared
 ### Alternate Sequences
-- Only if you have alt seq
-- Step 1 alt. seq.
-- step 2 alt. seq.
-- etc
+- Copy the link if needed to copy and paster for third part sources
 ### Alternate Trigger
+- Share the link directly to social media
 ### Alternate Postconditions
 
 ---
@@ -150,72 +147,161 @@ memorizing, searching notes, and managing time to avoid distractions over period
 ### 5. Create pdf of flash cards to print
 ### Non-functional Requirements
 ### Summary
-- s
+- The user can create a pdf of flash cards so that they can print
 ### Actors
 - the user
 - the flash card
 
 ### Preconditions
-- the user must be signed in.
-- the
+- User must be signed in.
+- Flashcards must exist on the account
 ### Triggers
- 
+- User selects "create pdf" button
 ### Primary Sequence
-- step 1 action
-- step 2 action
-- etc
+- User clicks the "Create PDF" button
+- User chooses the flashcard
+- System eventually creates a PDF
 ### Primary Postconditions
--postcondition
-- postcondition
-- etc
+- PDF has been created
+- User is able to download or print
 ### Alternate Sequences
-- Only if you have alt seq
-- Step 1 alt. seq.
-- step 2 alt. seq.
-- etc
+- System displays an error
+- System asks to select Flashcard again
 ### Alternate Trigger
+- Users share pdf directly to social media
 ### Alternate Postconditions
+- User does not have Flashcard to print
 
 ---
 
 ### 6. Change Order of Cards Based Off Accuracy
 ### Non-functional Requirements
 ### Summary
-- s
+- When doing flashcards, change the order of the cards based off previous attemps at memorizing
 ### Actors
 - the user
 - the flash card
-
 ### Preconditions
-- the user must be signed in.
-- the
+- User must be signed in.
+- Flashcard must exist on the account
+- User must attempt to memorize
 ### Triggers
- 
+- The order of cards will be automatically changed when user attempts.
 ### Primary Sequence
-- step 1 action
-- step 2 action
-- etc
+- User chooses a Flashcard to attempt
+- System automatically changes the order
 ### Primary Postconditions
--postcondition
-- postcondition
-- etc
+- The order of cards has been changed
 ### Alternate Sequences
-- Only if you have alt seq
-- Step 1 alt. seq.
-- step 2 alt. seq.
-- etc
+- System displays an error
+- System keeps changing the order of cards
 ### Alternate Trigger
 ### Alternate Postconditions
+- User attempts to delete the card
+---
+
+
+### 7. Mind map of Flashcards
+### Non-functional Requirements
+### Summary
+- The user will have the ability to input flashcards to create a mind map. The starting point is the map while the flashcards are the branches. The system will prompt the user to input a 
+- starting map and will ask the user to input flashcards as the branches. 
+### Actors
+- User
+### Preconditions
+- User is logged in
+- Had flashcards
+### Triggers
+- User requires Mind Map to visualize their flashcards
+### Primary Sequence
+- User clicks “Create Mind Map using Flash Cards”
+- System prompts user to input starting point map
+- System prompts user to input branch(es) for map(s)
+- User clicks finish map
+
+### Primary Postconditions
+- User will be able to view their mind map
+
+### Alternate Sequences
+- User inputs an extreme word count
+
+### Alternate Trigger
+- First time using Mind Map of Flash Cards
+### Alternate Postconditions
+- User doesn’t have flash cards
+---
+
+### 8. Render Markdown Notes
+### Non-functional Requirements
+### Summary
+- Rendering markdown notes on the flash cards.
+### Actors
+- User
+- Flashcard
+
+### Preconditions
+- User must be logged in. 
+- The flash cards must exist on the account. 
+- At least some notes on the flash card.
+
+### Triggers
+- The user selected the “render markdown notes” option. 
+### Primary Sequence
+- User chooses notes on the flash card
+- User clicks “render” button
+- System renders the notes
+
+### Primary Postconditions
+- The markdown notes have been rendered.
+- The markdown notes can be seen. 
+
+### Alternate Sequences
+- System displays error.
+- System prompts users to mark down some notes.
+- System asks users to click the “render” button again.
+
+### Alternate Trigger
+### Alternate Postconditions
+- No notes on the flash card to markdown. 
+---
+
+### 9. Convert Markdown to PDF
+### Non-functional Requirements
+### Summary
+- Users can convert markdown notes to a PDF format.
+### Actors
+- The user
+- The flash card
+- The note
+### Preconditions
+- Needs to have notes on flash card
+- User is signed in 
+- The flash cards must exist on the account.
+### Triggers
+- User selected the “convert markdown to pdf” option.
+### Primary Sequence
+- User selects notes to convert
+- User clicks “convert to pdf” button
+- System converts the selected notes to pdf format
+
+### Primary Postconditions
+- Markdown notes have been converted to pdf.
+### Alternate Sequences
+- System displays error
+- System asks the user to do the sequence again. 
+### Alternate Trigger
+- Markdown pdf notes could be used to print and share to social media.
+### Alternate Postconditions
+- No markdown to convert to pdf.
 
 ---
 
-### 7. Render Markdown Notes
+### 10. Share Notes With Other People (Add to their account)
 ### Non-functional Requirements
 ### Summary
 - s
 ### Actors
-- the user
-- the flash card
+- User
 
 ### Preconditions
 - the user must be signed in.
@@ -240,48 +326,40 @@ memorizing, searching notes, and managing time to avoid distractions over period
 
 ---
 
-### 8. Convert Markdown to PDF
+### 11. Find Text in Files
 ### Non-functional Requirements
 ### Summary
-- s
+- User will have the ability to find specific strings of text within their files 
 ### Actors
-- the user
-- the flash card
+- User
 
 ### Preconditions
-- the user must be signed in.
-- the
+- User is signed in 
+- User has files on account
 ### Triggers
- 
+- Search function for files on account
 ### Primary Sequence
 - step 1 action
 - step 2 action
 - etc
 ### Primary Postconditions
--postcondition
-- postcondition
-- etc
+- User is able to quickly find text within their account files
 ### Alternate Sequences
-- Only if you have alt seq
-- Step 1 alt. seq.
-- step 2 alt. seq.
-- etc
+- System prompts user with error saying text not found 
 ### Alternate Trigger
 ### Alternate Postconditions
 
 ---
 
-### 9. Share Notes With Other People (Add to their account)
+### 12. Quickly rename files using regular expressions
 ### Non-functional Requirements
 ### Summary
-- s
+- User will be able to quickly rename files on account using simple and known expressions
 ### Actors
-- the user
-- the flash card
-
+- User
+- System
 ### Preconditions
-- the user must be signed in.
-- the
+- User is logged in 
 ### Triggers
  
 ### Primary Sequence
@@ -302,129 +380,61 @@ memorizing, searching notes, and managing time to avoid distractions over period
 
 ---
 
-### 10. Find Text in Files
+### 13. Create graph (nodes and edges) of connections between notes
 ### Non-functional Requirements
 ### Summary
-- s
-### Actors
-- the user
-- the flash card
-
+- The user will have the ability to create a graph which connects notes using nodes and edges.
+## Actors
+- User
 ### Preconditions
-- the user must be signed in.
-- the
+- User is logged in
+- User has notes to input or existing notes
 ### Triggers
- 
+- User requires notes or existing notes
 ### Primary Sequence
-- step 1 action
-- step 2 action
-- etc
+- User clicks “Create Graph of Connection between Notes”
+- System prompts user to input notes or choose existing notes
+- System prompts user to assign a node to each note
+- System prompts user to assign edge(s) between nodes
+- System generates graph
 ### Primary Postconditions
--postcondition
-- postcondition
-- etc
+- User will be able to view graph of connection between notes
 ### Alternate Sequences
-- Only if you have alt seq
-- Step 1 alt. seq.
-- step 2 alt. seq.
-- etc
+- Error duplicate node
+- Error duplicate edge
 ### Alternate Trigger
+- First time using graph of connections between notes
 ### Alternate Postconditions
+- User doesn’t have notes
 
 ---
 
-### 11. Quickly rename files using regular expressions
-### Non-functional Requirements
-### Summary
-- s
-### Actors
-- the user
-- the flash card
-
-### Preconditions
-- the user must be signed in.
-- the
-### Triggers
- 
-### Primary Sequence
-- step 1 action
-- step 2 action
-- etc
-### Primary Postconditions
--postcondition
-- postcondition
-- etc
-### Alternate Sequences
-- Only if you have alt seq
-- Step 1 alt. seq.
-- step 2 alt. seq.
-- etc
-### Alternate Trigger
-### Alternate Postconditions
-
----
-
-### 12. Create graph (nodes and edges) of connections between notes
-### Non-functional Requirements
-### Summary
-- s
-### Actors
-- the user
-- the flash card
-
-### Preconditions
-- the user must be signed in.
-- the
-### Triggers
- 
-### Primary Sequence
-- step 1 action
-- step 2 action
-- etc
-### Primary Postconditions
--postcondition
-- postcondition
-- etc
-### Alternate Sequences
-- Only if you have alt seq
-- Step 1 alt. seq.
-- step 2 alt. seq.
-- etc
-### Alternate Trigger
-### Alternate Postconditions
-
----
-
-### 13. Create Time Blocks
+### 14. Create Time Blocks
 ### Non-functional Requirements
 ### Summary
 - User will be able to add time blocks scheduling out their 
-## Actors
+### Actors
 - User 
 - System
-## Preconditions
+### Preconditions
 - User is logged on 
-## Triggers
+### Triggers
 - User clicks “add time blocks” 
-## Primary Sequence
+### Primary Sequence
 - User is prompted with excel type table 
-- User can click and drag cells to create blocks
-- After user creates a cell system will prompt user for details
-- User can detail what each block is for, or just mark busy
+- User can click and drag to create blocks
 - System saves data of block
-## Primary Postconditions
+### Primary Postconditions
 - User will now have the ability to see timeblocks (see Visualize Timeblocks) 
 ## Alternate Sequences
-- System will warn user about conflicts
-- User can proceed or cancel action 
 ### Alternate Trigger
-- Time blocks conflict/overlap
 ### Alternate Postconditions
+
 
 
 ---
 
-### 14. Use Pomodoro Timer
+### 15. Use Pomodoro Timer
 ### Non-functional Requirements
 ### Summary
 - User will have the ability to use a Pomodoro timer to help with study sessions.
@@ -454,7 +464,7 @@ memorizing, searching notes, and managing time to avoid distractions over period
 
 ---
 
-### 15. Track Hours Worked Per Day
+### 16. Track Hours Worked Per Day
 ### Non-functional Requirements
 ### Summary
 - User is able to add hours studied/worked per day 
@@ -480,7 +490,7 @@ Only if you have alt seq
 
 ---
 
-### 16. Track Assignments/Projects Worked on/Finished
+### 17. Track Assignments/Projects Worked on/Finished
 ### Non-functional Requirements
 ### Summary
 - The user will have the ability to check off and list their projects/assignments to see what they have done and what still needs to be done
@@ -515,7 +525,7 @@ Only if you have alt seq
 
 ---
 
-### 17. Visualize Time Blocks
+### 18. Visualize Time Blocks
 ### Non-functional Requirements
 ### Summary
 - User will be able to see the time they allotted for themselves on a calendar 
@@ -529,10 +539,9 @@ Only if you have alt seq
 ## Triggers
 - User views the calendar
 ## Primary Sequence
-- System shows user the calendar view
+- User goes to calendar view
 - System displays added time blocks on calendar 
-- User is able to click and view details of time block events
-- User can see conflicts and resolve them (see create time blocks)
+- User is able to change color of blocks for organization
 ## Primary Postconditions
 - Able to see time blocks added to account by user 
 - User can recolor blocks 
@@ -543,64 +552,31 @@ Only if you have alt seq
 
 ---
 
-### 18. Visualize Hours Worked and Projects
+### 19. Visualize Hours Worked and Projects
 ### Non-functional Requirements
 ### Summary
-- s
-### Actors
-- the user
-- the flash card
-
+- The user will have the ability to view their hours worked and projects on a time chart
+## Actors
+- User
 ### Preconditions
-- the user must be signed in.
-- the
+- User is logged in
+- Has hours worked
+- Has project
 ### Triggers
- 
+- User requires information about their work hours
 ### Primary Sequence
-- step 1 action
-- step 2 action
-- etc
+- User clicks “Add Visualize Hours Worked and Projects” 
+- System prompts user to input hour(s) worked
+- System prompts user to input project(s)
+- System generates time table visualizer
+
 ### Primary Postconditions
--postcondition
-- postcondition
-- etc
+- User will be able to view hours worked and projects on a time chart
 ### Alternate Sequences
-- Only if you have alt seq
-- Step 1 alt. seq.
-- step 2 alt. seq.
-- etc
+- Invalid time display error
 ### Alternate Trigger
+- First time using visualize hours worked and projects
 ### Alternate Postconditions
-
----
-
-### 19. Add To Do Tracker
-### Non-functional Requirements
-### Summary
-- s
-### Actors
-- the user
-- the flash card
-
-### Preconditions
-- the user must be signed in.
-- the
-### Triggers
- 
-### Primary Sequence
-- step 1 action
-- step 2 action
-- etc
-### Primary Postconditions
--postcondition
-- postcondition
-- etc
-### Alternate Sequences
-- Only if you have alt seq
-- Step 1 alt. seq.
-- step 2 alt. seq.
-- etc
-### Alternate Trigger
-### Alternate Postconditions
+- User doesn’t have hours worked and projects
 
 ---
