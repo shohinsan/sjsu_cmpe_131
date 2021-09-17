@@ -362,9 +362,11 @@ memorizing, searching notes, and managing time to avoid distractions over period
 ### Triggers
 - User clicks on a file to rename
 ### Primary Sequence
-- 
+- System prompts user with a text box 
+- User uses expressions to rename file 
+- System updates file names
 ### Primary Postconditions
-- Files on account are renamed
+- Files specified on account are renamed
 ### Alternate Sequences
 - System prompts user with error saying there are no files 
 ### Alternate Trigger
