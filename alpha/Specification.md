@@ -204,13 +204,14 @@ memorizing, searching notes, and managing time to avoid distractions over period
 ### 7. Mind map of Flashcards
 ### Non-functional Requirements
 ### Summary
-- The user will have the ability to input flashcards to create a mind map. The starting point is the map while the flashcards are the branches. The system will prompt the user to input a 
+- The user will have the ability to input flashcards to create a mind map. 
+- The starting point is the map while the flashcards are the branches. The system will prompt the user to input a 
 - starting map and will ask the user to input flashcards as the branches. 
 ### Actors
 - User
 ### Preconditions
 - User is logged in
-- Had flashcards
+- Has flashcards
 ### Triggers
 - User requires Mind Map to visualize their flashcards
 ### Primary Sequence
@@ -223,12 +224,12 @@ memorizing, searching notes, and managing time to avoid distractions over period
 - User will be able to view their mind map
 
 ### Alternate Sequences
-- User inputs an extreme word count
+
 
 ### Alternate Trigger
 - First time using Mind Map of Flash Cards
 ### Alternate Postconditions
-- User doesn’t have flash cards
+- User does not have flash cards
 ---
 
 ### 8. Render Markdown Notes
@@ -405,7 +406,7 @@ memorizing, searching notes, and managing time to avoid distractions over period
 ### Alternate Trigger
 - First time using graph of connections between notes
 ### Alternate Postconditions
-- User doesn’t have notes
+- User does not have notes
 
 ---
 
@@ -568,7 +569,7 @@ Only if you have alt seq
 - User clicks “Add Visualize Hours Worked and Projects” 
 - System prompts user to input hour(s) worked
 - System prompts user to input project(s)
-- System generates time table visualizer
+- System generates timetable visualizer
 
 ### Primary Postconditions
 - User will be able to view hours worked and projects on a time chart
@@ -577,6 +578,6 @@ Only if you have alt seq
 ### Alternate Trigger
 - First time using visualize hours worked and projects
 ### Alternate Postconditions
-- User doesn’t have hours worked and projects
+- User does not have hours worked and projects
 
 ---
