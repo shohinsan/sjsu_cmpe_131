@@ -300,31 +300,27 @@ memorizing, searching notes, and managing time to avoid distractions over period
 ### 10. Share Notes With Other People (Add to their account)
 ### Non-functional Requirements
 ### Summary
-- s
+- User can share notes with other people by adding a note to their account
 ### Actors
-- User
-
+- User 1
 ### Preconditions
-- the user must be signed in.
-- the
+- User 1 must be signed in
+- User 1 has a note
 ### Triggers
- 
+- User requires adding a note to another user 
 ### Primary Sequence
-- step 1 action
-- step 2 action
-- etc
+- User 1 clicks "Add Note" by another user's name
+- System prompts user to input note
+- User 1 clicks "finish"
 ### Primary Postconditions
--postcondition
-- postcondition
-- etc
+- User 1 and other user(s) will be able to view note made by user 1 
 ### Alternate Sequences
-- Only if you have alt seq
-- Step 1 alt. seq.
-- step 2 alt. seq.
-- etc
-### Alternate Trigger
-### Alternate Postconditions
 
+### Alternate Trigger
+- User adds note(s)
+- User delete note(s)
+### Alternate Postconditions
+- User does not have notes
 ---
 
 ### 11. Find Text in Files
