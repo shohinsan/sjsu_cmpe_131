@@ -336,14 +336,15 @@ memorizing, searching notes, and managing time to avoid distractions over period
 ### Triggers
 - Search function for files on account
 ### Primary Sequence
-- step 1 action
-- step 2 action
-- etc
+- System prompts user with "search box"
+- User types in a string in question
+- System will list the files the string is found in
 ### Primary Postconditions
 - User is able to quickly find text within their account files
 ### Alternate Sequences
 - System prompts user with error saying text not found 
 ### Alternate Trigger
+- Text requested doesn't exist within account
 ### Alternate Postconditions
 
 ---
@@ -357,22 +358,17 @@ memorizing, searching notes, and managing time to avoid distractions over period
 - System
 ### Preconditions
 - User is logged in 
+- User has files on account 
 ### Triggers
- 
+- User clicks on a file to rename
 ### Primary Sequence
-- step 1 action
-- step 2 action
-- etc
+- 
 ### Primary Postconditions
--postcondition
-- postcondition
-- etc
+- Files on account are renamed
 ### Alternate Sequences
-- Only if you have alt seq
-- Step 1 alt. seq.
-- step 2 alt. seq.
-- etc
+- System prompts user with error saying there are no files 
 ### Alternate Trigger
+- There are no files on account 
 ### Alternate Postconditions
 
 ---
