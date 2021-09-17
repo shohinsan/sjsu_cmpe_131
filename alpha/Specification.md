@@ -246,10 +246,10 @@ memorizing, searching notes, and managing time to avoid distractions over period
 - At least some notes on the flash card.
 
 ### Triggers
-- The user selected the “render markdown notes” option. 
+- The user used specific key to activate the “render markdown notes” option. 
 ### Primary Sequence
 - User chooses notes on the flash card
-- User clicks “render” button
+- User uses specific key 
 - System renders the notes
 
 ### Primary Postconditions
@@ -258,8 +258,8 @@ memorizing, searching notes, and managing time to avoid distractions over period
 
 ### Alternate Sequences
 - System displays error.
+- System asks to use a valid key.
 - System prompts users to mark down some notes.
-- System asks users to click the “render” button again.
 
 ### Alternate Trigger
 ### Alternate Postconditions
