@@ -8,3 +8,12 @@
 .test p {
     color: white;
 }
+
+footer {
+    position: fixed;
+    margin-top: 2%;
+    width: 100%;
+    text-align: center;
+    font-size: 0.8em;
+    bottom: 0;
+}

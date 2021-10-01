@@ -14,3 +14,11 @@ def about():  # put application's code here
 @app.route('/account')
 def account():  # put application's code here
     return render_template("account.html", title='About')
+
+@app.route('/login')
+def login():
+    return render_template("login.html", form="login", title="Login")
+
+@app.route('/signup')
+def signup():
+    return render_template("signup.html", form="signup", title="Registration")
