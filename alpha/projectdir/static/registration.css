@@ -1,0 +1,54 @@
+
+body {
+    background: white !important;
+}
+
+.wrapper {
+    margin-top: 80px;
+    margin-bottom: 80px;
+}
+
+.form-signin {
+    max-width: 380px;
+    padding: 15px 35px 45px;
+    margin: 0 auto;
+}
+
+.form-signin-heading,
+.checkbox {
+    margin-bottom: 15px;
+}
+
+.checkbox {
+    font-weight: normal;
+    margin-right: 25px;
+}
+
+.form-control {
+    position: relative;
+    font-size: 16px;
+    height: auto;
+    padding: 15px;
+
+}
+
+input[type="text"] {
+    margin-bottom: 5px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+input[type="password"] {
+    margin-top: 5px;
+    margin-bottom: 20px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+footer {
+        position: fixed;
+}
+
+p {
+    margin-top: 10px;
+}

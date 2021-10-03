@@ -6,64 +6,72 @@
     <meta name="viewport" content="width=device-width , initial-scale=1.0">
     <title>{{ title }}</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
     <!-- Custom Main.css-->
     <link rel="stylesheet" href="{{ url_for('static',filename='main.css') }}">
     <!-- Custom Main.js-->
     <link rel="stylesheet" href="{{ url_for('static',filename='main.js') }}">
-
-    <!-- Multipurpose Navbar -->
-    <header class="p-3 bg-dark text-white">
-        <div class="container">
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                <!-- Navbar Logo -->
-                <a class="navbar-brand">
-                    <img src="https://placeholder.pics/svg/150x50/888888/EEE/Logo" alt="..." height="36">
-                </a>
-                <!-- Navbar Menu -->
-                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a href="{{ url_for('homepage') }}" class="nav-link px-2 text-white">ScholarRabbit</a></li>
-                </ul>
-                <!-- Navbar SearchBar Form -->
-                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-                    <input type="search" class="form-control form-control-dark" placeholder="Search..."
-                           aria-label="Search">
-                </form>
-                <!-- Navbar Left Area -->
-                <div class="text-end">
-                    <!-- Navbar Login Area -->
-                    <a href="{{ url_for('login') }}">
-                        <button type="button" class="btn btn-outline-light me-2">Login</button>
-                    </a>
-                    <!-- Navbar Sign Up Area -->
-                    <a href="{{ url_for('signup') }}">
-                        <button type="button" class="btn btn-warning">
-                            <style>a {
-                                text-decoration: none;
-                            } </style>
-                            Sign-up
-                        </button>
-                    </a>
-
-                </div>
-                <!-- Navbar After Container -->
-            </div>
-            <!-- Navbar Container -->
-        </div>
-    </header>
-    <!-- Multipurpose Navbar -->
 </head>
 <body>
 
-{% block content %}
-{% endblock content %}
 
-<!-- Bootstrap JS and dependencies-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
-</body>
+
+<!-- Multipurpose Navbar -->
+<header class="p-3 bg-dark text-white">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <!-- Navbar Logo -->
+            <a class="navbar-brand">
+                <img src="https://placeholder.pics/svg/150x50/888888/EEE/Logo" alt="..." height="36">
+            </a>
+            <!-- Navbar Menu -->
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="{{ url_for('homepage') }}" class="nav-link px-2 text-white">ScholarRabbit</a></li>
+            </ul>
+            <!-- Navbar SearchBar Form -->
+{#            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">#}
+{#                <input type="search" class="form-control form-control-dark" placeholder="Search..."#}
+{#                       aria-label="Search">#}
+{#            </form>#}
+
+            <!-- Navbar Left Area -->
+            <div class="text-end">
+                <!-- Navbar Login Area -->
+                <a href="{{ url_for('login') }}">
+                    <button type="button" class="btn btn-outline-light me-2">Login</button>
+                </a>
+                <!-- Navbar Sign Up Area -->
+                <a href="{{ url_for('signup') }}">
+                    <button type="button" class="btn btn-warning">
+                        <style>a {
+                            text-decoration: none;
+                        } </style>
+                        Sign-up
+                    </button>
+                </a>
+            </div>
+            <!-- Navbar After Container -->
+        </div>
+        <!-- Navbar Container -->
+    </div>
+</header>
+<!-- Multipurpose Navbar -->
+
+{% block home_content %}
+{% endblock home_content %}
+
+{% block login_content %}
+{% endblock login_content %}
+
+{% block signup_content %}
+{% endblock signup_content %}
+
+{% block notes_content %}
+{% endblock notes_content %}
+
+{% block profile_content %}
+{% endblock profile_content %}
 
 <!-- Multipurpose Footer -->
 <footer class="footer mt-auto py-3 bg-light">
@@ -73,5 +81,10 @@
 </footer>
 <!-- Multipurpose Footer -->
 
+<!-- Bootstrap JS and dependencies-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        crossorigin="anonymous"></script>
+</body>
 
 </html>
