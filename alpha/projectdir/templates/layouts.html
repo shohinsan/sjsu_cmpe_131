@@ -16,7 +16,6 @@
 <body>
 
 
-
 <!-- Multipurpose Navbar -->
 <header class="p-3 bg-dark text-white">
     <div class="container">
@@ -30,10 +29,10 @@
                 <li><a href="{{ url_for('homepage') }}" class="nav-link px-2 text-white">ScholarRabbit</a></li>
             </ul>
             <!-- Navbar SearchBar Form -->
-{#            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">#}
-{#                <input type="search" class="form-control form-control-dark" placeholder="Search..."#}
-{#                       aria-label="Search">#}
-{#            </form>#}
+            {#            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">#}
+            {#                <input type="search" class="form-control form-control-dark" placeholder="Search..."#}
+            {#                       aria-label="Search">#}
+            {#            </form>#}
 
             <!-- Navbar Left Area -->
             <div class="text-end">
@@ -42,7 +41,7 @@
                     <button type="button" class="btn btn-outline-light me-2">Login</button>
                 </a>
                 <!-- Navbar Sign Up Area -->
-                <a href="{{ url_for('signup') }}">
+                <a href="{{ url_for('registration') }}">
                     <button type="button" class="btn btn-warning">
                         <style>a {
                             text-decoration: none;
@@ -58,14 +57,27 @@
 </header>
 <!-- Multipurpose Navbar -->
 
+
+<div class="container w-50">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
+
 {% block home_content %}
 {% endblock home_content %}
 
 {% block login_content %}
 {% endblock login_content %}
 
-{% block signup_content %}
-{% endblock signup_content %}
+{% block registration_content %}
+{% endblock registration_content %}
 
 {% block notes_content %}
 {% endblock notes_content %}
