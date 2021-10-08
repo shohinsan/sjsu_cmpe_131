@@ -1,7 +1,7 @@
 {% extends 'layouts.html' %}
 {% block registration_content %}
 
-    <div class="container w-50">
+    <div class="container w-50 registration">
         <form method="POST" action="">
             {{ form.hidden_tag() }}
             <fieldset>
@@ -61,6 +61,7 @@
                 {{ form.submit(class='btn btn-primary') }}
             </div>
 
+            <hr class="divider">
 
         </form>
     </div>

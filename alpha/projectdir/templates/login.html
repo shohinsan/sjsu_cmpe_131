@@ -32,9 +32,14 @@
                 </div>
 
             </fieldset>
+
             <div class="field-group mt-4">
+                {{ form.remember_me() }}
+                {{ form.remember_me.label(class="form-control-label") }}
                 {{ form.submit(class='btn btn-primary') }}
             </div>
+
+            <hr class="divider">
 
 
         </form>

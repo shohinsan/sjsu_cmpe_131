@@ -45,10 +45,6 @@ input[type="password"] {
     border-top-right-radius: 0;
 }
 
-footer {
-        position: fixed;
-}
-
 p {
     margin-top: 10px;
 }

@@ -24,7 +24,7 @@ body {
 }
 
 footer {
-    position: relative;
+    position: relative !important;
     margin-top: 2%;
     width: 100%;
     text-align: center;
@@ -32,8 +32,9 @@ footer {
     bottom: 0;
 }
 
-.homepage {
-    padding-bottom: 100px;
-}
+
+
+
+
 
 
