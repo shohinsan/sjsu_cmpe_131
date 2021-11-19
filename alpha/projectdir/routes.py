@@ -39,3 +39,30 @@ def registration():
         flash(f'Account created successfully for {form.username.data}', category='success')
         return redirect(url_for('login'))
     return render_template('registration.html', title='Registration', form=form)
+
+@app.route('/flashcards')
+def flashcards():
+    #user var from loging 
+    # have two different paths for creating and reading flashcards
+    # mind map
+    return render_template('flashcards.html', title='Flashcards')
+@app.route('/md_notes')
+def md_notes():
+    # render notes 
+    # print notes to pdf
+    # share notes
+    # notes tree 
+    return render_template('mdnotes.html', title='Markdown')
+@app.route('/finder')
+def finder():
+    # rename and find files 
+    return render_template('find.html', title='Finder')
+@app.route('/time')
+def time():
+    # create Blocks
+    # visuale blocks
+    return render_template('time.html', title='Time Share')
+@app.route('/calendar')
+def calendar(): 
+    # track assignments
+    return render_template('calendar.html', title='Calendar')
