@@ -58,7 +58,7 @@
 <!-- Multipurpose Navbar -->
 
 
-<div class="container w-50">
+<div class="container w-50 p-3">
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
@@ -85,13 +85,6 @@
 {% block profile_content %}
 {% endblock profile_content %}
 
-<!-- Multipurpose Footer -->
-<footer class="footer mt-auto py-3 bg-light">
-    <div class="text-center p-3">© 2021 Copyright:
-        <a class="text-dark">ScholarRabbit, all rights reserved</a>
-    </div>
-</footer>
-<!-- Multipurpose Footer -->
 
 <!-- Bootstrap JS and dependencies-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"

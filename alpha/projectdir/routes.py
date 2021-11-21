@@ -1,21 +1,23 @@
-from projectdir import app
 from flask import render_template, url_for, redirect, flash
+
+from projectdir import app, database
 from projectdir.forms import RegistrationForm, LoginForm
+from projectdir.models import User
 
 
 @app.route('/')
 @app.route('/home')
-def homepage():  # put application's code here
+def homepage():
     return render_template('homepage.html', title='Home')
 
 
 @app.route('/about')
-def about():  # put application's code here
+def about():
     return render_template('about.html', title='About')
 
 
 @app.route('/account')
-def account():  # put application's code here
+def account():
     return render_template('account.html', title='About')
 
 
@@ -23,7 +25,8 @@ def account():  # put application's code here
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        if form.email.data == 'abd.shohin@gmail.com' and form.password.data == '123456':
+        user = User.query.filter_by(email=form.email.data).first()
+        if form.email.data == user.email and form.password.data == user.password:
             flash(f'Login successful for {form.email.data}', category='success')
             return redirect(url_for('account'))
         else:
@@ -36,16 +39,22 @@ def login():
 def registration():
     form = RegistrationForm()
     if form.validate_on_submit():
+        user = User(username=form.username.data, email=form.email.data, password=form.password.data)
+        database.session.add(user)
+        database.session.commit()
         flash(f'Account created successfully for {form.username.data}', category='success')
         return redirect(url_for('login'))
     return render_template('registration.html', title='Registration', form=form)
 
+
 @app.route('/flashcards')
 def flashcards():
-    #user var from loging 
+    # user var from loging
     # have two different paths for creating and reading flashcards
     # mind map
     return render_template('flashcards.html', title='Flashcards')
+
+
 @app.route('/md_notes')
 def md_notes():
     # render notes 
@@ -53,16 +62,22 @@ def md_notes():
     # share notes
     # notes tree 
     return render_template('mdnotes.html', title='Markdown')
+
+
 @app.route('/finder')
 def finder():
     # rename and find files 
     return render_template('find.html', title='Finder')
+
+
 @app.route('/time')
 def time():
     # create Blocks
     # visuale blocks
     return render_template('time.html', title='Time Share')
+
+
 @app.route('/calendar')
-def calendar(): 
+def calendar():
     # track assignments
     return render_template('calendar.html', title='Calendar')
