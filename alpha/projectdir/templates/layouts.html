@@ -28,27 +28,43 @@
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="{{ url_for('homepage') }}" class="nav-link px-2 text-white">ScholarRabbit</a></li>
             </ul>
-            <!-- Navbar SearchBar Form -->
-            {#            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">#}
-            {#                <input type="search" class="form-control form-control-dark" placeholder="Search..."#}
-            {#                       aria-label="Search">#}
-            {#            </form>#}
+            {% if current_user.is_authenticated %}
+                <!-- Navbar SearchBar Form -->
+                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                    <input type="search" class="form-control form-control-dark" placeholder="Search..."
+                           aria-label="Search">
+                </form>
+            {% endif %}
+
 
             <!-- Navbar Left Area -->
             <div class="text-end">
-                <!-- Navbar Login Area -->
-                <a href="{{ url_for('login') }}">
-                    <button type="button" class="btn btn-outline-light me-2">Login</button>
-                </a>
-                <!-- Navbar Sign Up Area -->
-                <a href="{{ url_for('registration') }}">
-                    <button type="button" class="btn btn-warning">
-                        <style>a {
-                            text-decoration: none;
-                        } </style>
-                        Sign-up
-                    </button>
-                </a>
+                {% if current_user.is_authenticated %}
+
+                    <a>{{ current_user.username }}</a>
+                    <a href="{{ url_for('account') }}" style="text-decoration: none">
+                        <button type="button" class="btn btn-outline-light me-2">Settings</button>
+                    </a>
+                    <a href="{{ url_for('logout') }}" style="text-decoration: none">
+                        <button type="button" class="btn btn-outline-light me-2 ">Logout</button>
+                    </a>
+
+                {% else %}
+                    <!-- Navbar Login Area -->
+                    <a href="{{ url_for('login') }}" style="text-decoration: none">
+                        <button type="button" class="btn btn-outline-light me-2">Login</button>
+                    </a>
+                    <!-- Navbar Sign Up Area -->
+                    <a href="{{ url_for('registration') }}" style="text-decoration: none">
+                        <button type="button" class="btn btn-warning">
+                            <style>a {
+                                text-decoration: none;
+                            } </style>
+                            Sign-up
+                        </button>
+                    </a>
+                {% endif %}
+
             </div>
             <!-- Navbar After Container -->
         </div>

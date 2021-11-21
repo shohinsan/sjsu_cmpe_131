@@ -3,6 +3,7 @@ from flask import render_template, url_for, redirect, flash
 from projectdir import app, database, bcrypt
 from projectdir.forms import RegistrationForm, LoginForm
 from projectdir.models import User
+from flask_login import login_user, logout_user, current_user,login_required
 
 
 @app.route('/')
@@ -17,16 +18,20 @@ def about():
 
 
 @app.route('/account')
+@login_required
 def account():
     return render_template('account.html', title='About')
 
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('account'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password,form.password.data):
+            login_user(user)
             flash(f'Login successful for {form.email.data}', category='success')
             return redirect(url_for('account'))
         else:
@@ -34,9 +39,16 @@ def login():
             return redirect(url_for('homepage'))
     return render_template('login.html', title='Login', form=form)
 
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
 
 @app.route('/registration', methods=['POST', 'GET'])
 def registration():
+    if current_user.is_authenticated:
+        return redirect(url_for('account'))
     form = RegistrationForm()
     if form.validate_on_submit():
         encrypted_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')

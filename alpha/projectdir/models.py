@@ -1,8 +1,20 @@
-from projectdir import database
+from flask import redirect, url_for
+from flask_login import UserMixin
+
+from projectdir import database, login_manager
 from datetime import datetime
 
 
-class User(database.Model):
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
+
+@login_manager.unauthorized_handler
+def unauthorized():
+    return redirect(url_for('register'))
+
+
+class User(database.Model, UserMixin):
     id = database.Column(database.Integer, primary_key=True)
     username = database.Column(database.String(20), unique=True, nullable=False)
     email = database.Column(database.String(120), unique=True, nullable=False)
