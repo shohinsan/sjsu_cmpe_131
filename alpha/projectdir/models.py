@@ -8,3 +8,8 @@
 #     image_file
 #     password
 #     data_created
+
+# class Log(database.Model):
+    # id = database.Column(database.Integer, primary_key=True)
+    
+    

@@ -10,7 +10,8 @@
         <!-- Custom Main.css-->
         <link rel="stylesheet" href="{{ url_for('static',filename='main.css') }}">
         <!-- Custom Main.js-->
-        <link rel="stylesheet" href="{{ url_for('static',filename='main.js') }}">
+        <!-- <link rel="stylesheet" href="{{ url_for('static',filename='main.js') }}"> -->
+        <script src="{{ url_for('static',filename='jquery.js')}}"></script>
     </head>
 <body>
     
@@ -56,4 +57,5 @@
 <!-- Multipurpose Navbar -->
     {% block content %} 
     {% endblock %}
+    </body>
 </html>
