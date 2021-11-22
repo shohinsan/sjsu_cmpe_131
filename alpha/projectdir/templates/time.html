@@ -2,4 +2,31 @@
 
 {% block content %}
 
+    <h1>Pomodoro Timer</h1>
+    <div>
+        <span class="minutes">25</span>
+        <span>Minutes</span>
+    </div>
+    <div>
+        <span class="seconds">00</span>
+        <span>Seconds</span>
+    </div>
+
+    <div class="start-stop-section">
+        <a href='#' class="stop-start" onclick="timerflag==0? start(): stop();">Start Timer</a>
+    </div>
+    <div class="pause-section">
+        <a href='#' class="pause" onclick="pauseflag==1? resume(): pause();">Pause Timer</a>
+    </div>
+
+    <script>
+        $(".pause-section").hide();
+        var minutes=25;
+        var seconds=0;
+        var timerflag=0;
+        var pauseflag=0;
+    </script>
+    <script src="{{ url_for('static', filename='timer.js') }}"></script>
+
 {% endblock %}
+
