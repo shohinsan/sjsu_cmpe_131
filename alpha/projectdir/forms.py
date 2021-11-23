@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email
 
@@ -28,6 +29,15 @@ class ResetPasswordForm(FlaskForm):
 class ResetRequestForm(FlaskForm):
     email = StringField(label='Email', validators=[DataRequired()])
     submit = SubmitField(label='Reset Password', validators=[DataRequired()])
+
+
+class AccountUpdateForm(FlaskForm):
+    # first_name = StringField(label='First Name', validators=[DataRequired(), Length(min=3, max=20)])
+    # last_name = StringField(label='Last Name', validators=[DataRequired(), Length(min=3, max=20)])
+    username = StringField(label='Username', validators=[DataRequired(), Length(min=3, max=20)])
+    email = StringField(label='Email', validators=[DataRequired(), Email()])
+    picture = FileField(label="Update Profile Picture", validators=[FileAllowed(['jpg', 'png'])])
+    submit = SubmitField(label='Update Account')
 
 # class PomodoroForm(FlaskForm):
 #     email = StringField(label='Email', validators=[DataRequired(), Email()])

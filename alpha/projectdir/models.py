@@ -22,6 +22,8 @@ class User(database.Model, UserMixin):
     email = database.Column(database.String(120), unique=True, nullable=False)
     image_file = database.Column(database.String(20), nullable=False, default='default.jpg')
     password = database.Column(database.String(60), nullable=False)
+    # this must be date_created, but I misspelled and left it since it was messing my database
+    # when changing the naming and it was lots of other workarounds
     data_created = database.Column(database.DateTime, default=datetime.utcnow())
 
     def get_token(self, expires_sec=300):
