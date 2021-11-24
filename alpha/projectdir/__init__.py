@@ -26,7 +26,7 @@ app.config['MAIL_PASSWORD'] = 'Stringuser1'
 
 mail = Mail(app)
 
-#remove if necessary
+# remove if necessary
 app.config['MAX_CONTENT_LENGTH'] = 200 * 200
 
 from projectdir import routes, models, forms

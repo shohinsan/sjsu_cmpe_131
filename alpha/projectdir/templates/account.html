@@ -12,7 +12,7 @@
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4 mt-4"> {{ legend }}</legend>
 
-                        <div class="form-group">
+                <div class="form-group">
                     {{ form.username.label(class="form-control-label") }}
                     {% if form.username.errors %}
                         {{ form.username(class="form-control form-control-lg is-invalid") }}
@@ -36,7 +36,7 @@
                     {% endif %}
                 </div>
 
-                <div class="form-group">
+                <div class="form-group mt-4">
                     {{ form.picture.label() }}
                     {{ form.picture(class="form-control-file") }}
                     {% if form.picture.errors %}
@@ -49,7 +49,7 @@
 
             <div class="field-group mt-4">
                 {{ form.submit(class='btn btn-primary') }}
-{#                {{ form.submit(class='btn btn-danger') }}#}
+                {{ form.delete(class='btn btn-danger') }}
             </div>
 
         </form>

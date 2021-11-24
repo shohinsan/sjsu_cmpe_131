@@ -44,20 +44,20 @@ function resume() {
 }
 
 function update() {
-    if (minutes == 0 && seconds == 0) {
+    if (minutes === 0 && seconds === 0) {
         minutes=25;
         seconds=0;
         Timer();
     }
-    else if (seconds == 0) {
+    else if (seconds === 0) {
         minutes-=1;
-        seconds=59; 
+        seconds=59;
         Timer();
         t=setTimeout(update, 1000);
     }
     else {
         seconds-=1;
         Timer();
-        t=setTimeout(update, 1000);
+        t = setTimeout(update, 1000);
     }
 }

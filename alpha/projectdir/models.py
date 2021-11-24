@@ -40,4 +40,7 @@ class User(database.Model, UserMixin):
         return User.query.get(user_id)
 
     def __repr__(self):
-        return f'{self.username} : {self.email} : {self.data_created.strftime("%d/%m/%Y, %H:%M:%S")}'
+        return f'{self.id} ' \
+               f': {self.username} ' \
+               f': {self.email} ' \
+               f': {self.data_created.strftime("%d/%m/%Y, %H:%M:%S")}'

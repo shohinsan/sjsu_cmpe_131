@@ -1,4 +1,4 @@
-from flask import render_template, url_for, redirect, flash, request, session
+from flask import render_template, url_for, redirect, flash, request
 
 from projectdir import app, database, bcrypt, mail
 from projectdir.forms import RegistrationForm, LoginForm, ResetRequestForm, ResetPasswordForm, AccountUpdateForm
@@ -18,6 +18,8 @@ def homepage():
 def about():
     return render_template('about.html', title='About')
 
+
+# Login/ Signup Features Starts
 
 def save_image(picture_file):
     picture_name = picture_file.filename
@@ -83,6 +85,8 @@ def registration():
         return redirect(url_for('login'))
     return render_template('registration.html', title='Registration', form=form)
 
+# Login/ Signup Features Ends
+
 
 @app.route('/flashcards')
 def flashcards():
@@ -112,6 +116,8 @@ def time():
     # create Blocks
     # visualize blocks
     return render_template('time.html', title='Time Share')
+
+# Forgot Password Feature Starts
 
 
 def send_mail(user):
@@ -154,6 +160,8 @@ def reset_token(token):
         flash('Password changed! Please login!', 'success')
         return redirect(url_for('login'))
     return render_template('change_password.html', title="Change Password", legend="Change Password", form=form)
+
+# Forgot Password Feature Ends
 
 
 @app.route('/calendar')

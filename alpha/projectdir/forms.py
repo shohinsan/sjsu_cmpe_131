@@ -38,9 +38,8 @@ class AccountUpdateForm(FlaskForm):
     email = StringField(label='Email', validators=[DataRequired(), Email()])
     picture = FileField(label="Update Profile Picture", validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField(label='Update Account')
+    delete = SubmitField(label='Delete Account')
 
-# class PomodoroForm(FlaskForm):
-#     email = StringField(label='Email', validators=[DataRequired(), Email()])
-#     password = PasswordField(label='Password', validators=[DataRequired(), Length(min=6, max=16)])
-#     remember_me = BooleanField('Remember Me')
-#     submit = SubmitField(label='Login')
+
+class DeleteAccountForm(FlaskForm):
+    delete = SubmitField(label='Delete Account')
