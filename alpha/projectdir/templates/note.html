@@ -1,0 +1,23 @@
+{% extends "layouts.html" %}
+{% block content %}
+  <article class="media content-section">
+    <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + note.author.image_file) }}">
+    <div class="media-body">
+      <div class="article-metadata">
+        <a class="mr-2" href="#">{{ note.author.username }}</a>
+        <small class="text-muted">{{ note.date.strftime('%Y-%m-%d') }}</small>
+        {% if note.author == current_user %}
+          <div>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('update_note', note_id=note.id) }}">Update</a>
+            <a class="btn btn-danger btn-sm mt-1 mb-1" href="{{ url_for('delete_note', note_id=note.id) }}">Delete</a>
+          </div>
+        {% endif %}
+      </div>
+      <h2 class="article-title">{{ note.title }}</h2>
+      <p class="article-content">{{ note.content }}</p>
+    </div>
+  </article>
+  </br>
+  <a class="btn btn-success btn-sm mt-1 mb-1" id="left" href="{{url_for('notes')}}"> Close </a>
+
+{% endblock content %}
