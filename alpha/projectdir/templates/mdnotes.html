@@ -1,5 +1,28 @@
 {% extends 'featurebase.html' %}
 
 {% block content %}
+<div style="text-align: center;">
+    <h2>Create</h2>
+</div>
+<form method="POST" action = '/'>
+    <div style="text-align: center;">
+    <input type='text' name='title' placeholder='Title of note' style="text-align: center;">
+    </div> 
+    <div style="text-align: center;">
+    <input type='text' name='text' placeholder='Write notes here'>
+    </div>
+    <div style="text-align: center;">
+    <button type='submit' value='create'>Add note</button>
+    </div>
+</form>
 
+<div class='notes-list'>
+    <h2>Your current notes</h2>
+    {% for note in notes %}
+        <p> 
+            <input type='text' title='{{ note.title }}' value='{{ note.title }}' name='title'>
+            <input type='text' title='{{ note.title }}' value='{{ note.content }}' name='text'>
+        </p>
+    {% endfor %}
+</div>
 {% endblock %}
