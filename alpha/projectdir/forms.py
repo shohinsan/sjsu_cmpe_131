@@ -43,3 +43,8 @@ class AccountUpdateForm(FlaskForm):
 
 class DeleteAccountForm(FlaskForm):
     delete = SubmitField(label='Delete Account')
+
+class TimerForm(FlaskForm):
+    lengthtime = StringField(label='Study Length', validators=[DataRequired()])
+    breaktime = StringField(label='Break Length', validators=[DataRequired()])
+    submit = SubmitField(label="Submit")

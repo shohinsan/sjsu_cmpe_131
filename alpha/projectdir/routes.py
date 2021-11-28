@@ -1,11 +1,11 @@
+from datetime import datetime
 import json
 
-from flask import render_template, url_for, redirect, flash, request
+from flask import render_template, url_for, redirect, flash, request, session
 
 from projectdir import app, database, bcrypt, mail
-from projectdir.forms import RegistrationForm, LoginForm, ResetRequestForm, ResetPasswordForm, AccountUpdateForm, \
-    DeleteAccountForm
-from projectdir.models import User, Quiz, Card
+from projectdir.forms import RegistrationForm, LoginForm, ResetRequestForm, ResetPasswordForm, AccountUpdateForm, DeleteAccountForm, TimerForm
+from projectdir.models import User, TimerDetails # Quiz, Card
 from flask_login import login_user, logout_user, current_user, login_required
 from flask_mail import Message
 import os
@@ -111,7 +111,7 @@ def registration():
 # Login/ Signup Features Ends
 
 
-# November 26 Added
+    # November 26 Added
 
 #
 # @app.route('/flashcards')
@@ -167,11 +167,37 @@ def finder():
     return render_template('find.html', title='Finder')
 
 
-@app.route('/time')
+@app.route('/timer', methods=['GET', 'POST'])
+@login_required
 def time():
-    # create Blocks
-    # visualize blocks
-    return render_template('time.html', title='Time Share')
+    form=TimerForm()
+    return render_template('timer.html', title='Timer', form=form)
+
+@app.route('/countdown')
+def count():
+    print(datetime.now())
+    session['starttime']=datetime.now()
+    return render_template('timeractual.html', Timer=25)
+
+
+#database for some reason doesn't exit 
+@app.route('/break')
+def shortbreak():
+    print(datetime.now())
+    session['endtime']=datetime.now()
+    timespent=session['endtime']-session['starttime']
+    timer = TimerDetails(id=datetime.now().day, time=timespent.total_seconds()//60)
+    # database.session.add(timer)
+    # database.session.commit()
+    return render_template('break.html', Break=5)
+def longbreak():
+    print(datetime.now())
+    session['endtime']=datetime.now()
+    timespent=session['endtime']-session['starttime']
+    timer = TimerDetails(id=datetime.now().day, time=timespent.total_seconds()//60)
+    # database.session.add(timer)
+    # database.session.commit()
+    return render_template('break.html', Break=15)
 
 
 # Forgot Password Feature Starts
