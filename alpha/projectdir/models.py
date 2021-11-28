@@ -1,8 +1,6 @@
-from enum import unique
 from flask import redirect, url_for
 from flask_login import UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from sqlalchemy.orm import backref
 
 from projectdir import database, login_manager, app
 from datetime import datetime
@@ -10,7 +8,7 @@ from datetime import datetime
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return User.query.get(user_id)
 
 
 @login_manager.unauthorized_handler
@@ -27,9 +25,6 @@ class User(database.Model, UserMixin):
     # this must be date_created, but I misspelled and left it since it was messing my database
     # when changing the naming and it was lots of other workarounds
     data_created = database.Column(database.DateTime, default=datetime.utcnow())
-
-    #flashcards = database.relationship('Flashcard', backref='author', lazy=True)
-    notes = database.relationship('Note', backref='author', lazy=True)
 
     def get_token(self, expires_sec=300):
         serial = Serializer(app.config['SECRET_KEY'], expires_in=expires_sec)
@@ -49,23 +44,17 @@ class User(database.Model, UserMixin):
                f': {self.username} ' \
                f': {self.email} ' \
                f': {self.data_created.strftime("%d/%m/%Y, %H:%M:%S")}'
-"""
-class Flashcards(database.Model):
-    id = database.Column(database.Integer, primary_key=True)
-    content = database.Column(database.String)
-    
-    user_id = database.Column(database.Integer, database.ForeignKey('user.id'))
-    
-    def __repr__(self):
-        return f'<Flashcard: {self.content}'
-"""  
 
-class Note(database.Model):
-    id = database.Column(database.Integer, primary_key=True)
-    title = database.Column(database.String(64), nullable=False)
-    date = database.Column(database.DateTime, nullable=False ,default=datetime.utcnow)
-    content = database.Column(database.Text, nullable=False)
-    user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
-    
+class TimerDetails(database.Model):
+    id = database.Column(database.String(10), primary_key=True)
+    time = database.Column(database.Integer)
+
     def __repr__(self):
-        return f"Note('{self.title}', '{self.date}')"
+        return f'{self.id}: {self.time}'
+
+class Notes(database.Model):
+    id = database.Column(database.String(10), primary_key=True)
+    content = database.Column(database.String(1000))
+
+    def __repr__(self):
+        pass 
