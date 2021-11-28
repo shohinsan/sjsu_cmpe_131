@@ -40,6 +40,11 @@ class User(database.Model, UserMixin):
         except:
             return None
         return User.query.get(user_id)
+    
+    def check_user(sefl, username):
+        if username != sefl.username:
+            return False
+        return True
 
     def __repr__(self):
         return f'{self.id} ' \

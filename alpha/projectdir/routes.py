@@ -4,7 +4,7 @@ import json
 from flask import render_template, url_for, redirect, flash, request, session
 
 from projectdir import app, database, bcrypt, mail
-from projectdir.forms import RegistrationForm, LoginForm, ResetRequestForm, ResetPasswordForm, AccountUpdateForm, NewFlashCard, NoteForm
+from projectdir.forms import RegistrationForm, LoginForm, ResetRequestForm, ResetPasswordForm, AccountUpdateForm, NewFlashCard, NoteForm, ShareForm
 from projectdir.models import User, Note
 from flask_login import login_user, logout_user, current_user, login_required
 from flask_mail import Message
@@ -185,6 +185,23 @@ def delete_note(note_id):
     database.session.commit()
     flash(f'Your note has been deleted successfully!')
     return redirect(url_for('notes'))
+
+@app.route("/notes/<int:note_id>/share", methods=['GET', 'POST'])
+@login_required
+def share_note(note_id):
+    note = Note.query.get_or_404(note_id)
+    form = ShareForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None or not user.check_user(form.username.data):
+            flash(f'Invalided Account! This account does not exist!')
+            return redirect(url_for('share_note', note_id=note.id))
+        newNote = Note(title=note.title, content=note.content, user_id=user.id)
+        database.session.add(newNote)
+        database.session.commit()
+        flash(f'Successfully Shared Note!')
+        return redirect(url_for('note', note_id=note.id))
+    return render_template('shareNote.html', form=form, title='Share Note')
 
 @app.route('/finder')
 def finder():
