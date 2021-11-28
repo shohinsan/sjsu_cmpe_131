@@ -25,7 +25,9 @@ class User(database.Model, UserMixin):
     # this must be date_created, but I misspelled and left it since it was messing my database
     # when changing the naming and it was lots of other workarounds
     data_created = database.Column(database.DateTime, default=datetime.utcnow())
-
+    
+    notes = database.relationship('Note', backref='author', lazy=True)
+    
     def get_token(self, expires_sec=300):
         serial = Serializer(app.config['SECRET_KEY'], expires_in=expires_sec)
         return serial.dumps({'user_id': self.id}).decode('utf-8')
@@ -52,9 +54,13 @@ class TimerDetails(database.Model):
     def __repr__(self):
         return f'{self.id}: {self.time}'
 
-class Notes(database.Model):
-    id = database.Column(database.String(10), primary_key=True)
-    content = database.Column(database.String(1000))
+
+class Note(database.Model):
+    id = database.Column(database.Integer, primary_key=True)
+    title = database.Column(database.String(64), nullable=False)
+    date = database.Column(database.DateTime, nullable=False, default=datetime.utcnow)
+    content = database.Column(database.Text, nullable=False)
+    user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
-        pass 
+        return f"Note('{self.title}', '{self.date}')"
