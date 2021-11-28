@@ -1,0 +1,15 @@
+{% extends "layouts.html" %}
+{% block content %}
+<form action="" method="POST" novalidate>
+        {{ form.hidden_tag() }}
+    <div class="form-control">
+        <h1>Add Note</h1>
+        <p> {{ form.title.label }}
+        {{ form.title(size=32) }}</p>
+        <p>{{form.content.label}}
+        {{form.content()}}</p>
+        <p> {{ form.submit.label }}
+        {{ form.submit() }}</p>
+    </div>
+</form> 
+{% endblock content %}

@@ -1,12 +1,13 @@
 from flask import render_template, url_for, redirect, flash, request
 
 from projectdir import app, database, bcrypt, mail
-from projectdir.forms import RegistrationForm, LoginForm, ResetRequestForm, ResetPasswordForm, AccountUpdateForm
-from projectdir.models import User
+from projectdir.forms import RegistrationForm, LoginForm, ResetRequestForm, ResetPasswordForm, AccountUpdateForm, NewFlashCard, NoteForm
+from projectdir.models import User, Note
 from flask_login import login_user, logout_user, current_user, login_required
 from flask_mail import Message
 import os
-
+#import markdown
+#import markdown.extensions.fenced_code
 
 @app.route('/')
 @app.route('/home')
@@ -93,17 +94,74 @@ def flashcards():
     # user var from loging
     # have two different paths for creating and reading flashcards
     # mind map
-    return render_template('flashcards.html', title='Flashcards')
+    """
+    user = User.query.filter_by(username=current_user.username).first()
+    cards = Flashcards.query.filter_by(user_id=user.id).all()
+    form = NewFlashCard()
+    if form.validate_on_submit():
+        read_file = open(form.markdownFile.data,"r")
+        content = markdown.markdown(read_file.read(), extensions=["fenced_code"])
+        newCard = NewFlashCard(user_id=user.id, content=content)
+        database.session.add(newCard)
+        database.session.commit()
+        flash(f'Upload Flashcard Successfully!')
+        return redirect(url_for('flashcards'))
+    """
+    return render_template('flashcards.html',  title='Flashcards')
 
+@app.route('/notes')
+@login_required
+def notes():
+    user = User.query.filter_by(username=current_user.username).first()
+    notes = Note.query.filter_by(user_id=user.id).all()
+    return render_template('notes.html', notes=notes, title='Notes')
 
-@app.route('/md_notes')
-def md_notes():
-    # render notes 
-    # print notes to pdf
-    # share notes
-    # notes tree 
-    return render_template('mdnotes.html', title='Markdown')
+@app.route('/notes/<int:note_id>')
+@login_required
+def note(note_id):
+    note = Note.query.get_or_404(note_id)
+    return render_template('note.html', note=note, title=note.title)
 
+@app.route('/notes/add', methods=['GET', 'POST'])
+@login_required
+def add_note():
+    form = NoteForm()
+    if form.validate_on_submit():
+        note = Note(title=form.title.data, content=form.content.data, user_id=user.id)
+        database.session.add(note)
+        database.session.commit()
+        flash(f'Successfully added new note!')
+        return redirect('/notes')
+    return render_template('createNote.html',  form=form, title='Add Notes')
+
+@app.route("/note/<int:note_id>/update", methods=['GET', 'POST'])
+@login_required
+def update_note(note_id):
+    note = Note.query.get_or_404(note_id)
+    if note.author != current_user:
+        abort(403)
+    form = NoteForm()
+    if form.validate_on_submit():
+        note.title = form.title.data
+        note.content = form.content.data
+        database.session.commit()
+        flash(f'Your note has been updated successfully!')
+        return redirect(url_for('notes', note_id=note.id))
+    elif request.method == 'GET':
+        form.title.data = note.title
+        form.content.data = note.content
+    return render_template('createNote.html', title='Update Note', form=form, legend='Update Note')
+
+@app.route("/notes/<int:note_id>/delete",methods=['GET', 'POST'])
+@login_required
+def delete_note(note_id):
+    note = Note.query.get_or_404(note_id)
+    if note.author != current_user:
+        abort(403)
+    database.session.delete(note)
+    database.session.commit()
+    flash(f'Your note has been deleted successfully!')
+    return redirect(url_for('notes'))
 
 @app.route('/finder')
 def finder():

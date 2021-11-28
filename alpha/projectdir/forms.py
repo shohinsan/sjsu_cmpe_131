@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileAllowed
+from wtforms import validators
+from flask_wtf.file import FileField, FileAllowed, FileRequired
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms.fields.simple import TextAreaField
 from wtforms.validators import DataRequired, Length, Email
 
 
@@ -43,3 +45,12 @@ class AccountUpdateForm(FlaskForm):
 
 class DeleteAccountForm(FlaskForm):
     delete = SubmitField(label='Delete Account')
+
+class NewFlashCard(FlaskForm):
+    markdownFile = FileField('Enter your markdown file', validators=[FileRequired(), FileAllowed(['md', 'markdown'], 'Markdown file only!')])
+    submit = SubmitField('Add')
+
+class NoteForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    content = TextAreaField('Content', validators=[DataRequired()])
+    submit = SubmitField('Add')
