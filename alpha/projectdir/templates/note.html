@@ -9,6 +9,7 @@
         {% if note.author == current_user %}
           <div>
             <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('update_note', note_id=note.id) }}">Update</a>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('share_note', note_id=note.id) }}">Share</a>
             <a class="btn btn-danger btn-sm mt-1 mb-1" href="{{ url_for('delete_note', note_id=note.id) }}">Delete</a>
           </div>
         {% endif %}
@@ -18,6 +19,6 @@
     </div>
   </article>
   </br>
-  <a class="btn btn-success btn-sm mt-1 mb-1" id="left" href="{{url_for('notes')}}"> Close </a>
+  <a class="btn btn-success btn-sm mt-1 mb-1" href="{{url_for('notes')}}"> Close </a>
 
 {% endblock content %}

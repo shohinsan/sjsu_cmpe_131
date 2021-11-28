@@ -58,3 +58,8 @@ class NoteForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     content = TextAreaField('Content', validators=[DataRequired()])
     submit = SubmitField('Add')
+ 
+class ShareForm(FlaskForm):
+    username = StringField(label='Username', validators=[DataRequired(), Length(min=3, max=20)])
+    email = StringField(label='Email', validators=[DataRequired(), Email()])
+    submit = SubmitField(label="Submit")
