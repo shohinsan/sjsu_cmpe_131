@@ -1,16 +1,36 @@
 from datetime import datetime
+import markdown
 import json
 
 from flask import render_template, url_for, redirect, flash, request, session
-from alpha.projectdir.forms import NotesForm
-from alpha.projectdir.models import Notes
 
 from projectdir import app, database, bcrypt, mail
-from projectdir.forms import RegistrationForm, LoginForm, ResetRequestForm, ResetPasswordForm, AccountUpdateForm, DeleteAccountForm, TimerForm, NotesForm
-from projectdir.models import User, TimerDetails # Quiz, Card
+from projectdir.forms import RegistrationForm, LoginForm, ResetRequestForm, ResetPasswordForm, AccountUpdateForm, DeleteAccountForm, TimerForm
+from projectdir.models import User, TimerDetails, Notes # Quiz, Card
 from flask_login import login_user, logout_user, current_user, login_required
 from flask_mail import Message
 import os
+
+
+def create(text, title):
+    note = Notes(text=text, title=title)
+    database.session.add(note)
+    database.session.commit()
+    database.session.refresh(note)
+
+def get_notes():
+    return database.session.query(Notes).all()
+    
+def update(id, text, title): 
+    database.session.query(Notes).filter_by(id=id).update({
+        "text":text,
+        "title":title
+    })
+    database.commit()
+
+def delete(id):
+    database.session.query(Notes).filter_by(id=id).delete()
+    database.session.commit()
 
 
 @app.route('/')
@@ -153,13 +173,24 @@ def registration():
 # November 26 Added
 
 
-@app.route('/md_notes')
+notes=["test1", 'test2', 'test3']
+
+@app.route('/md_notes', methods=['GET', 'POST'])
 @login_required
 def md_notes():
-    form = NotesForm()
+    if request.method == "POST":
+        create(request.form['text'], request.form['title'])
 
-    return render_template('mdnotes.html', title='Markdown', form=form)
+    return render_template('mdnotes.html', title='Markdown', notes=notes)
 
+@app.route('/edit/<id>', methods=['GET', 'POST'])
+@login_required
+def edit(id):
+    if request.method == "POST":
+        update(id, text=request.form['text'], title=request.form['title'])
+    elif request.method == "GET":
+        delete(id)
+    return redirect(url_for('md_notes'))
 
 @app.route('/finder')
 def finder():
