@@ -48,3 +48,8 @@ class TimerForm(FlaskForm):
     lengthtime = StringField(label='Study Length', validators=[DataRequired()])
     breaktime = StringField(label='Break Length', validators=[DataRequired()])
     submit = SubmitField(label="Submit")
+
+class NotesForm(FlaskForm):
+    note_title = StringField(label='Note Title', validators=[DataRequired()])
+    note_content = StringField(label='Note Content', validators=[DataRequired])
+    submit = SubmitField(label='Create Note')

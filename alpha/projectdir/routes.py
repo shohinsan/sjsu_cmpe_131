@@ -2,9 +2,11 @@ from datetime import datetime
 import json
 
 from flask import render_template, url_for, redirect, flash, request, session
+from alpha.projectdir.forms import NotesForm
+from alpha.projectdir.models import Notes
 
 from projectdir import app, database, bcrypt, mail
-from projectdir.forms import RegistrationForm, LoginForm, ResetRequestForm, ResetPasswordForm, AccountUpdateForm, DeleteAccountForm, TimerForm
+from projectdir.forms import RegistrationForm, LoginForm, ResetRequestForm, ResetPasswordForm, AccountUpdateForm, DeleteAccountForm, TimerForm, NotesForm
 from projectdir.models import User, TimerDetails # Quiz, Card
 from flask_login import login_user, logout_user, current_user, login_required
 from flask_mail import Message
@@ -154,11 +156,9 @@ def registration():
 @app.route('/md_notes')
 @login_required
 def md_notes():
-    # render notes 
-    # print notes to pdf
-    # share notes
-    # notes tree 
-    return render_template('mdnotes.html', title='Markdown')
+    form = NotesForm()
+
+    return render_template('mdnotes.html', title='Markdown', form=form)
 
 
 @app.route('/finder')
