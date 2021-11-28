@@ -44,3 +44,17 @@ class User(database.Model, UserMixin):
                f': {self.username} ' \
                f': {self.email} ' \
                f': {self.data_created.strftime("%d/%m/%Y, %H:%M:%S")}'
+
+class TimerDetails(database.Model):
+    id = database.Column(database.String(10), primary_key=True)
+    time = database.Column(database.Integer)
+
+    def __repr__(self):
+        return f'{self.id}: {self.time}'
+
+class Notes(database.Model):
+    id = database.Column(database.String(10), primary_key=True)
+    content = database.Column(database.String(1000))
+
+    def __repr__(self):
+        pass 

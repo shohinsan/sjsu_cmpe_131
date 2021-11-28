@@ -1,0 +1,26 @@
+{% extends 'featurebase.html' %}
+
+{% block content %}
+<h1 style="text-align: center;">
+    Break!
+</h1>
+<div style="text-align: center;">
+    <h2 id="timer" style="font-weight: 900;">{{ Break }} min</h2>
+</div>
+<div style='text-align: center;'>
+    <a class='btn btn-primary' href='{{ url_for('time') }}'>Get back to studying!</a>
+</div>
+<progress max="{{ Break }}" value=0 style="visibility: hidden;" id="progressBar"></progress>
+<script type='application/javascript'>
+    const timerElement = document.getElementById("timer");
+    var timerCounter = progressBar.max;
+    const interval = setInterval(() => {
+        if (timerCounter <= 1) {
+            window.location.href = "{{ url_for('time') }}";
+            clearInterval(interval);
+        }
+        timerCounter = timerCounter - 1;
+        timerElement.innerText = timerCounter + " min";
+    }, 60000);
+</script>
+{% endblock %}
