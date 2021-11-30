@@ -27,6 +27,8 @@ class User(database.Model, UserMixin):
     data_created = database.Column(database.DateTime, default=datetime.utcnow())
     
     notes = database.relationship('Note', backref='author', lazy=True)
+
+
     
     def get_token(self, expires_sec=300):
         serial = Serializer(app.config['SECRET_KEY'], expires_in=expires_sec)
@@ -69,3 +71,4 @@ class Note(database.Model):
 
     def __repr__(self):
         return f"Note('{self.title}', '{self.date}')"
+

@@ -4,7 +4,6 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
 
-
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'groupnineproject'
@@ -34,5 +33,6 @@ app.config['MAX_CONTENT_LENGTH'] = 200 * 200
 @app.before_first_request
 def create_tables():
     database.create_all()
+
 
 from projectdir import routes, models, forms

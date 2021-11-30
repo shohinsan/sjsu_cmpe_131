@@ -1,21 +1,28 @@
 {% extends "layouts.html" %}
 {% block content %}
+
     <h1 align="center"> Notes </h1>
     {% for note in notes %}
         <article class="media content-section">
-            <li class="list-group-item">
-            <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + note.author.image_file) }}">
-            <div class="media-body">
-                <div class="article-metadata">
-                    <a class="mr-2" href="#">{{ note.author.username }}</a>
-                    <small class="text-muted">{{ note.date.strftime('%Y-%m-%d') }}</small>
+            <li class="list-group-item m-3 p-3 card">
+                <img class="rounded-circle article-img "
+                     style="width: 3%"
+                     src="{{ url_for('static', filename='profile_pics/' + note.author.image_file) }}" alt="">
+                <div class="media-body ">
+                    <div class="article-metadata">
+                        <a class="mr-2" href="#">{{ note.author.username }}</a>
+                        <small class="text-muted">{{ note.date.strftime('%Y-%m-%d') }}</small>
+                    </div>
+                    <h2><a class="article-title" href="{{ url_for('note', note_id=note.id) }}">{{ note.title }}</a></h2>
+                    <p class="article-content">{{ note.content }}</p>
                 </div>
-                <h2><a class="article-title" href="{{ url_for('note', note_id=note.id) }}">{{ note.title }}</a></h2>
-                <p class="article-content">{{ note.content }}</p>
-            </div>
             </li>
         </article>
     {% endfor %}
     </br>
-    <a class="btn btn-primary btn-sm mt-1 mb-1" href="http://127.0.0.1:5000/notes/add"> Add New Note </a>
+
+    <a class="btn btn-primary btn-sm mt-1 mb-1 m-3 p-3" href="http://127.0.0.1:5000/notes/add"> Add New Note </a>
+
+
+
 {% endblock content %}
