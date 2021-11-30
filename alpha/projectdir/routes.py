@@ -1,7 +1,9 @@
 from datetime import datetime
+import markdown
 
-import pdfkit
 from flask import render_template, url_for, redirect, flash, request, session, make_response, send_file
+from fpdf import FPDF
+from werkzeug.utils import send_file
 
 from projectdir import app, database, bcrypt, mail
 from projectdir.forms import RegistrationForm, LoginForm, ResetRequestForm, ResetPasswordForm, AccountUpdateForm, \
@@ -150,9 +152,9 @@ def add_flashcard():
         flashcard = Flashcard(file=form.file.data, user_id=current_user.id)
         database.session.add(flashcard)
         database.session.commit()
-        flash(f'Successfully added new markdown file to flashcard!')
+        flash(f'Successfully added new markdown file to flashcard!', 'success')
         return redirect(url_for('flashcards'))
-    return render_template('createFlashcard.html',  form=form, title='Add Flashcard')
+    return render_template('createFlashcard.html', form=form, title='Add Flashcard')
 
 
 @app.route('/notes')
@@ -198,7 +200,7 @@ def update_note(note_id):
         note.title = form.title.data
         note.content = form.content.data
         database.session.commit()
-        flash(f'Your note has been updated successfully!')
+        flash(f'Your note has been updated successfully!', 'success')
         return redirect(url_for('note', note_id=note.id))
     elif request.method == 'GET':
         form.title.data = note.title
@@ -215,7 +217,7 @@ def delete_note(note_id):
         os.abort(403)
     database.session.delete(note)
     database.session.commit()
-    flash(f'Your note has been deleted successfully!')
+    flash(f'Your note has been deleted successfully!', 'success')
     return redirect(url_for('notes'))
 
 
@@ -233,20 +235,21 @@ def share_note(note_id):
         newNote = Note(title=note.title, content=note.content, user_id=user.id)
         database.session.add(newNote)
         database.session.commit()
-        flash(f'Successfully Shared Note!')
+        flash(f'Successfully Shared Note!', 'success')
         return redirect(url_for('note', note_id=note.id))
     return render_template('shareNote.html', form=form, title='Share Note')
+
 
 @app.route('/notes/<int:note_id>/pdf', methods=['GET', 'POST'])
 @login_required
 def pdf(note_id):
     note = Note.query.get_or_404(note_id)
-    pdf=FPDF()
-    pdf.add_page() 
+    pdf = FPDF()
+    pdf.add_page()
     pdf.set_font('Arial', size=14)
-    pdf.multi_cell(w=40, h=20, txt=note.title+'\n'+note.content, align='C')
+    pdf.multi_cell(w=40, h=20, txt=note.title + '\n' + note.content, align='C')
     pdf.output('output.pdf')
-    return send_file('output.pdf', as_attachment=True, environ=request.environ)
+    return send_file('output.pdf', as_attachment=True, environ = request.environ)
 
 
 @app.route('/finder')

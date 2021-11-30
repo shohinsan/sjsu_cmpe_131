@@ -25,7 +25,7 @@ class User(database.Model, UserMixin):
     # this must be date_created, but I misspelled and left it since it was messing my database
     # when changing the naming and it was lots of other workarounds
     data_created = database.Column(database.DateTime, default=datetime.utcnow())
-    
+
     notes = database.relationship('Note', backref='author', lazy=True)
     flashcards = database.relationship('Flashcard', backref='author', lazy=True)
 
@@ -41,7 +41,7 @@ class User(database.Model, UserMixin):
         except:
             return None
         return User.query.get(user_id)
-    
+
     def check_user(sefl, username):
         if username != sefl.username:
             return False
@@ -52,6 +52,7 @@ class User(database.Model, UserMixin):
                f': {self.username} ' \
                f': {self.email} ' \
                f': {self.data_created.strftime("%d/%m/%Y, %H:%M:%S")}'
+
 
 class TimerDetails(database.Model):
     id = database.Column(database.String(10), primary_key=True)

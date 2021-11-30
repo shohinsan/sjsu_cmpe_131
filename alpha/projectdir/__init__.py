@@ -10,6 +10,8 @@ app.config['SECRET_KEY'] = 'groupnineproject'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/notetaking.db'
 
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+
 database = SQLAlchemy(app)
 
 bcrypt = Bcrypt(app)
