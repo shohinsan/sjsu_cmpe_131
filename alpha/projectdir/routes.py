@@ -1,7 +1,7 @@
 from datetime import datetime
 
 import pdfkit
-from flask import render_template, url_for, redirect, flash, request, session, make_response
+from flask import render_template, url_for, redirect, flash, request, session, make_response, send_file
 
 from projectdir import app, database, bcrypt, mail
 from projectdir.forms import RegistrationForm, LoginForm, ResetRequestForm, ResetPasswordForm, AccountUpdateForm, \
@@ -236,6 +236,17 @@ def share_note(note_id):
         flash(f'Successfully Shared Note!')
         return redirect(url_for('note', note_id=note.id))
     return render_template('shareNote.html', form=form, title='Share Note')
+
+@app.route('/notes/<int:note_id>/pdf', methods=['GET', 'POST'])
+@login_required
+def pdf(note_id):
+    note = Note.query.get_or_404(note_id)
+    pdf=FPDF()
+    pdf.add_page() 
+    pdf.set_font('Arial', size=14)
+    pdf.multi_cell(w=40, h=20, txt=note.title+'\n'+note.content, align='C')
+    pdf.output('output.pdf')
+    return send_file('output.pdf', as_attachment=True, environ=request.environ)
 
 
 @app.route('/finder')

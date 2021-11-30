@@ -29,6 +29,6 @@
 
 
 
-{#    <a class="btn btn-success btn-sm mt-1 mb-1 m-3" href="{{ url_for('testpdfonly') }}"> Save as PDF </a>#}
+    <a class="btn btn-success btn-sm mt-1 mb-1 m-3" href="{{ url_for('pdf', note_id=note.id) }}"> Save as PDF </a>
 
 {% endblock content %}
