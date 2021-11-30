@@ -27,9 +27,8 @@ class User(database.Model, UserMixin):
     data_created = database.Column(database.DateTime, default=datetime.utcnow())
     
     notes = database.relationship('Note', backref='author', lazy=True)
+    flashcards = database.relationship('Flashcard', backref='author', lazy=True)
 
-
-    
     def get_token(self, expires_sec=300):
         serial = Serializer(app.config['SECRET_KEY'], expires_in=expires_sec)
         return serial.dumps({'user_id': self.id}).decode('utf-8')
@@ -66,9 +65,18 @@ class Note(database.Model):
     id = database.Column(database.Integer, primary_key=True)
     title = database.Column(database.String(64), nullable=False)
     date = database.Column(database.DateTime, nullable=False, default=datetime.utcnow)
-    content = database.Column(database.Text, nullable=False)
+    content = database.Column(database.String, nullable=False)
     user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
         return f"Note('{self.title}', '{self.date}')"
 
+
+class Flashcard(database.Model):
+    id = database.Column(database.Integer, primary_key=True)
+    date = database.Column(database.DateTime, nullable=False, default=datetime.utcnow)
+    file = database.Column(database.String, nullable=False)
+    user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
+
+    def __repr__(self):
+        return f"Flashcard('{self.file}', '{self.date}')"
