@@ -51,7 +51,7 @@ class TimerForm(FlaskForm):
 
 
 class NewFlashCard(FlaskForm):
-    markdownFile = FileField('Enter your markdown file', validators=[FileRequired(), FileAllowed(['md', 'markdown'], 'Markdown file only!')])
+    file = FileField('Enter your markdown file', validators=[FileRequired(), FileAllowed(['md', 'markdown'], 'Markdown file only!')])
     submit = SubmitField('Add')
 
 class NoteForm(FlaskForm):
