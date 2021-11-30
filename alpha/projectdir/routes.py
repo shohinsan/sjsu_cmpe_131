@@ -1,14 +1,12 @@
 from datetime import datetime
 
-from fpdf import FPDF
+import pdfkit
 from flask import render_template, url_for, redirect, flash, request, session, make_response, send_file
-from werkzeug.utils import send_file
-from wtforms import widgets
 
 from projectdir import app, database, bcrypt, mail
 from projectdir.forms import RegistrationForm, LoginForm, ResetRequestForm, ResetPasswordForm, AccountUpdateForm, \
     NewFlashCard, NoteForm, ShareForm, TimerForm
-from projectdir.models import User, Note, TimerDetails
+from projectdir.models import User, Note, TimerDetails, Flashcard
 from flask_login import login_user, logout_user, current_user, login_required
 from flask_mail import Message
 import os
@@ -126,24 +124,35 @@ def registration():
 
 
 @app.route('/flashcards')
+@login_required
 def flashcards():
     # user var from loging
     # have two different paths for creating and reading flashcards
     # mind map
-    """
     user = User.query.filter_by(username=current_user.username).first()
-    cards = Flashcards.query.filter_by(user_id=user.id).all()
+    flashcards = Flashcard.query.filter_by(user_id=user.id).all()
+
+    return render_template('flashcards.html', flashcards=flashcards, title='Flashcards')
+
+
+@app.route("/flashcards/<int:flashcard_id>", methods=['POST', 'GET'])
+@login_required
+def show_flashcard(flashcard_id):
+    flashcard = User.query.get_or_404(flashcard_id)
+    return render_template('flashcard.html', flashcard=flashcard, title=flashcard.file)
+
+
+@app.route("/flashcards/add", methods=['POST', 'GET'])
+@login_required
+def add_flashcard():
     form = NewFlashCard()
     if form.validate_on_submit():
-        read_file = open(form.markdownFile.data,"r")
-        content = markdown.markdown(read_file.read(), extensions=["fenced_code"])
-        newCard = NewFlashCard(user_id=user.id, content=content)
-        database.session.add(newCard)
+        flashcard = Flashcard(file=form.file.data, user_id=current_user.id)
+        database.session.add(flashcard)
         database.session.commit()
-        flash(f'Upload Flashcard Successfully!')
+        flash(f'Successfully added new markdown file to flashcard!')
         return redirect(url_for('flashcards'))
-    """
-    return render_template('flashcards.html', title='Flashcards')
+    return render_template('createFlashcard.html',  form=form, title='Add Flashcard')
 
 
 @app.route('/notes')
@@ -238,6 +247,7 @@ def pdf(note_id):
     pdf.multi_cell(w=40, h=20, txt=note.title+'\n'+note.content, align='C')
     pdf.output('output.pdf')
     return send_file('output.pdf', as_attachment=True, environ=request.environ)
+
 
 @app.route('/finder')
 def finder():
