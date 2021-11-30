@@ -32,8 +32,6 @@ class ResetRequestForm(FlaskForm):
 
 
 class AccountUpdateForm(FlaskForm):
-    # first_name = StringField(label='First Name', validators=[DataRequired(), Length(min=3, max=20)])
-    # last_name = StringField(label='Last Name', validators=[DataRequired(), Length(min=3, max=20)])
     username = StringField(label='Username', validators=[DataRequired(), Length(min=3, max=20)])
     email = StringField(label='Email', validators=[DataRequired(), Email()])
     picture = FileField(label="Update Profile Picture", validators=[FileAllowed(['jpg', 'png'])])
@@ -44,6 +42,7 @@ class AccountUpdateForm(FlaskForm):
 class DeleteAccountForm(FlaskForm):
     delete = SubmitField(label='Delete Account')
 
+
 class TimerForm(FlaskForm):
     lengthtime = StringField(label='Study Length', validators=[DataRequired()])
     breaktime = StringField(label='Break Length', validators=[DataRequired()])
@@ -51,15 +50,22 @@ class TimerForm(FlaskForm):
 
 
 class NewFlashCard(FlaskForm):
-    file = FileField('Enter your markdown file', validators=[FileRequired(), FileAllowed(['md', 'markdown'], 'Markdown file only!')])
+    markdownFile = FileField('Enter your markdown file',
+                             validators=[FileRequired(), FileAllowed(['md', 'markdown'], 'Markdown file only!')])
     submit = SubmitField('Add')
+
 
 class NoteForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     content = TextAreaField('Content', validators=[DataRequired()])
     submit = SubmitField('Add')
- 
+
+
 class ShareForm(FlaskForm):
     username = StringField(label='Username', validators=[DataRequired(), Length(min=3, max=20)])
     email = StringField(label='Email', validators=[DataRequired(), Email()])
     submit = SubmitField(label="Submit")
+
+#
+# class DeleteAccountForm(FlaskForm):
+#     convert = SubmitField(label='Convert to PDF')

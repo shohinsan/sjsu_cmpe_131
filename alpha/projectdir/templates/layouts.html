@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='main.css') }}">
     <!-- Custom Main.js-->
     <link rel="stylesheet" href="{{ url_for('static',filename='main.js') }}">
+
+
 </head>
 <body>
 
@@ -25,9 +27,20 @@
                 <img src="https://placeholder.pics/svg/150x50/888888/EEE/Logo" alt="..." height="36">
             </a>
             <!-- Navbar Menu -->
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="{{ url_for('homepage') }}" class="nav-link px-2 text-white">ScholarRabbit</a></li>
-            </ul>
+            {% if current_user.is_authenticated %}
+
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><a href="{{ url_for('notes') }}" class="nav-link px-2 text-white">ScholarRabbit Notes</a></li>
+                    <li><a href="{{ url_for('flashcards') }}" class="nav-link px-2 text-white">Flashcards</a></li>
+                    <li><a href="{{ url_for('time') }}" class="nav-link px-2 text-white">Pomodoro</a></li>
+
+                </ul>
+            {% else %}
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><a href="{{ url_for('homepage') }}" class="nav-link px-2 text-white">ScholarRabbit</a></li>
+                </ul>
+            {% endif %}
+
             {% if current_user.is_authenticated %}
                 <!-- Navbar SearchBar Form -->
                 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
@@ -85,27 +98,6 @@
         {% endif %}
     {% endwith %}
 </div>
-
-{% block home_content %}
-{% endblock home_content %}
-
-{% block login_content %}
-{% endblock login_content %}
-
-{% block registration_content %}
-{% endblock registration_content %}
-
-{% block notes_content %}
-{% endblock notes_content %}
-
-{% block profile_content %}
-{% endblock profile_content %}
-
-{% block pomodoro_content %}
-{% endblock pomodoro_content %}
-
-{% block reset_request %}
-{% endblock reset_request %}
 
 {% block content %}
 {% endblock content %}

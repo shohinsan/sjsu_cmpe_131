@@ -1,9 +1,7 @@
-{% extends "layouts.html" %}
-{% block content %}
-    <h1 align="center"> Flashcards </h1>
-    {% for flashcard in flashcards %}
-        <h2 href="">{{flashcard.file}}</h2>
-    {% endfor %}
-    </br>
-    <a class="btn btn-primary btn-sm mt-1 mb-1" href="http://127.0.0.1:5000/flashcards/add"> Add New Flashcard </a>
+{% extends 'featurebase.html' %} 
+
+{% block content %} 
+<div>
+    <h1>Should be able to share and create and print flashcards</h1>
+</div>
 {% endblock content %}

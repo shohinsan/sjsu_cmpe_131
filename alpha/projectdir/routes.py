@@ -1,18 +1,19 @@
 from datetime import datetime
-import json
 
+import pdfkit
 from flask import render_template, url_for, redirect, flash, request, session, make_response
-from flask.wrappers import Response
 
 from projectdir import app, database, bcrypt, mail
-from projectdir.forms import RegistrationForm, LoginForm, ResetRequestForm, ResetPasswordForm, AccountUpdateForm, NewFlashCard, NoteForm, ShareForm
-from projectdir.models import User, Note, Flashcard
+from projectdir.forms import RegistrationForm, LoginForm, ResetRequestForm, ResetPasswordForm, AccountUpdateForm, \
+    NewFlashCard, NoteForm, ShareForm, TimerForm
+from projectdir.models import User, Note, TimerDetails
 from flask_login import login_user, logout_user, current_user, login_required
 from flask_mail import Message
 import os
-import pdfkit
-#import markdown
-#import markdown.extensions.fenced_code
+
+
+# import markdown
+# import markdown.extensions.fenced_code
 
 @app.route('/')
 @app.route('/home')
@@ -21,6 +22,7 @@ def homepage():
 
 
 @app.route('/about')
+# non-functional method, will be removed by the 3rd milestone
 def about():
     return render_template('about.html', title='About')
 
@@ -28,6 +30,7 @@ def about():
 # Login/ Signup Features Starts
 
 def save_image(picture_file):
+    # A function to save image in project database
     picture_name = picture_file.filename
     picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_name)
     picture_file.save(picture_path)
@@ -37,6 +40,8 @@ def save_image(picture_file):
 @app.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
+    # A function to update username, email, and profile picture max of (200x200) I set a limit
+    # because it was huge at first
     form = AccountUpdateForm()
     if form.validate_on_submit():
         if form.picture.data:
@@ -57,6 +62,7 @@ def account():
 @app.route('/account/delete')
 @login_required
 def delete_account():
+    # A function helper to delete user from database (takes care of button)
     form = AccountUpdateForm()
     return render_template('account.html', form=form)
 
@@ -64,6 +70,7 @@ def delete_account():
 @app.route('/account/delete_successful')
 @login_required
 def delete_successful():
+    # A function to delete user from database
     user = current_user.id
     database.session.query(User).filter(User.id == user).delete(synchronize_session=False)
     logout_user()
@@ -72,9 +79,9 @@ def delete_successful():
     return redirect(url_for('login'))
 
 
-
 @app.route('/login', methods=['POST', 'GET'])
 def login():
+    # A function to log in to system
     if current_user.is_authenticated:
         return redirect(url_for('account'))
     form = LoginForm()
@@ -83,7 +90,7 @@ def login():
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
             flash(f'Login successful for {form.email.data}', category='success')
-            return redirect(url_for('account'))
+            return redirect(url_for('notes'))
         else:
             flash(f'Login unsuccessful for {form.email.data}', category='danger')
             return redirect(url_for('homepage'))
@@ -92,12 +99,14 @@ def login():
 
 @app.route('/logout')
 def logout():
+    # A function to log out of system
     logout_user()
     return redirect(url_for('login'))
 
 
 @app.route('/registration', methods=['POST', 'GET'])
 def registration():
+    # A function to register a user into database
     if current_user.is_authenticated:
         return redirect(url_for('account'))
     form = RegistrationForm()
@@ -115,66 +124,64 @@ def registration():
 
 
 @app.route('/flashcards')
-@login_required
 def flashcards():
     # user var from loging
     # have two different paths for creating and reading flashcards
     # mind map
+    """
     user = User.query.filter_by(username=current_user.username).first()
-    flashcards = Flashcard.query.filter_by(user_id=user.id).all()
-    
-    return render_template('flashcards.html', flashcards=flashcards, title='Flashcards')
-
-@app.route("/flashcards/<int:flashcard_id>", methods=['POST', 'GET'])
-@login_required
-def show_flashcard(flashcard_id):
-    flashcard = User.query.get_or_404(flashcard_id)
-    return render_template('flashcard.html', flashcard=flashcard, title=flashcard.file)
-
-
-@app.route("/flashcards/add", methods=['POST', 'GET'])
-@login_required
-def add_flashcard():
+    cards = Flashcards.query.filter_by(user_id=user.id).all()
     form = NewFlashCard()
     if form.validate_on_submit():
-        flashcard = Flashcard(file=form.file.data, user_id=current_user.id)
-        database.session.add(flashcard)
+        read_file = open(form.markdownFile.data,"r")
+        content = markdown.markdown(read_file.read(), extensions=["fenced_code"])
+        newCard = NewFlashCard(user_id=user.id, content=content)
+        database.session.add(newCard)
         database.session.commit()
-        flash(f'Successfully added new markdown file to flashcard!')
+        flash(f'Upload Flashcard Successfully!')
         return redirect(url_for('flashcards'))
-    return render_template('createFlashcard.html',  form=form, title='Add Flashcard')
+    """
+    return render_template('flashcards.html', title='Flashcards')
+
 
 @app.route('/notes')
 @login_required
 def notes():
+    # A function to display all the notes
     user = User.query.filter_by(username=current_user.username).first()
     notes = Note.query.filter_by(user_id=user.id).all()
     return render_template('notes.html', notes=notes, title='Notes')
 
+
 @app.route('/notes/<int:note_id>')
 @login_required
+# A function to click each note and get to another route
 def note(note_id):
     note = Note.query.get_or_404(note_id)
     return render_template('note.html', note=note, title=note.title)
 
+
 @app.route('/notes/add', methods=['GET', 'POST'])
 @login_required
+# A function to add notes to database
 def add_note():
     form = NoteForm()
     if form.validate_on_submit():
         note = Note(title=form.title.data, content=form.content.data, user_id=current_user.id)
         database.session.add(note)
         database.session.commit()
-        flash(f'Successfully added new note!')
+        flash(f'Successfully added new note!', 'success')
         return redirect('/notes')
-    return render_template('createNote.html',  form=form, title='Add Notes')
+    return render_template('createNote.html', form=form, title='Add Notes')
+
 
 @app.route("/note/<int:note_id>/update", methods=['GET', 'POST'])
 @login_required
 def update_note(note_id):
+    # A function to update notes from database
     note = Note.query.get_or_404(note_id)
     if note.author != current_user:
-        abort(403)
+        os.abort(403)
     form = NoteForm()
     if form.validate_on_submit():
         note.title = form.title.data
@@ -187,20 +194,24 @@ def update_note(note_id):
         form.content.data = note.content
     return render_template('createNote.html', title='Update Note', form=form, legend='Update Note')
 
-@app.route("/notes/<int:note_id>/delete",methods=['GET', 'POST'])
+
+@app.route("/notes/<int:note_id>/delete", methods=['GET', 'POST'])
 @login_required
 def delete_note(note_id):
+    # A function to delete notes from database
     note = Note.query.get_or_404(note_id)
     if note.author != current_user:
-        abort(403)
+        os.abort(403)
     database.session.delete(note)
     database.session.commit()
     flash(f'Your note has been deleted successfully!')
     return redirect(url_for('notes'))
 
+
 @app.route("/notes/<int:note_id>/share", methods=['GET', 'POST'])
 @login_required
 def share_note(note_id):
+    # A function helper to share notes with other users in database
     note = Note.query.get_or_404(note_id)
     form = ShareForm()
     if form.validate_on_submit():
@@ -215,19 +226,7 @@ def share_note(note_id):
         return redirect(url_for('note', note_id=note.id))
     return render_template('shareNote.html', form=form, title='Share Note')
 
-@app.route("/notes/<int:note_id>/downloadpdf", methods=['POST','GET'])
-@login_required
-def download_pdf(note_id):
-    note = Note.query.get_or_404(note_id)
-    rendered = render_template('pdf.html', note=note, node_id=note.id)
-    pdf = pdfkit.from_string(rendered, False)
-    
-    response = make_response(pdf)
-    response.headers['content-Type'] = 'application/pdf'
-    response.headers['content-Disposition'] = 'inline: filename=output.pdf'
-        
-    return response, redirect(url_for('note', note_id=note.id))
-    
+
 @app.route('/finder')
 def finder():
     # rename and find files 
@@ -237,31 +236,34 @@ def finder():
 @app.route('/timer', methods=['GET', 'POST'])
 @login_required
 def time():
-    form=TimerForm()
+    form = TimerForm()
     return render_template('timer.html', title='Timer', form=form)
+
 
 @app.route('/countdown')
 def count():
     print(datetime.now())
-    session['starttime']=datetime.now()
+    session['starttime'] = datetime.now()
     return render_template('timeractual.html', Timer=25)
 
 
-#database for some reason doesn't exit 
+# database for some reason doesn't exit
 @app.route('/break')
 def shortbreak():
     print(datetime.now())
-    session['endtime']=datetime.now()
-    timespent=session['endtime']-session['starttime']
-    timer = TimerDetails(id=datetime.now().day, time=timespent.total_seconds()//60)
+    session['endtime'] = datetime.now()
+    timespent = session['endtime'] - session['starttime']
+    timer = TimerDetails(id=datetime.now().day, time=timespent.total_seconds() // 60)
     # database.session.add(timer)
     # database.session.commit()
     return render_template('break.html', Break=5)
+
+
 def longbreak():
     print(datetime.now())
-    session['endtime']=datetime.now()
-    timespent=session['endtime']-session['starttime']
-    timer = TimerDetails(id=datetime.now().day, time=timespent.total_seconds()//60)
+    session['endtime'] = datetime.now()
+    timespent = session['endtime'] - session['starttime']
+    timer = TimerDetails(id=datetime.now().day, time=timespent.total_seconds() // 60)
     # database.session.add(timer)
     # database.session.commit()
     return render_template('break.html', Break=15)
@@ -271,6 +273,7 @@ def longbreak():
 
 
 def send_mail(user):
+    # Send email confirmation to change password
     token = user.get_token()
     msg = Message('Password Reset Request', recipients=[user.email], sender='noreply@scholarrabbit.com')
     msg.body = f''' To reset your password. Please follow the link below
@@ -285,6 +288,7 @@ def send_mail(user):
 
 @app.route('/reset_password', methods=['GET', 'POST'])
 def reset_request():
+    # A route to activate reset password button
     form = ResetRequestForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
@@ -297,6 +301,7 @@ def reset_request():
 
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_token(token):
+    # Password change helper
     user = User.verify_token(token)
     if user is None:
         flash('That is invalid token or expired. Please try again.', 'warning')
