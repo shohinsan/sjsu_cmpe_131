@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileRequired
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, IntegerField
 from wtforms.validators import DataRequired, Length, Email
 
 
@@ -43,10 +43,11 @@ class DeleteAccountForm(FlaskForm):
     delete = SubmitField(label='Delete Account')
 
 
-class TimerForm(FlaskForm):
-    lengthtime = StringField(label='Study Length', validators=[DataRequired()])
-    breaktime = StringField(label='Break Length', validators=[DataRequired()])
-    submit = SubmitField(label="Submit")
+class PomodoroAndBlockForm(FlaskForm):
+    study = IntegerField(label='Study', validators=[DataRequired()])
+    rest = IntegerField(label='Rest', validators=[DataRequired()])
+    blocks = IntegerField(label='Blocks', validators=[DataRequired()])
+    submit = SubmitField(label="Start")
 
 
 class NewFlashCard(FlaskForm):
@@ -66,6 +67,8 @@ class ShareForm(FlaskForm):
     email = StringField(label='Email', validators=[DataRequired(), Email()])
     submit = SubmitField(label="Submit")
 
-#
-# class DeleteAccountForm(FlaskForm):
-#     convert = SubmitField(label='Convert to PDF')
+
+# class TimerForm(FlaskForm):
+#     lengthtime = StringField(label='Study Length', validators=[DataRequired()])
+#     breaktime = StringField(label='Break Length', validators=[DataRequired()])
+#     submit = SubmitField(label="Start Studying")

@@ -7,7 +7,7 @@ from werkzeug.utils import send_file
 
 from projectdir import app, database, bcrypt, mail
 from projectdir.forms import RegistrationForm, LoginForm, ResetRequestForm, ResetPasswordForm, AccountUpdateForm, \
-    NewFlashCard, NoteForm, ShareForm, TimerForm
+    NewFlashCard, NoteForm, ShareForm, PomodoroAndBlockForm
 from projectdir.models import User, Note, TimerDetails, Flashcard
 from flask_login import login_user, logout_user, current_user, login_required
 from flask_mail import Message
@@ -249,7 +249,7 @@ def pdf(note_id):
     pdf.set_font('Arial', size=14)
     pdf.multi_cell(w=40, h=20, txt=note.title + '\n' + note.content, align='C')
     pdf.output('output.pdf')
-    return send_file('output.pdf', as_attachment=True, environ = request.environ)
+    return send_file('output.pdf', as_attachment=True, environ=request.environ)
 
 
 @app.route('/finder')
@@ -261,37 +261,70 @@ def finder():
 @app.route('/timer', methods=['GET', 'POST'])
 @login_required
 def time():
-    form = TimerForm()
-    return render_template('timer.html', title='Timer', form=form)
+    if request.method == "POST":
+        study = int(request.form["study"])
+        rest = int(request.form["rest"])
+        blocks = int(request.form["blocks"])
+
+        session["study"] = study
+        session["rest"] = rest
+        session["blocks"] = blocks
+        session["study_counter"] = 0
+
+        return redirect(url_for("study"))
+    return render_template('timer.html', title='Timer')
 
 
-@app.route('/countdown')
-def count():
-    print(datetime.now())
-    session['starttime'] = datetime.now()
-    return render_template('timeractual.html', Timer=25)
+@app.route('/rest')
+@login_required
+def rest():
+    return render_template('rest.html', title='Time To Rest', rest=session["rest"])
 
 
-# database for some reason doesn't exit
-@app.route('/break')
-def shortbreak():
-    print(datetime.now())
-    session['endtime'] = datetime.now()
-    timespent = session['endtime'] - session['starttime']
-    timer = TimerDetails(id=datetime.now().day, time=timespent.total_seconds() // 60)
-    # database.session.add(timer)
-    # database.session.commit()
-    return render_template('break.html', Break=5)
+@app.route('/study')
+@login_required
+def study():
+    if session["study_counter"] == session["blocks"]:
+        return redirect(url_for("study_completed"))
+    session["study_counter"] += 1
+    return render_template('study.html', title='Time To Study', study=session["study"])
 
 
-def longbreak():
-    print(datetime.now())
-    session['endtime'] = datetime.now()
-    timespent = session['endtime'] - session['starttime']
-    timer = TimerDetails(id=datetime.now().day, time=timespent.total_seconds() // 60)
-    # database.session.add(timer)
-    # database.session.commit()
-    return render_template('break.html', Break=15)
+@app.route('/completed-studying')
+@login_required
+def study_completed():
+    return render_template("study_completed.html", study_counter=session["study_counter"])
+
+
+# @app.route('/countdown')
+# def count():
+#     print(datetime.now())
+#     session['starttime'] = datetime.now()
+#     return render_template('timeractual.html', Timer=25)
+
+
+#
+#
+# # database for some reason doesn't exit
+# @app.route('/break')
+# def shortbreak():
+#     print(datetime.now())
+#     session['endtime'] = datetime.now()
+#     timespent = session['endtime'] - session['starttime']
+#     timer = TimerDetails(id=datetime.now().day, time=timespent.total_seconds() // 60)
+#     # database.session.add(timer)
+#     # database.session.commit()
+#     return render_template('break.html', Break=5)
+#
+#
+# def longbreak():
+#     print(datetime.now())
+#     session['endtime'] = datetime.now()
+#     timespent = session['endtime'] - session['starttime']
+#     timer = TimerDetails(id=datetime.now().day, time=timespent.total_seconds() // 60)
+#     # database.session.add(timer)
+#     # database.session.commit()
+#     return render_template('break.html', Break=15)
 
 
 # Forgot Password Feature Starts

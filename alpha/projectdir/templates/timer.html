@@ -1,15 +1,36 @@
-{% extends 'layouts.html' %} 
+{% extends 'layouts.html' %}
 
 {% block content %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/timexx.css') }}">
 
     <h1 style='text-align: center;'>Pomodoro Timer</h1>
-    <form>
-        <div class='field-group mt-4' style="text-align: center;">
-            <a class='btn btn-primary' href="{{ url_for('count') }}">Start Studying!</a>
-        </div>
-    </form>
 
-    
+    <main class="main">
+
+
+        <div class="container">
+            <form class="form" method="POST">
+                <label class="form__label" for="study">Study</label>
+                <input class="form__input" type="number" name="study" id="study" value="10"/>
+                <span class="units">(25m=1500s)</span>
+
+                <label class="form__label" for="rest">Rest</label>
+                <input class="form__input" type="number" name="rest" id="rest" value="5"/>
+                <span class="units">(5m=300s)</span>
+
+                <label class="form__label" for="blocks">Blocks</label>
+                <input class="form__input" type="number" name="blocks" id="blocks" value="2"/>
+                <span class="units"></span>
+
+                <div class="form__button-container">
+                    <button class="btn btn-primary" type="submit">Start</button>
+                </div>
+
+            </form>
+        </div>
+
+    </main>
+
 
 {% endblock content %}
 
