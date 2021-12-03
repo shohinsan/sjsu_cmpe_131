@@ -1,6 +1,3 @@
-from datetime import datetime
-import markdown
-
 from flask import render_template, url_for, redirect, flash, request, session, make_response, send_file
 from fpdf import FPDF
 from werkzeug.utils import send_file
@@ -164,6 +161,17 @@ def notes():
     user = User.query.filter_by(username=current_user.username).first()
     notes = Note.query.filter_by(user_id=user.id).all()
     return render_template('notes.html', notes=notes, title='Notes')
+
+
+@app.route('/search')
+@login_required
+def n_search():
+    q = request.args.get('q')
+    if q:
+        notes = Note.query.filter(Note.title.contains(q) | Note.content.contains(q))
+    else:
+        notes = Note.query.all()
+    return render_template('searched_notes.html', notes=notes, title='Notes')
 
 
 @app.route('/notes/<int:note_id>')
