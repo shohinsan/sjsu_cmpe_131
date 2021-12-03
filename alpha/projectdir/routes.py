@@ -55,7 +55,7 @@ def account():
         form.email.data = current_user.email
 
     image_url = url_for('static', filename='profile_pics/' + current_user.image_file)
-    return render_template('account.html', title='About', legend="Account Details", form=form, image_url=image_url)
+    return render_template('general/account.html', title='About', legend="Account Details", form=form, image_url=image_url)
 
 
 @app.route('/account/delete')
@@ -63,7 +63,7 @@ def account():
 def delete_account():
     # A function helper to delete user from database (takes care of button)
     form = AccountUpdateForm()
-    return render_template('account.html', form=form)
+    return render_template('general/account.html', form=form)
 
 
 @app.route('/account/delete_successful')
@@ -93,7 +93,7 @@ def login():
         else:
             flash(f'Login unsuccessful for {form.email.data}', category='danger')
             return redirect(url_for('homepage'))
-    return render_template('login.html', title='Login', form=form)
+    return render_template('general/login.html', title='Login', form=form)
 
 
 @app.route('/logout')
@@ -116,7 +116,7 @@ def registration():
         database.session.commit()
         flash(f'Account created successfully for {form.username.data}', category='success')
         return redirect(url_for('login'))
-    return render_template('registration.html', title='Registration', form=form)
+    return render_template('general/registration.html', title='Registration', form=form)
 
 
 # Login/ Signup Features Ends
@@ -160,7 +160,7 @@ def notes():
     # A function to display all the notes
     user = User.query.filter_by(username=current_user.username).first()
     notes = Note.query.filter_by(user_id=user.id).all()
-    return render_template('notes.html', notes=notes, title='Notes')
+    return render_template('notes/notes.html', notes=notes, title='Notes')
 
 
 @app.route('/search')
@@ -171,7 +171,7 @@ def n_search():
         notes = Note.query.filter(Note.title.contains(q) | Note.content.contains(q))
     else:
         notes = Note.query.all()
-    return render_template('searched_notes.html', notes=notes, title='Notes')
+    return render_template('notes/searched_notes.html', notes=notes, title='Notes')
 
 
 @app.route('/notes/<int:note_id>')
@@ -179,7 +179,7 @@ def n_search():
 # A function to click each note and get to another route
 def note(note_id):
     note = Note.query.get_or_404(note_id)
-    return render_template('note.html', note=note, title=note.title)
+    return render_template('notes/note.html', note=note, title=note.title)
 
 
 @app.route('/notes/add', methods=['GET', 'POST'])
@@ -193,7 +193,7 @@ def add_note():
         database.session.commit()
         flash(f'Successfully added new note!', 'success')
         return redirect('/notes')
-    return render_template('createNote.html', form=form, title='Add Notes')
+    return render_template('notes/createNote.html', form=form, title='Add Notes')
 
 
 @app.route("/note/<int:note_id>/update", methods=['GET', 'POST'])
@@ -213,7 +213,7 @@ def update_note(note_id):
     elif request.method == 'GET':
         form.title.data = note.title
         form.content.data = note.content
-    return render_template('createNote.html', title='Update Note', form=form, legend='Update Note')
+    return render_template('notes/createNote.html', title='Update Note', form=form, legend='Update Note')
 
 
 @app.route("/notes/<int:note_id>/delete", methods=['GET', 'POST'])
@@ -245,7 +245,7 @@ def share_note(note_id):
         database.session.commit()
         flash(f'Successfully Shared Note!', 'success')
         return redirect(url_for('note', note_id=note.id))
-    return render_template('shareNote.html', form=form, title='Share Note')
+    return render_template('notes/shareNote.html', form=form, title='Share Note')
 
 
 @app.route('/notes/<int:note_id>/pdf', methods=['GET', 'POST'])
@@ -280,13 +280,13 @@ def time():
         session["study_counter"] = 0
 
         return redirect(url_for("study"))
-    return render_template('timer.html', title='Timer')
+    return render_template('timing/timer.html', title='Timer')
 
 
 @app.route('/rest')
 @login_required
 def rest():
-    return render_template('rest.html', title='Time To Rest', rest=session["rest"])
+    return render_template('timing/rest.html', title='Time To Rest', rest=session["rest"])
 
 
 @app.route('/study')
@@ -295,13 +295,13 @@ def study():
     if session["study_counter"] == session["blocks"]:
         return redirect(url_for("study_completed"))
     session["study_counter"] += 1
-    return render_template('study.html', title='Time To Study', study=session["study"])
+    return render_template('timing/study.html', title='Time To Study', study=session["study"])
 
 
 @app.route('/completed-studying')
 @login_required
 def study_completed():
-    return render_template("study_completed.html", study_counter=session["study_counter"], study=session["study"])
+    return render_template("timing/study_completed.html", study_counter=session["study_counter"], study=session["study"])
 
 
 # @app.route('/countdown')
@@ -362,7 +362,7 @@ def reset_request():
             send_mail(user)
             flash('Reset request sent. Check your mail', 'success')
             return redirect(url_for('login'))
-    return render_template('reset_request.html', title="Reset Request", form=form)
+    return render_template('general/reset_request.html', title="Reset Request", form=form)
 
 
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])
@@ -380,7 +380,7 @@ def reset_token(token):
         database.session.commit()
         flash('Password changed! Please login!', 'success')
         return redirect(url_for('login'))
-    return render_template('change_password.html', title="Change Password", legend="Change Password", form=form)
+    return render_template('general/change_password.html', title="Change Password", legend="Change Password", form=form)
 
 
 # Forgot Password Feature Ends
@@ -388,5 +388,21 @@ def reset_token(token):
 
 @app.route('/calendar')
 def calendar():
+
     # track assignments
-    return render_template('calendar.html', title='Calendar')
+    return render_template('timing/calendar.html', title='Calendar')
+
+# https://www.youtube.com/watch?v=CiuC5PF4I-A&ab_channel=codePerfect
+
+@app.route('/calendar/add', methods=['GET', 'POST'])
+@login_required
+# A function to add notes to database
+def add_calendar_event():
+    form = NoteForm()
+    if form.validate_on_submit():
+        note = Note(title=form.title.data, content=form.content.data, user_id=current_user.id)
+        database.session.add(note)
+        database.session.commit()
+        flash(f'Successfully added new note!', 'success')
+        return redirect('/notes')
+    return render_template('notes/createNote.html', form=form, title='Add Notes')
