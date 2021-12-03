@@ -301,7 +301,7 @@ def study():
 @app.route('/completed-studying')
 @login_required
 def study_completed():
-    return render_template("study_completed.html", study_counter=session["study_counter"])
+    return render_template("study_completed.html", study_counter=session["study_counter"], study=session["study"])
 
 
 # @app.route('/countdown')
