@@ -55,7 +55,8 @@ def account():
         form.email.data = current_user.email
 
     image_url = url_for('static', filename='profile_pics/' + current_user.image_file)
-    return render_template('general/account.html', title='About', legend="Account Details", form=form, image_url=image_url)
+    return render_template('general/account.html', title='About', legend="Account Details", form=form,
+                           image_url=image_url)
 
 
 @app.route('/account/delete')
@@ -301,7 +302,8 @@ def study():
 @app.route('/completed-studying')
 @login_required
 def study_completed():
-    return render_template("timing/study_completed.html", study_counter=session["study_counter"], study=session["study"])
+    return render_template("timing/study_completed.html", study_counter=session["study_counter"],
+                           study=session["study"])
 
 
 # @app.route('/countdown')
@@ -387,22 +389,47 @@ def reset_token(token):
 
 
 @app.route('/calendar')
+@login_required
 def calendar():
-
     # track assignments
-    return render_template('timing/calendar.html', title='Calendar')
+    return render_template('timing/calendar.html', title='Calendar', events=events)
+
+
+events = [
+    {
+        'title': 'TestEvent',
+        'start': '2021-12-03',
+        'end': '',
+        'url': 'https://youtube.com'
+    },
+    {
+        'title': 'Another TestEvent',
+        'start': '2021-12-04',
+        'end': '2021-12-04',
+        'url': 'https://google.com'
+    },
+
+]
+
 
 # https://www.youtube.com/watch?v=CiuC5PF4I-A&ab_channel=codePerfect
 
-@app.route('/calendar/add', methods=['GET', 'POST'])
+@app.route('/add-cal/test111', methods=['GET', 'POST'])
 @login_required
-# A function to add notes to database
+# A function to add calendar events to database
 def add_calendar_event():
-    form = NoteForm()
-    if form.validate_on_submit():
-        note = Note(title=form.title.data, content=form.content.data, user_id=current_user.id)
-        database.session.add(note)
-        database.session.commit()
-        flash(f'Successfully added new note!', 'success')
-        return redirect('/notes')
-    return render_template('notes/createNote.html', form=form, title='Add Notes')
+    if request.method == "POST":
+        title = request.form['title']
+        start = request.form['title']
+        end = request.form['title']
+        url = request.form['title']
+        if end == '':
+            end = start
+        events.append({
+            'title': title,
+            'start': start,
+            'end': end,
+            'url': url,
+        },
+        )
+        return render_template("timing/add_event.html")

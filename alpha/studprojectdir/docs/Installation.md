@@ -16,16 +16,19 @@ Required apps to install:
 12. pdfkit~=1.0.0
 
 # How to install apps
+
 ### Example
+
 * Step 1: Open command line
 * Step 2: In command line type: pip install insert application name
 * Continue step 2 until you have downloaded all 12 of the applications
 
 # Running Apps
+
 * run.py
 
 ## Project layout
-    
+
     projectdir/
         /database
             notetaking.db
@@ -36,27 +39,35 @@ Required apps to install:
             main.js
             registration.css
         /templates
-            about.html  
-            account.html
-            break.html 
-            calendar.html
-            change_password.html
+            /general
+                account.html
+                change_password.html
+                login.html
+                registration.html
+                reset_request.html 
+                signup.html
+            /notes
+                createNote.html
+                note.html
+                notes.html
+                pdf.html
+                shareNote.html
+                searched_notes.html
+            /timing
+                timer.html
+                timeractual.html
+                break.html 
+                calendar.html
+                add_event.html
+                rest.html
+                study.html
+                study_completed.html
+            about.html
             createFlashcard.html
-            createNote.html
             find.html
             flashcards.html
             homepage.html
             layouts.html
-            login.html
-            note.html
-            notes.html
-            pdf.html
-            registration.html
-            reset_request.html
-            shareNote.html
-            signup.html
-            timer.html
-            timeractual.html
     __init__.py
     forms.py
     models.py
