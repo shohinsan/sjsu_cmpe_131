@@ -412,8 +412,6 @@ events = [
 ]
 
 
-# https://www.youtube.com/watch?v=CiuC5PF4I-A&ab_channel=codePerfect
-
 @app.route('/add_calendevent', methods=['GET', "POST"])
 @login_required
 # A function to add calendar events to database
