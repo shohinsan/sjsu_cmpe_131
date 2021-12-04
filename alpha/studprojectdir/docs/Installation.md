@@ -53,7 +53,7 @@ Required apps to install:
                 pdf.html
                 shareNote.html
                 searched_notes.html
-            /timing
+            /timing 
                 add_event.html
                 timer.html
                 timeractual.html
