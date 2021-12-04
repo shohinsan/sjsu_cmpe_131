@@ -1,13 +1,13 @@
 {% extends "layouts.html" %}
 {% block content %}
 
-
     <div class="container">
 
-        <form action="/projectdir/routes.py/add-cal" method="POST">
+        <form action="/add_calendevent" method="POST">
             <div class="mb-3">
                 <label for="title" class="form-label">Event title</label>
-                <input type="text" class="form-control" name="title" id="title" placeholder="Enter the event title">
+                <input type="text" class="form-control" name="title" id="title"
+                       placeholder="Enter the event title">
             </div>
 
             <div class="mb-3">
@@ -23,7 +23,8 @@
             </div>
             <div class="mb-3">
                 <label for="url" class="form-label">Event url</label>
-                <input type="url" class="form-control" name="url" id="url" placeholder="Leave empty for no URL">
+                <input type="url" class="form-control" name="url" id="url"
+                       placeholder="Leave empty for no URL">
             </div>
 
             <button type="submit" class="btn btn-outline-dark">Submit</button>

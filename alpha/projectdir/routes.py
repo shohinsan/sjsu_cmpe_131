@@ -414,15 +414,16 @@ events = [
 
 # https://www.youtube.com/watch?v=CiuC5PF4I-A&ab_channel=codePerfect
 
-@app.route('/add-cal/test111', methods=['GET', 'POST'])
+@app.route('/add_calendevent', methods=['GET', "POST"])
 @login_required
 # A function to add calendar events to database
 def add_calendar_event():
     if request.method == "POST":
         title = request.form['title']
-        start = request.form['title']
-        end = request.form['title']
-        url = request.form['title']
+        start = request.form['start']
+        end = request.form['end']
+        url = request.form['url']
+        flash('Event added successfully', 'success')
         if end == '':
             end = start
         events.append({
@@ -432,4 +433,4 @@ def add_calendar_event():
             'url': url,
         },
         )
-        return render_template("timing/add_event.html")
+    return render_template("timing/add_event.html", title='Calendar')
