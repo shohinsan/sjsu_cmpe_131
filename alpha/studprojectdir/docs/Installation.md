@@ -54,6 +54,7 @@ Required apps to install:
                 shareNote.html
                 searched_notes.html
             /timing
+                add_event.html
                 timer.html
                 timeractual.html
                 break.html 
