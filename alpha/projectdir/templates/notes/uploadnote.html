@@ -1,0 +1,9 @@
+{% extends "layouts.html" %}
+
+{% block content %}
+    <h1 align="center">Upload New File</h1>
+    <form style="text-align: center;" method=post enctype="multipart/form-data">
+        <input type="file" name="file" accept=".md">
+        <input type=submit value="Upload">
+    </form>
+{% endblock %}

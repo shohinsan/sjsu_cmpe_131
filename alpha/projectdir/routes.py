@@ -1,6 +1,6 @@
 from flask import render_template, url_for, redirect, flash, request, session, make_response, send_file
 from fpdf import FPDF
-from werkzeug.utils import send_file
+from werkzeug.utils import send_file, secure_filename
 
 from projectdir import app, database, bcrypt, mail
 from projectdir.forms import RegistrationForm, LoginForm, ResetRequestForm, ResetPasswordForm, AccountUpdateForm, \
@@ -10,6 +10,9 @@ from flask_login import login_user, logout_user, current_user, login_required
 from flask_mail import Message
 import os
 
+ALLOWED_EXTENSIONS = {'md'}
+uploads_dir = os.path.join(app.instance_path, 'uploads')
+os.makedirs(uploads_dir, exist_ok=True)
 
 # import markdown
 # import markdown.extensions.fenced_code
@@ -196,6 +199,37 @@ def add_note():
         return redirect('/notes')
     return render_template('notes/createNote.html', form=form, title='Add Notes')
 
+def allowed(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/notes/upload', methods=['GET','POST'])
+@login_required
+def upload_note():
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(uploads_dir, filename))
+            f = open(os.path.join(uploads_dir, filename), 'r')
+            notecontent = ''
+            # Only adds title if there is a header in the md file 
+            for x in f:
+                if x[0] == '#':
+                    notetitle = x[1:]
+                else:
+                    notecontent+=x
+            note = Note(title=notetitle, content=notecontent, user_id=current_user.id)
+            database.session.add(note)
+            database.session.commit()
+            flash('Succesfully added note to database')
+            return redirect(url_for('notes'))
+    return render_template('notes/uploadnote.html', title='Upload a Markdown file')
 
 @app.route("/note/<int:note_id>/update", methods=['GET', 'POST'])
 @login_required
