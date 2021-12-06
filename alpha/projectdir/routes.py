@@ -221,6 +221,7 @@ def upload_note():
             filename = secure_filename(file.filename)
             file.save(os.path.join(uploads_dir, filename))
             f = open(os.path.join(uploads_dir, filename), 'r')
+            notetitle = filename
             notecontent = ''
             # Only adds title if there is a header in the md file 
             for x in f:
