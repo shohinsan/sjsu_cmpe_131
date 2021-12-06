@@ -134,9 +134,9 @@ def flashcards():
     # have two different paths for creating and reading flashcards
     # mind map
     user = User.query.filter_by(username=current_user.username).first()
-    # flashcards = Flashcard.query.filter_by(user_id=user.id).all()
+    flashcards = Flashcard.query.filter_by(user_id=user.id).all()
 
-    return render_template('flashcard/flashcards.html', front='front', back='back', title='Flashcards')
+    return render_template('flashcard/flashcards.html', flashcards=flashcards, title='Flashcards')
 
 
 @app.route("/flashcards/<int:flashcard_id>", methods=['POST', 'GET'])
@@ -147,7 +147,6 @@ def show_flashcard(flashcard_id):
 
 @app.route('/flashcards/add', methods=['GET', 'POST'])
 @login_required
-# A function to add flashcards to database
 def create_flashcard():
     form = NewFlashCard()
     if form.validate_on_submit():
@@ -161,7 +160,6 @@ def create_flashcard():
 @app.route("/flashcards/<int:card_id>/delete", methods=['GET', 'POST'])
 @login_required
 def delete_card(card_id):
-    # A function to delete notes from database
     card = Flashcard.query.get_or_404(card_id)
     if card.author != current_user:
         os.abort(403)
@@ -173,14 +171,6 @@ def delete_card(card_id):
 @app.route("/flashcards/addfile", methods=['POST', 'GET'])
 @login_required
 def add_flashcard():
-    # form = NewFlashCard()
-    # if form.validate_on_submit():
-    #     flashcard = Flashcard(file=form.file.data, user_id=current_user.id)
-    #     database.session.add(flashcard)
-    #     database.session.commit()
-    #     flash(f'Successfully added new markdown file to flashcard!', 'success')
-    #     return redirect(url_for('flashcards'))
-    # return render_template('createFlashcard.html', title='Add Flashcard')
     if request.method == 'POST':
         if 'file' not in request.files:
             flash('No file part')
