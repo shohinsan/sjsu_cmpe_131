@@ -1,0 +1,29 @@
+{% extends "layouts.html" %}
+
+{% block content %}
+
+    <div class="container justify-content-center">
+        <h2 class="heading">Rest</h2>
+        <span class="timer" id="timer">{{ rest }}s</span>
+        <progress max="{{ rest }}" value="{{ rest }}" class="progress rest-progress" id="progressBar"></progress>
+    </div>
+
+
+    <script type="application/javascript">
+        const timerElement = document.getElementById("timer");
+        const progressBar = document.getElementById("progressBar")
+        var timerCounter = progressBar.max;
+        const interval = setInterval(() => {
+            if (timerCounter <= 1) {
+                window.location.href = "{{ url_for('study') }}";
+                clearInterval(interval);
+            }
+            timerCounter = timerCounter - 1;
+
+            timerElement.innerText = timerCounter + "s";
+            timerElement.innerText = Math.floor(timerCounter / 60) + ":" + (timerCounter % 60 ? timerCounter % 60 : '00') + "s";
+            progressBar.value = timerCounter;
+        }, 1000);
+
+    </script>
+{% endblock %}

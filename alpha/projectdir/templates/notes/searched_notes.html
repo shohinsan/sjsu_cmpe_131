@@ -1,8 +1,9 @@
 {% extends "layouts.html" %}
 {% block content %}
 
+
     <h1 align="center"> Notes </h1>
-    {% for note in notes %}
+    {% for note in current_user.notes %}
         <article class="media content-section">
             <li class="list-group-item m-3 p-3 card">
                 <img class="rounded-circle article-img "
@@ -19,10 +20,9 @@
             </li>
         </article>
     {% endfor %}
-    </br>
 
-    <a class="btn btn-primary btn-sm mt-1 mb-1 m-3 p-3" href="http://127.0.0.1:5000/notes/add"> Add New Note </a>
 
+    <a class="btn btn-primary btn-sm mt-1 mb-1 m-3 p-3" href="{{ url_for('notes') }}" > Return </a>
 
 
 {% endblock content %}

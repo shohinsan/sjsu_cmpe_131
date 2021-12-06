@@ -1,15 +1,19 @@
-from datetime import datetime
+import os
 
-import pdfkit
-from flask import render_template, url_for, redirect, flash, request, session, make_response
+from flask import render_template, url_for, redirect, flash, request, session, send_file
+from flask_login import login_user, logout_user, current_user, login_required
+from flask_mail import Message
+from fpdf import FPDF
+from werkzeug.utils import send_file, secure_filename
 
 from projectdir import app, database, bcrypt, mail
 from projectdir.forms import RegistrationForm, LoginForm, ResetRequestForm, ResetPasswordForm, AccountUpdateForm, \
-    NewFlashCard, NoteForm, ShareForm, TimerForm
-from projectdir.models import User, Note, TimerDetails, Flashcard
-from flask_login import login_user, logout_user, current_user, login_required
-from flask_mail import Message
-import os
+    NewFlashCard, NoteForm, ShareForm
+from projectdir.models import User, Note, Flashcard, Events, TimerDetails
+
+ALLOWED_EXTENSIONS = {'md'}
+uploads_dir = os.path.join(app.instance_path, 'uploads')
+os.makedirs(uploads_dir, exist_ok=True)
 
 
 # import markdown
@@ -56,7 +60,8 @@ def account():
         form.email.data = current_user.email
 
     image_url = url_for('static', filename='profile_pics/' + current_user.image_file)
-    return render_template('account.html', title='About', legend="Account Details", form=form, image_url=image_url)
+    return render_template('general/account.html', title='About', legend="Account Details", form=form,
+                           image_url=image_url)
 
 
 @app.route('/account/delete')
@@ -64,7 +69,7 @@ def account():
 def delete_account():
     # A function helper to delete user from database (takes care of button)
     form = AccountUpdateForm()
-    return render_template('account.html', form=form)
+    return render_template('general/account.html', form=form)
 
 
 @app.route('/account/delete_successful')
@@ -94,7 +99,7 @@ def login():
         else:
             flash(f'Login unsuccessful for {form.email.data}', category='danger')
             return redirect(url_for('homepage'))
-    return render_template('login.html', title='Login', form=form)
+    return render_template('general/login.html', title='Login', form=form)
 
 
 @app.route('/logout')
@@ -117,7 +122,7 @@ def registration():
         database.session.commit()
         flash(f'Account created successfully for {form.username.data}', category='success')
         return redirect(url_for('login'))
-    return render_template('registration.html', title='Registration', form=form)
+    return render_template('general/registration.html', title='Registration', form=form)
 
 
 # Login/ Signup Features Ends
@@ -132,27 +137,82 @@ def flashcards():
     user = User.query.filter_by(username=current_user.username).first()
     flashcards = Flashcard.query.filter_by(user_id=user.id).all()
 
-    return render_template('flashcards.html', flashcards=flashcards, title='Flashcards')
+    return render_template('flashcardz/flashcards.html', flashcards=flashcards, title='Flashcards')
 
 
 @app.route("/flashcards/<int:flashcard_id>", methods=['POST', 'GET'])
 @login_required
 def show_flashcard(flashcard_id):
     flashcard = User.query.get_or_404(flashcard_id)
-    return render_template('flashcard.html', flashcard=flashcard, title=flashcard.file)
+    return render_template('flashcardz/flashcard.html', flashcard=flashcard, title=flashcard.file)
+
+@app.route('/memorize')
+@login_required
+def memorize():
+    return render_template('flashcardz/memorize.html', flashcards=flashcards, title="Memorize")
 
 
 @app.route("/flashcards/add", methods=['POST', 'GET'])
 @login_required
-def add_flashcard():
+def create_flashcard():
     form = NewFlashCard()
     if form.validate_on_submit():
-        flashcard = Flashcard(file=form.file.data, user_id=current_user.id)
+        flashcard = Flashcard(front=form.front.data, back=form.back.data, user_id=current_user.id)
         database.session.add(flashcard)
         database.session.commit()
-        flash(f'Successfully added new markdown file to flashcard!')
-        return redirect(url_for('flashcards'))
-    return render_template('createFlashcard.html',  form=form, title='Add Flashcard')
+        flash(f'Successfully added new Flashcard!', 'success')
+        return redirect('/flashcards')
+    return render_template('flashcardz/createFlashcard.html', form=form, title='Create Flashcard')
+
+
+@app.route("/flashcards/<int:card_id>/delete", methods=['GET', 'POST'])
+@login_required
+def delete_card(card_id):
+    # A function to delete notes from database
+    card = Flashcard.query.get_or_404(card_id)
+    if card.author != current_user:
+        os.abort(403)
+    database.session.delete(note)
+    database.session.commit()
+    flash(f'Your card has been deleted successfully!', 'success')
+    return redirect(url_for('flashcards'))
+
+
+@app.route("/flashcards/addfile", methods=['POST', 'GET'])
+@login_required
+def add_flashcard():
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(uploads_dir, filename))
+            f = open(os.path.join(uploads_dir, filename), 'r')
+            flashcardback = ''
+            # Only adds front if there is a header in the md file; accepts the format
+            ''' 
+            # Title 
+            Content below the title 
+            '''
+            for x in f:
+                if x[0] == '#':
+                    flashcardfront = x[1:len(x) - 1]
+                else:
+                    flashcardback += x
+            flashcard = Flashcard(front=flashcardfront, back=flashcardback, user_id=current_user.id)
+            database.session.add(flashcard)
+            database.session.commit()
+            flash('Succesfully added flashcard to database')
+            return redirect(url_for('flashcards'))
+    return render_template('flashcardz/createMDFlashcard.html', title='Markdown to Flashcard')
+
+
+# Flashcard End
 
 
 @app.route('/notes')
@@ -161,7 +221,18 @@ def notes():
     # A function to display all the notes
     user = User.query.filter_by(username=current_user.username).first()
     notes = Note.query.filter_by(user_id=user.id).all()
-    return render_template('notes.html', notes=notes, title='Notes')
+    return render_template('notes/notes.html', notes=notes, title='Notes')
+
+
+@app.route('/search')
+@login_required
+def n_search():
+    q = request.args.get('q')
+    if q:
+        notes = Note.query.filter(Note.title.contains(q) | Note.content.contains(q))
+    else:
+        notes = Note.query.all()
+    return render_template('notes/searched_notes.html', notes=notes, title='Notes')
 
 
 @app.route('/notes/<int:note_id>')
@@ -169,7 +240,7 @@ def notes():
 # A function to click each note and get to another route
 def note(note_id):
     note = Note.query.get_or_404(note_id)
-    return render_template('note.html', note=note, title=note.title)
+    return render_template('notes/note.html', note=note, title=note.title)
 
 
 @app.route('/notes/add', methods=['GET', 'POST'])
@@ -183,7 +254,42 @@ def add_note():
         database.session.commit()
         flash(f'Successfully added new note!', 'success')
         return redirect('/notes')
-    return render_template('createNote.html', form=form, title='Add Notes')
+    return render_template('notes/createNote.html', form=form, title='Add Notes')
+
+
+def allowed(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@app.route('/notes/upload', methods=['GET', 'POST'])
+@login_required
+def upload_note():
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(uploads_dir, filename))
+            f = open(os.path.join(uploads_dir, filename), 'r')
+            notetitle = filename
+            notecontent = ''
+            # Only adds title if there is a header in the md file 
+            for x in f:
+                if x[0] == '#':
+                    notetitle = x[1:]
+                else:
+                    notecontent += x
+            note = Note(title=notetitle, content=notecontent, user_id=current_user.id)
+            database.session.add(note)
+            database.session.commit()
+            flash('Succesfully added note to database')
+            return redirect(url_for('notes'))
+    return render_template('notes/uploadnote.html', title='Upload a Markdown file')
 
 
 @app.route("/note/<int:note_id>/update", methods=['GET', 'POST'])
@@ -198,12 +304,12 @@ def update_note(note_id):
         note.title = form.title.data
         note.content = form.content.data
         database.session.commit()
-        flash(f'Your note has been updated successfully!')
+        flash(f'Your note has been updated successfully!', 'success')
         return redirect(url_for('note', note_id=note.id))
     elif request.method == 'GET':
         form.title.data = note.title
         form.content.data = note.content
-    return render_template('createNote.html', title='Update Note', form=form, legend='Update Note')
+    return render_template('notes/createNote.html', title='Update Note', form=form, legend='Update Note')
 
 
 @app.route("/notes/<int:note_id>/delete", methods=['GET', 'POST'])
@@ -215,7 +321,7 @@ def delete_note(note_id):
         os.abort(403)
     database.session.delete(note)
     database.session.commit()
-    flash(f'Your note has been deleted successfully!')
+    flash(f'Your note has been deleted successfully!', 'success')
     return redirect(url_for('notes'))
 
 
@@ -233,9 +339,21 @@ def share_note(note_id):
         newNote = Note(title=note.title, content=note.content, user_id=user.id)
         database.session.add(newNote)
         database.session.commit()
-        flash(f'Successfully Shared Note!')
+        flash(f'Successfully Shared Note!', 'success')
         return redirect(url_for('note', note_id=note.id))
-    return render_template('shareNote.html', form=form, title='Share Note')
+    return render_template('notes/shareNote.html', form=form, title='Share Note')
+
+
+@app.route('/notes/<int:note_id>/pdf', methods=['GET', 'POST'])
+@login_required
+def pdf(note_id):
+    note = Note.query.get_or_404(note_id)
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font('Arial', size=14)
+    pdf.multi_cell(w=40, h=20, txt=note.title + '\n' + note.content, align='C')
+    pdf.output('output.pdf')
+    return send_file('output.pdf', as_attachment=True, environ=request.environ)
 
 
 @app.route('/finder')
@@ -247,37 +365,57 @@ def finder():
 @app.route('/timer', methods=['GET', 'POST'])
 @login_required
 def time():
-    form = TimerForm()
-    return render_template('timer.html', title='Timer', form=form)
+    if request.method == "POST":
+        study = int(request.form["study"])
+        rest = int(request.form["rest"])
+        blocks = int(request.form["blocks"])
+
+        session["study"] = study
+        session["rest"] = rest
+        session["blocks"] = blocks
+        session["study_counter"] = 0
+
+        return redirect(url_for("study"))
+    return render_template('timing/timer.html', title='Timer')
 
 
-@app.route('/countdown')
-def count():
-    print(datetime.now())
-    session['starttime'] = datetime.now()
-    return render_template('timeractual.html', Timer=25)
+@app.route('/rest')
+@login_required
+def rest():
+    return render_template('timing/rest.html', title='Time To Rest', rest=session["rest"])
 
 
-# database for some reason doesn't exit
-@app.route('/break')
-def shortbreak():
-    print(datetime.now())
-    session['endtime'] = datetime.now()
-    timespent = session['endtime'] - session['starttime']
-    timer = TimerDetails(id=datetime.now().day, time=timespent.total_seconds() // 60)
-    # database.session.add(timer)
-    # database.session.commit()
-    return render_template('break.html', Break=5)
+@app.route('/study')
+@login_required
+def study():
+    if session["study_counter"] == session["blocks"]:
+        return redirect(url_for("study_completed"))
+    session["study_counter"] += 1
+    return render_template('timing/study.html', title='Time To Study', study=session["study"])
 
 
-def longbreak():
-    print(datetime.now())
-    session['endtime'] = datetime.now()
-    timespent = session['endtime'] - session['starttime']
-    timer = TimerDetails(id=datetime.now().day, time=timespent.total_seconds() // 60)
-    # database.session.add(timer)
-    # database.session.commit()
-    return render_template('break.html', Break=15)
+@app.route('/completed-studying')
+@login_required
+def study_completed():
+    user = User.query.filter_by(username=current_user.username).first()
+    timeblock = TimerDetails(time=session['study_counter'] * session['study'], user_id=current_user.id)
+    database.session.add(timeblock)
+    database.session.commit()
+    blocks = TimerDetails.query.filter_by(user_id=user.id).all()
+    return render_template("timing/study_completed.html")
+
+
+
+@app.route('/visualizeblocks')
+@login_required
+def visualize_blocks():
+    user = User.query.filter_by(username=current_user.username).first()
+    blocks = TimerDetails.query.filter_by(user_id=user.id).all()
+    return render_template('timing/visualizeblocks.html', title='Timeblocks', blocks=blocks,
+                           study_counter=session["study_counter"], study=session["study"])
+
+
+# Timer End
 
 
 # Forgot Password Feature Starts
@@ -307,7 +445,7 @@ def reset_request():
             send_mail(user)
             flash('Reset request sent. Check your mail', 'success')
             return redirect(url_for('login'))
-    return render_template('reset_request.html', title="Reset Request", form=form)
+    return render_template('general/reset_request.html', title="Reset Request", form=form)
 
 
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])
@@ -325,13 +463,35 @@ def reset_token(token):
         database.session.commit()
         flash('Password changed! Please login!', 'success')
         return redirect(url_for('login'))
-    return render_template('change_password.html', title="Change Password", legend="Change Password", form=form)
+    return render_template('general/change_password.html', title="Change Password", legend="Change Password", form=form)
 
 
 # Forgot Password Feature Ends
 
 
 @app.route('/calendar')
+@login_required
 def calendar():
+    user = User.query.filter_by(username=current_user.username).first()
+    events = Events.query.filter_by(user_id=user.id).all()
     # track assignments
-    return render_template('calendar.html', title='Calendar')
+    return render_template('timing/calendar.html', title='Calendar', events=events)
+
+
+@app.route('/add_calendevent', methods=['GET', "POST"])
+@login_required
+# A function to add calendar events to database
+def add_calendar_event():
+    if request.method == "POST":
+        title = request.form['title']
+        start = request.form['start']
+        end = request.form['end']
+        url = request.form['url']
+
+        events = Events(title=title, start=start, end=end, url=url, user_id=current_user.id)
+        database.session.add(events)
+        database.session.commit()
+
+        flash('Event added successfully', 'success')
+
+    return render_template("timing/add_event.html", title='Calendar')

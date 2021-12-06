@@ -1,0 +1,36 @@
+{% extends "layouts.html" %}
+{% block content %}
+
+    <div class="container">
+
+        <form action="/add_calendevent" method="POST">
+            <div class="mb-3">
+                <label for="title" class="form-label">Event title</label>
+                <input type="text" class="form-control" name="title" id="title"
+                       placeholder="Enter the event title">
+            </div>
+
+            <div class="mb-3">
+                <label for="start" class="form-label">Start date</label>
+                <input type="datetime-local" class="form-control" name="start" id="start"
+                       placeholder="Format is yyyy-mm-ddThh:mm">
+            </div>
+
+            <div class="mb-3">
+                <label for="end" class="form-label">End date (empty if you want full)</label>
+                <input type="datetime-local" class="form-control" name="end" id="end"
+                       placeholder="Leave empty for event to be all day">
+            </div>
+            <div class="mb-3">
+                <label for="url" class="form-label">Event url</label>
+                <input type="url" class="form-control" name="url" id="url"
+                       placeholder="Leave empty for no URL">
+            </div>
+
+            <button type="submit" class="btn btn-outline-dark">Submit</button>
+
+        </form>
+
+    </div>
+
+{% endblock content %}

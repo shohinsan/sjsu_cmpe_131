@@ -1,23 +1,22 @@
-{% extends 'featurebase.html' %}
+{% extends 'layouts.html' %}
 
 {% block content %}
 <h1 style="text-align: center;">
-    Study!
+    Break!
 </h1>
 <div style="text-align: center;">
-    <h2 id="timer" style="font-weight: 900;">{{ Timer }} min</h2>
+    <h2 id="timer" style="font-weight: 900;">{{ SBreak|LBreak }} min</h2>
 </div>
-<div style="text-align: center;">
-    <a class='btn btn-primary' href="{{ url_for('count') }}">Take a short break now!(5 minutes)</a>
-    <a class='btn btn-primary' href="{{ url_for('count') }}">Take a long break now! (15 minutes)</a>
+<div style='text-align: center;'>
+    <a class='btn btn-primary' href='{{ url_for('time') }}'>Get back to studying!</a>
 </div>
-<progress max="{{ Timer }}" value=0 style="visibility: hidden;" id="progressBar"></progress>
+<progress max="{{ Break }}" value=0 style="visibility: hidden;" id="progressBar"></progress>
 <script type='application/javascript'>
     const timerElement = document.getElementById("timer");
     var timerCounter = progressBar.max;
     const interval = setInterval(() => {
         if (timerCounter <= 1) {
-            window.location.href = "{{ url_for('shortbreak') }}";
+            window.location.href = "{{ url_for('time') }}";
             clearInterval(interval);
         }
         timerCounter = timerCounter - 1;

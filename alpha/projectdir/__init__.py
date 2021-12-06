@@ -6,9 +6,14 @@ from flask_mail import Mail
 
 app = Flask(__name__)
 
+UPLOAD_FOLDER = 'sjsu_cmpe_131/alpha/projectdir/uploads'
+
+app.config['UPLOADS'] = UPLOAD_FOLDER 
 app.config['SECRET_KEY'] = 'groupnineproject'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/notetaking.db'
+
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 database = SQLAlchemy(app)
 

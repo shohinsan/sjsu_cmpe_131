@@ -1,0 +1,11 @@
+{% extends 'layouts.html' %}
+
+{% block content %}
+    <script>
+        window.setTimeout(function () {
+            window.location.href = "{{ url_for('visualize_blocks') }}";
+        }, 0);
+
+    </script>
+{% endblock content %}
+
