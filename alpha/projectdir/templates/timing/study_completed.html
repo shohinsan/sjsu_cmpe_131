@@ -1,19 +1,12 @@
 {% extends 'layouts.html' %}
 
 {% block content %}
-    <div class="container justify-content-center">
-        <h1 style='text-align: center;'>
-            <span>You've used {{ study_counter }} time blocks <br> As well as
-                {{ study_counter * study }} seconds tracked <br> while studying with Pomodoro</span>
-        </h1>
-    </div>
-    <ul>
-    {% for tracker in blocks %}
-        <li>
-            {{ tracker.date }}: {{ tracker.time}}s
-        </li>
-    {% endfor %}
-    </ul>
+    <script>
+        window.setTimeout(function(){
 
+        window.location.href = "{{ url_for('visualize_blocks') }}";
+        }, 0);
+
+    </script>
 {% endblock content %}
 

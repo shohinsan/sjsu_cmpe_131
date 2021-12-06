@@ -136,18 +136,18 @@ def flashcards():
     user = User.query.filter_by(username=current_user.username).first()
     flashcards = Flashcard.query.filter_by(user_id=user.id).all()
 
-    return render_template('flashcard/flashcards.html', flashcards=flashcards, title='Flashcards')
+    return render_template('flashcardz/flashcards.html', flashcards=flashcards, title='Flashcards')
 
 @app.route('/memorize')
 @login_required
 def memorize(): 
-    return render_template('flashcard/memorize.html', flashcards=flashcards, title="Memorize")
+    return render_template('flashcardz/memorize.html', flashcards=flashcards, title="Memorize")
 
 @app.route("/flashcards/<int:flashcard_id>", methods=['POST', 'GET'])
 @login_required
 def show_flashcard(flashcard_id):
     flashcard = User.query.get_or_404(flashcard_id)
-    return render_template('flashcard/flashcard.html', flashcard=flashcard, title=flashcard.file)
+    return render_template('flashcardz/flashcard.html', flashcard=flashcard, title=flashcard.file)
 
 @app.route('/flashcards/add', methods=['GET', 'POST'])
 @login_required
@@ -159,7 +159,7 @@ def create_flashcard():
         database.session.commit()
         flash(f'Successfully added new Flashcard!', 'success')
         return redirect('/flashcards')
-    return render_template('flashcard/createFlashcard.html', form=form, title='Create Flashcard')
+    return render_template('flashcardz/createFlashcard.html', form=form, title='Create Flashcard')
 
 @app.route("/flashcards/<int:card_id>/delete", methods=['GET', 'POST'])
 @login_required
@@ -203,7 +203,7 @@ def add_flashcard():
             database.session.commit()
             flash('Succesfully added flashcard to database')
             return redirect(url_for('flashcards'))
-    return render_template('flashcard/createmdflashcard.html', title='Markdown to Flashcard')
+    return render_template('flashcardz/createmdflashcard.html', title='Markdown to Flashcard')
 
 # Flashcard End
 
@@ -397,20 +397,17 @@ def study():
 @app.route('/completed-studying')
 @login_required
 def study_completed():
-    user = User.query.filter_by(username=current_user.username).first()
     timeblock = TimerDetails(time=session['study_counter']*session['study'], user_id=current_user.id)
     database.session.add(timeblock)
     database.session.commit()
+    return render_template("timing/study_completed.html")
+
+@app.route('/visualizeblocks')
+@login_required
+def visualize_blocks():
+    user = User.query.filter_by(username=current_user.username).first()
     blocks = TimerDetails.query.filter_by(user_id=user.id).all()
-    return render_template("timing/study_completed.html", study_counter=session["study_counter"],
-                           study=session["study"], blocks=blocks)
-
-
-'''    
-timeblock = TimerDetails(time=session['study_counter']*session['study'], user_id=current_user.id)
-database.session.add(timeblock)
-database.session.commit()
-'''
+    return render_template('timing/visualizeblocks.html', title='Timeblocks', blocks=blocks, study_counter=session["study_counter"], study=session["study"])
 
 # Timer End
 

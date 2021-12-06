@@ -3,7 +3,7 @@ from flask_login import UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 from projectdir import database, login_manager, app
-from datetime import datetime
+from datetime import datetime, date
 
 
 @login_manager.user_loader
@@ -57,7 +57,7 @@ class User(database.Model, UserMixin):
 class TimerDetails(database.Model):
     id = database.Column(database.Integer, primary_key=True)
     time = database.Column(database.Integer, nullable=False)
-    date = database.Column(database.DateTime, nullable=False, default=datetime.utcnow)
+    date = database.Column(database.Date, nullable=False, default=date.today())
     user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
