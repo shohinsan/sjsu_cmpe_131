@@ -28,6 +28,7 @@ class User(database.Model, UserMixin):
 
     notes = database.relationship('Note', backref='author', lazy=True)
     flashcards = database.relationship('Flashcard', backref='author', lazy=True)
+    events = database.relationship('Events', backref='author', lazy=True)
 
     def get_token(self, expires_sec=300):
         serial = Serializer(app.config['SECRET_KEY'], expires_in=expires_sec)
@@ -81,3 +82,16 @@ class Flashcard(database.Model):
 
     def __repr__(self):
         return f"Flashcard('{self.file}', '{self.date}')"
+
+
+class Events(database.Model):
+    id = database.Column(database.Integer, primary_key=True)
+    title = database.Column(database.String())
+    start = database.Column(database.Integer(), nullable=False)
+    end = database.Column(database.Integer(), nullable=False)
+    url = database.Column(database.String())
+    user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
+
+    def __repr__(self):
+        return f"Events('{self.title}', '{self.start}', {self.end}, {self.url})"
+
