@@ -55,8 +55,10 @@ class User(database.Model, UserMixin):
 
 
 class TimerDetails(database.Model):
-    id = database.Column(database.String(10), primary_key=True)
-    time = database.Column(database.Integer)
+    id = database.Column(database.Integer, primary_key=True)
+    time = database.Column(database.Integer, nullable=False)
+    date = database.Column(database.DateTime, nullable=False, default=datetime.utcnow)
+    user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
         return f'{self.id}: {self.time}'

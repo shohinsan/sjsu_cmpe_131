@@ -138,6 +138,10 @@ def flashcards():
 
     return render_template('flashcard/flashcards.html', flashcards=flashcards, title='Flashcards')
 
+@app.route('/memorize')
+@login_required
+def memorize(): 
+    return render_template('flashcard/memorize.html', flashcards=flashcards, title="Memorize")
 
 @app.route("/flashcards/<int:flashcard_id>", methods=['POST', 'GET'])
 @login_required
@@ -393,8 +397,20 @@ def study():
 @app.route('/completed-studying')
 @login_required
 def study_completed():
+    user = User.query.filter_by(username=current_user.username).first()
+    timeblock = TimerDetails(time=session['study_counter']*session['study'], user_id=current_user.id)
+    database.session.add(timeblock)
+    database.session.commit()
+    blocks = TimerDetails.query.filter_by(user_id=user.id).all()
     return render_template("timing/study_completed.html", study_counter=session["study_counter"],
-                           study=session["study"])
+                           study=session["study"], blocks=blocks)
+
+
+'''    
+timeblock = TimerDetails(time=session['study_counter']*session['study'], user_id=current_user.id)
+database.session.add(timeblock)
+database.session.commit()
+'''
 
 # Timer End
 
