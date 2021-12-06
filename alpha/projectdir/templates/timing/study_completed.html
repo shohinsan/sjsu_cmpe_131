@@ -8,5 +8,13 @@
         </h1>
     </div>
 
+    <ul>
+        {% for tracker in blocks %}
+            <li>
+                {{ tracker.date }}: {{ tracker.time }}s
+            </li>
+        {% endfor %}
+    </ul>
+
 {% endblock content %}
 

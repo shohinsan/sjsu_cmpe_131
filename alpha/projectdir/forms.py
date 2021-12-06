@@ -51,8 +51,8 @@ class PomodoroAndBlockForm(FlaskForm):
 
 
 class NewFlashCard(FlaskForm):
-    markdownFile = FileField('Enter your markdown file',
-                             validators=[FileRequired(), FileAllowed(['md', 'markdown'], 'Markdown file only!')])
+    front = StringField('Frontside', validators=[DataRequired()])
+    back = StringField('Backside', validators=[DataRequired()])
     submit = SubmitField('Add')
 
 
@@ -66,9 +66,3 @@ class ShareForm(FlaskForm):
     username = StringField(label='Username', validators=[DataRequired(), Length(min=3, max=20)])
     email = StringField(label='Email', validators=[DataRequired(), Email()])
     submit = SubmitField(label="Submit")
-
-
-# class TimerForm(FlaskForm):
-#     lengthtime = StringField(label='Study Length', validators=[DataRequired()])
-#     breaktime = StringField(label='Break Length', validators=[DataRequired()])
-#     submit = SubmitField(label="Start Studying")

@@ -1,0 +1,32 @@
+{% extends "layouts.html" %}
+
+{% block content %}
+    <h1 align="center"> Flashcards </h1>
+
+    </br>
+    </br>
+
+    {% for flashcard in flashcards %}
+        <div class='wrapper' style='border: solid black 3px; width: 90%; position: relative; left: 5%; font-size: 25px; display: flex;'>
+            <div style='float: left; width: 50%; height: 100%;'>
+                <p>{{ flashcard.front }}</p>
+            </div>
+            <div style="float: right; width: 50%; height: 100%; border-left: solid black 3px; padding-left: 1%;">
+                <p>{{ flashcard.back }}</p>
+            </div>
+        </div>
+        </br>
+    {% endfor %}
+
+    </br>
+    </br>
+
+    <center>
+        <div>
+            <a class="btn btn-primary btn-sm mt-1 mb-1 m-3 p-3" href="{{ url_for('create_flashcard') }}"> Add New Flashcard </a>
+            <a class= 'btn btn-primary btn-sm mt-1 mb-1 m-3 p-3' href="{{ url_for('add_flashcard') }}"> Upload a Markdown File </a>
+            <a class = 'btn-primary btn btn-sm mt-1 mb-1 m-3 p-3' href=''> Memorize </a>
+        </div>
+    </center>
+
+{% endblock content %} 

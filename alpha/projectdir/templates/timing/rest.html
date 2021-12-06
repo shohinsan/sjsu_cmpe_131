@@ -21,7 +21,7 @@
             timerCounter = timerCounter - 1;
 
             timerElement.innerText = timerCounter + "s";
-            timerElement.innerText = Math.floor(timerCounter / 60) + ":" + (timerCounter % 60 ? timerCounter % 60 : '00') + "s";
+            timerElement.innerText = Math.floor(timerCounter / 60) + "m : " + (timerCounter % 60 ? timerCounter % 60 : '00') + "s";
             progressBar.value = timerCounter;
         }, 1000);
 
