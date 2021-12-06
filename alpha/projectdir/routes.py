@@ -25,12 +25,6 @@ def homepage():
     return render_template('homepage.html', title='Home')
 
 
-@app.route('/about')
-# non-functional method, will be removed by the 3rd milestone
-def about():
-    return render_template('about.html', title='About')
-
-
 # Login/ Signup Features Starts
 
 def save_image(picture_file):
@@ -140,16 +134,38 @@ def flashcards():
     return render_template('flashcardz/flashcards.html', flashcards=flashcards, title='Flashcards')
 
 
-@app.route("/flashcards/<int:flashcard_id>", methods=['POST', 'GET'])
+@app.route('/flashcards/<int:flashcard_id>')
 @login_required
 def show_flashcard(flashcard_id):
-    flashcard = User.query.get_or_404(flashcard_id)
-    return render_template('flashcardz/flashcard.html', flashcard=flashcard, title=flashcard.file)
+    flashcard = Flashcard.query.get_or_404(flashcard_id)
+    return render_template('flashcardz/flashcard.html', flashcard=flashcard, title='Flashcard')
+
 
 @app.route('/memorize')
 @login_required
 def memorize():
     return render_template('flashcardz/memorize.html', flashcards=flashcards, title="Memorize")
+
+
+@app.route("/flashcards/<int:flashcard_id>/update", methods=['GET', 'POST'])
+@login_required
+def update_flashcard(flashcard_id):
+    # A function to update notes from database
+    flashcard = Flashcard.query.get_or_404(flashcard_id)
+    if flashcard.author != current_user:
+        os.abort(403)
+    form = NewFlashCard()
+    if form.validate_on_submit():
+        flashcard.front = form.front.data
+        flashcard.back = form.back.data
+        database.session.commit()
+        flash(f'Your flashcard has been updated successfully!', 'success')
+        return redirect(url_for('show_flashcard', flashcard_id=flashcard.id))
+    elif request.method == 'GET':
+        form.front.data = flashcard.front
+        form.back.data = flashcard.back
+    return render_template('flashcardz/createFlashcard.html', title='Update Flashcard', form=form,
+                           legend='Update Flashcard')
 
 
 @app.route("/flashcards/add", methods=['POST', 'GET'])
@@ -165,17 +181,48 @@ def create_flashcard():
     return render_template('flashcardz/createFlashcard.html', form=form, title='Create Flashcard')
 
 
-@app.route("/flashcards/<int:card_id>/delete", methods=['GET', 'POST'])
+@app.route("/flashcards/<int:flashcard_id>/delete", methods=['GET', 'POST'])
 @login_required
-def delete_card(card_id):
+def delete_flashcard(flashcard_id):
     # A function to delete notes from database
-    card = Flashcard.query.get_or_404(card_id)
-    if card.author != current_user:
+    flashcard = Flashcard.query.get_or_404(flashcard_id)
+    if flashcard.author != current_user:
         os.abort(403)
-    database.session.delete(note)
+    database.session.delete(flashcard)
     database.session.commit()
-    flash(f'Your card has been deleted successfully!', 'success')
+    flash(f'Your flashcard has been deleted successfully!', 'success')
     return redirect(url_for('flashcards'))
+
+
+@app.route("/flashcards/<int:flashcard_id>/share", methods=['GET', 'POST'])
+@login_required
+def share_flashcard(flashcard_id):
+    # A function helper to share notes with other users in database
+    flashcard = Flashcard.query.get_or_404(flashcard_id)
+    form = ShareForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None or not user.check_user(form.username.data):
+            flash(f'Invalided Account! This account does not exist!')
+            return redirect(url_for('share_flashcard', flashcard_id=flashcard.id))
+        newFlashcard = Flashcard(front=flashcard.front, back=flashcard.back, user_id=user.id)
+        database.session.add(newFlashcard)
+        database.session.commit()
+        flash(f'Successfully Shared Flashcard!', 'success')
+        return redirect(url_for('show_flashcard', flashcard_id=flashcard.id))
+    return render_template('notes/shareNote.html', form=form, title='Share Flashcard')
+
+
+@app.route('/flashcards/<int:flashcard_id>/pdf', methods=['GET', 'POST'])
+@login_required
+def flashcard_pdf(flashcard_id):
+    flashcard = Flashcard.query.get_or_404(flashcard_id)
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font('Arial', size=14)
+    pdf.multi_cell(w=40, h=20, txt=flashcard.front + '\n' + flashcard.back, align='C')
+    pdf.output('output_flashcard.pdf')
+    return send_file('output_flashcard.pdf', as_attachment=True, environ=request.environ)
 
 
 @app.route("/flashcards/addfile", methods=['POST', 'GET'])
@@ -193,6 +240,7 @@ def add_flashcard():
             filename = secure_filename(file.filename)
             file.save(os.path.join(uploads_dir, filename))
             f = open(os.path.join(uploads_dir, filename), 'r')
+            flashcardfront = filename.split('.md', 1)[0]
             flashcardback = ''
             # Only adds front if there is a header in the md file; accepts the format
             ''' 
@@ -207,7 +255,7 @@ def add_flashcard():
             flashcard = Flashcard(front=flashcardfront, back=flashcardback, user_id=current_user.id)
             database.session.add(flashcard)
             database.session.commit()
-            flash('Succesfully added flashcard to database')
+            flash('Succesfully added flashcard to database', 'success')
             return redirect(url_for('flashcards'))
     return render_template('flashcardz/createMDFlashcard.html', title='Markdown to Flashcard')
 
@@ -276,7 +324,7 @@ def upload_note():
             filename = secure_filename(file.filename)
             file.save(os.path.join(uploads_dir, filename))
             f = open(os.path.join(uploads_dir, filename), 'r')
-            notetitle = filename
+            notetitle = filename.split('.md', 1)[0]
             notecontent = ''
             # Only adds title if there is a header in the md file 
             for x in f:
@@ -352,14 +400,8 @@ def pdf(note_id):
     pdf.add_page()
     pdf.set_font('Arial', size=14)
     pdf.multi_cell(w=40, h=20, txt=note.title + '\n' + note.content, align='C')
-    pdf.output('output.pdf')
-    return send_file('output.pdf', as_attachment=True, environ=request.environ)
-
-
-@app.route('/finder')
-def finder():
-    # rename and find files 
-    return render_template('find.html', title='Finder')
+    pdf.output('output_notes.pdf')
+    return send_file('output_notes.pdf', as_attachment=True, environ=request.environ)
 
 
 @app.route('/timer', methods=['GET', 'POST'])
@@ -403,7 +445,6 @@ def study_completed():
     database.session.commit()
     blocks = TimerDetails.query.filter_by(user_id=user.id).all()
     return render_template("timing/study_completed.html")
-
 
 
 @app.route('/visualizeblocks')
@@ -493,5 +534,6 @@ def add_calendar_event():
         database.session.commit()
 
         flash('Event added successfully', 'success')
+        return redirect(url_for('calendar'))
 
     return render_template("timing/add_event.html", title='Calendar')

@@ -29,6 +29,15 @@ class User(database.Model, UserMixin):
     notes = database.relationship('Note', backref='author', lazy=True)
     flashcards = database.relationship('Flashcard', backref='author', lazy=True)
     events = database.relationship('Events', backref='author', lazy=True)
+    # categories = database.relationship('Category',
+    #                                    secondary=has_category,
+    #                                    backref=database.backref('collections', lazy='dynamic'),
+    #                                    lazy='dynamic')
+    #
+    # has_category = database.Table('has_category',
+    #                               database.Column('category_id', database.Integer, database.ForeignKey('category.id')),
+    #                               database.Column('flashcardcollection_id', database.Integer,
+    #                                               database.ForeignKey('flashcardcollection.id')))
 
     def get_token(self, expires_sec=300):
         serial = Serializer(app.config['SECRET_KEY'], expires_in=expires_sec)
@@ -97,4 +106,3 @@ class Events(database.Model):
 
     def __repr__(self):
         return f"Events('{self.title}', '{self.start}', {self.end}, {self.url})"
-

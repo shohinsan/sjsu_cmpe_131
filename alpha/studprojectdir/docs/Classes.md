@@ -10,3 +10,4 @@
 8. User (models.py - login.html | registration.html | change_password.html)
 9. Timer Details (models.py - timer.html | timeractual.html)
 10. Note (models.py - notes.html | note.html | createNote.html | shareNote.html)
+11. Events (models.py - calendar.html | add_event.html )

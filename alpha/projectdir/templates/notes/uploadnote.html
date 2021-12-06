@@ -1,9 +1,16 @@
 {% extends "layouts.html" %}
 
 {% block content %}
-    <h1 align="center">Upload New File</h1>
-    <form style="text-align: center;" method=post enctype="multipart/form-data">
-        <input type="file" name="file" accept=".md">
-        <input type=submit value="Upload">
-    </form>
+    <div class="form-control">
+        <h1> Add Markdown File to Notes </h1>
+        </br>
+
+        <form style="text-align: left;" method=post enctype="multipart/form-data">
+            <p>Enter the markdown file <input type="file" name="file" accept=".md"></p>
+            <p>Upload the markdown file <input type=submit value="Upload"></p>
+        </form>
+    </div>
+
+    </br>
+    <a class='btn btn-primary btn-sm mt-1 mb-1 m-3 p-3' href='/notes'> Back </a>
 {% endblock %}

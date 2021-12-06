@@ -29,47 +29,58 @@ Required apps to install:
 
 ## Project layout
 
-    projectdir/
-        /database
-            notetaking.db
-        /static
-            /js
-            /profile_pics
-            main.css
-            main.js
-            registration.css
-        /templates
-            /general
-                account.html
-                change_password.html
-                login.html
-                registration.html
-                reset_request.html 
-                signup.html
-            /notes
-                createNote.html
-                note.html
-                notes.html
-                pdf.html
-                shareNote.html
-                searched_notes.html
-            /timing 
-                add_event.html
-                timer.html
-                timeractual.html
-                break.html 
-                calendar.html
-                add_event.html
-                rest.html
-                study.html
-                study_completed.html
-            about.html
-            createFlashcard.html
-            find.html
-            flashcards.html
+    alpha/
+        instance/
+            /uploads
+                .md (uploaded file)
+        projectdir/
+            /database
+                notetaking.db
+            /static
+                /js
+                    main.js
+                /css
+                    main.css
+                    registration.css  
+                    timexx.css
+                /profile_pics
+                    .jpg/.png (uploaded picture profile 200x200)
+            /templates
+                /flashcardz
+                    createFlashcard.html
+                    createMDFlashcard.hmtl
+                    flashcard.html
+                    flashcards.html
+                    memorize.html
+                /general
+                    account.html
+                    change_password.html
+                    login.html
+                    registration.html
+                    reset_request.html 
+                    signup.html
+                /notes
+                    createNote.html
+                    note.html
+                    notes.html
+                    pdf.html
+                    searched_notes.html
+                    shareNote.html
+                    uploadnote.html
+                /timing 
+                    add_event.html
+                    calendar.html
+                    rest.html
+                    study.html
+                    study_completed.html
+                    timer.html
+                    visualizeblocks.html
             homepage.html
             layouts.html
-    __init__.py
-    forms.py
-    models.py
-    routes.py
+        __init__.py
+        forms.py
+        models.py
+        routes.py
+    output_flashcard.pdf (saved as pdf + download)
+    output_notes.pdf (saved as pdf + download)
+    run.py (server runner file)
