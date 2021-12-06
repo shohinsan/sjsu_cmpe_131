@@ -1,0 +1,31 @@
+{% extends "layouts.html" %}
+
+{% block content %}
+    <article class="media content-section">
+        <img class="rounded-circle article-img m-3"
+             style="width: 3%"
+             src="{{ url_for('static', filename='profile_pics/' + note.author.image_file) }}">
+        <a class="mr-2" href="#">{{ card.author.username }}</a> ~~~
+        <small class="text-muted">{{ card.date.strftime('%Y-%m-%d') }}</small>
+        <div class="media-body">
+            <div class="article-metadata">
+
+                {% if card.author == current_user %}
+                    <div class="m-1">
+                        <a class="btn btn-danger btn-sm mt-1 mb-1 m-3"
+                           href="{{ url_for('delete_note', note_id=note.id) }}">Delete</a>
+                    </div>
+                {% endif %}
+            </div>
+            <h2 style="width: 50rem" class="article-content m-3 p-3 card">{{ card.front }}</h2>
+            <p style="width: 50rem" class="article-content m-3 p-3 card">{{ card.back }}</p>
+        </div>
+    </article>
+
+    <a class="btn btn-success btn-sm mt-1 mb-1 m-3" href="{{ url_for('flashcards') }}"> Close </a>
+
+
+
+    <!-- <a class="btn btn-success btn-sm mt-1 mb-1 m-3" href="{{ url_for('pdf', note_id=note.id) }}"> Save as PDF </a> -->
+
+{% endblock content %} 
