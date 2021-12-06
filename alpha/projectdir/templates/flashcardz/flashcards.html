@@ -10,7 +10,7 @@
         <div class='wrapper'
              style='border: solid black 3px; width: 90%; position: relative; left: 5%; font-size: 25px; display: flex;'>
             <div style='float: left; width: 50%; height: 100%;'>
-                <p>{{ flashcard.front }}</p>
+                <a href="{{ url_for('show_flashcard', flashcard_id=flashcard.id) }}">{{ flashcard.front }}</a>
             </div>
             <div style="float: right; width: 50%; height: 100%; border-left: solid black 3px; padding-left: 1%;">
                 <p>{{ flashcard.back }}</p>
