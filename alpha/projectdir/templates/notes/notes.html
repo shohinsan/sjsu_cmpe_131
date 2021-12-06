@@ -24,7 +24,7 @@
                 <img class="rounded-circle article-img "
                      style="width: 3%"
                      src="{{ url_for('static', filename='profile_pics/' + note.author.image_file) }}" alt="">
-                <div class="media-body ">
+                <div class="media-body">
                     <div class="article-metadata">
                         <a class="mr-2" href="#">{{ note.author.username }}</a>
                         <small class="text-muted">{{ note.date.strftime('%Y-%m-%d') }}</small>
