@@ -13,16 +13,16 @@
       <th>Date</th>
       <th>Time Worked</th>
     </tr>
+    {% for tracker in blocks %}
     <tr>
-        {% for tracker in blocks %}
         <td>
             {{ tracker.date }}
         </td>
         <td>
-            {{ tracker.time }}s
+            {{ tracker.time }}
         </td>
-    {% endfor %}
     </tr>
+    {% endfor %}
   </table>
   </center>
 
