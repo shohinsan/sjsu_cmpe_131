@@ -9,7 +9,7 @@ from werkzeug.utils import send_file, secure_filename
 from projectdir import app, database, bcrypt, mail
 from projectdir.forms import RegistrationForm, LoginForm, ResetRequestForm, ResetPasswordForm, AccountUpdateForm, \
     NewFlashCard, NoteForm, ShareForm
-from projectdir.models import User, Note, Flashcard, Events
+from projectdir.models import User, Note, Flashcard, Events, TimerDetails
 
 ALLOWED_EXTENSIONS = {'md'}
 uploads_dir = os.path.join(app.instance_path, 'uploads')
@@ -137,27 +137,82 @@ def flashcards():
     user = User.query.filter_by(username=current_user.username).first()
     flashcards = Flashcard.query.filter_by(user_id=user.id).all()
 
-    return render_template('flashcards.html', flashcards=flashcards, title='Flashcards')
+    return render_template('flashcardz/flashcards.html', flashcards=flashcards, title='Flashcards')
 
 
 @app.route("/flashcards/<int:flashcard_id>", methods=['POST', 'GET'])
 @login_required
 def show_flashcard(flashcard_id):
     flashcard = User.query.get_or_404(flashcard_id)
-    return render_template('flashcard.html', flashcard=flashcard, title=flashcard.file)
+    return render_template('flashcardz/flashcard.html', flashcard=flashcard, title=flashcard.file)
+
+@app.route('/memorize')
+@login_required
+def memorize():
+    return render_template('flashcardz/memorize.html', flashcards=flashcards, title="Memorize")
 
 
 @app.route("/flashcards/add", methods=['POST', 'GET'])
 @login_required
-def add_flashcard():
+def create_flashcard():
     form = NewFlashCard()
     if form.validate_on_submit():
-        flashcard = Flashcard(file=form.file.data, user_id=current_user.id)
+        flashcard = Flashcard(front=form.front.data, back=form.back.data, user_id=current_user.id)
         database.session.add(flashcard)
         database.session.commit()
-        flash(f'Successfully added new markdown file to flashcard!', 'success')
-        return redirect(url_for('flashcards'))
-    return render_template('createFlashcard.html', form=form, title='Add Flashcard')
+        flash(f'Successfully added new Flashcard!', 'success')
+        return redirect('/flashcards')
+    return render_template('flashcardz/createFlashcard.html', form=form, title='Create Flashcard')
+
+
+@app.route("/flashcards/<int:card_id>/delete", methods=['GET', 'POST'])
+@login_required
+def delete_card(card_id):
+    # A function to delete notes from database
+    card = Flashcard.query.get_or_404(card_id)
+    if card.author != current_user:
+        os.abort(403)
+    database.session.delete(note)
+    database.session.commit()
+    flash(f'Your card has been deleted successfully!', 'success')
+    return redirect(url_for('flashcards'))
+
+
+@app.route("/flashcards/addfile", methods=['POST', 'GET'])
+@login_required
+def add_flashcard():
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(uploads_dir, filename))
+            f = open(os.path.join(uploads_dir, filename), 'r')
+            flashcardback = ''
+            # Only adds front if there is a header in the md file; accepts the format
+            ''' 
+            # Title 
+            Content below the title 
+            '''
+            for x in f:
+                if x[0] == '#':
+                    flashcardfront = x[1:len(x) - 1]
+                else:
+                    flashcardback += x
+            flashcard = Flashcard(front=flashcardfront, back=flashcardback, user_id=current_user.id)
+            database.session.add(flashcard)
+            database.session.commit()
+            flash('Succesfully added flashcard to database')
+            return redirect(url_for('flashcards'))
+    return render_template('flashcardz/createMDFlashcard.html', title='Markdown to Flashcard')
+
+
+# Flashcard End
 
 
 @app.route('/notes')
@@ -342,39 +397,25 @@ def study():
 @app.route('/completed-studying')
 @login_required
 def study_completed():
-    return render_template("timing/study_completed.html", study_counter=session["study_counter"],
-                           study=session["study"])
+    user = User.query.filter_by(username=current_user.username).first()
+    timeblock = TimerDetails(time=session['study_counter'] * session['study'], user_id=current_user.id)
+    database.session.add(timeblock)
+    database.session.commit()
+    blocks = TimerDetails.query.filter_by(user_id=user.id).all()
+    return render_template("timing/study_completed.html")
 
 
-# @app.route('/countdown')
-# def count():
-#     print(datetime.now())
-#     session['starttime'] = datetime.now()
-#     return render_template('timeractual.html', Timer=25)
+
+@app.route('/visualizeblocks')
+@login_required
+def visualize_blocks():
+    user = User.query.filter_by(username=current_user.username).first()
+    blocks = TimerDetails.query.filter_by(user_id=user.id).all()
+    return render_template('timing/visualizeblocks.html', title='Timeblocks', blocks=blocks,
+                           study_counter=session["study_counter"], study=session["study"])
 
 
-#
-#
-# # database for some reason doesn't exit
-# @app.route('/break')
-# def shortbreak():
-#     print(datetime.now())
-#     session['endtime'] = datetime.now()
-#     timespent = session['endtime'] - session['starttime']
-#     timer = TimerDetails(id=datetime.now().day, time=timespent.total_seconds() // 60)
-#     # database.session.add(timer)
-#     # database.session.commit()
-#     return render_template('break.html', Break=5)
-#
-#
-# def longbreak():
-#     print(datetime.now())
-#     session['endtime'] = datetime.now()
-#     timespent = session['endtime'] - session['starttime']
-#     timer = TimerDetails(id=datetime.now().day, time=timespent.total_seconds() // 60)
-#     # database.session.add(timer)
-#     # database.session.commit()
-#     return render_template('break.html', Break=15)
+# Timer End
 
 
 # Forgot Password Feature Starts

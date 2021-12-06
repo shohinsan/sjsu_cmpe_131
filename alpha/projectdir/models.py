@@ -3,7 +3,7 @@ from flask_login import UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 from projectdir import database, login_manager, app
-from datetime import datetime
+from datetime import datetime, date
 
 
 @login_manager.user_loader
@@ -56,8 +56,10 @@ class User(database.Model, UserMixin):
 
 
 class TimerDetails(database.Model):
-    id = database.Column(database.String(10), primary_key=True)
-    time = database.Column(database.Integer)
+    id = database.Column(database.Integer, primary_key=True)
+    time = database.Column(database.Integer, nullable=False)
+    date = database.Column(database.Date, nullable=False, default=date.today())
+    user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
         return f'{self.id}: {self.time}'
@@ -77,11 +79,12 @@ class Note(database.Model):
 class Flashcard(database.Model):
     id = database.Column(database.Integer, primary_key=True)
     date = database.Column(database.DateTime, nullable=False, default=datetime.utcnow)
-    file = database.Column(database.String, nullable=False)
+    front = database.Column(database.String, nullable=False)
+    back = database.Column(database.String, nullable=False)
     user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
-        return f"Flashcard('{self.file}', '{self.date}')"
+        return f"Flashcard('{self.front}', '{self.back}', '{self.date}')"
 
 
 class Events(database.Model):
