@@ -1,18 +1,20 @@
-from flask import render_template, url_for, redirect, flash, request, session, make_response, send_file
+import os
+
+from flask import render_template, url_for, redirect, flash, request, session, send_file
+from flask_login import login_user, logout_user, current_user, login_required
+from flask_mail import Message
 from fpdf import FPDF
 from werkzeug.utils import send_file, secure_filename
 
 from projectdir import app, database, bcrypt, mail
 from projectdir.forms import RegistrationForm, LoginForm, ResetRequestForm, ResetPasswordForm, AccountUpdateForm, \
-    NewFlashCard, NoteForm, ShareForm, PomodoroAndBlockForm
-from projectdir.models import User, Note, TimerDetails, Flashcard
-from flask_login import login_user, logout_user, current_user, login_required
-from flask_mail import Message
-import os
+    NewFlashCard, NoteForm, ShareForm
+from projectdir.models import User, Note, Flashcard, Events
 
 ALLOWED_EXTENSIONS = {'md'}
 uploads_dir = os.path.join(app.instance_path, 'uploads')
 os.makedirs(uploads_dir, exist_ok=True)
+
 
 # import markdown
 # import markdown.extensions.fenced_code
@@ -199,10 +201,12 @@ def add_note():
         return redirect('/notes')
     return render_template('notes/createNote.html', form=form, title='Add Notes')
 
+
 def allowed(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/notes/upload', methods=['GET','POST'])
+
+@app.route('/notes/upload', methods=['GET', 'POST'])
 @login_required
 def upload_note():
     if request.method == 'POST':
@@ -223,13 +227,14 @@ def upload_note():
                 if x[0] == '#':
                     notetitle = x[1:]
                 else:
-                    notecontent+=x
+                    notecontent += x
             note = Note(title=notetitle, content=notecontent, user_id=current_user.id)
             database.session.add(note)
             database.session.commit()
             flash('Succesfully added note to database')
             return redirect(url_for('notes'))
     return render_template('notes/uploadnote.html', title='Upload a Markdown file')
+
 
 @app.route("/note/<int:note_id>/update", methods=['GET', 'POST'])
 @login_required
@@ -425,25 +430,10 @@ def reset_token(token):
 @app.route('/calendar')
 @login_required
 def calendar():
+    user = User.query.filter_by(username=current_user.username).first()
+    events = Events.query.filter_by(user_id=user.id).all()
     # track assignments
     return render_template('timing/calendar.html', title='Calendar', events=events)
-
-
-events = [
-    {
-        'title': 'TestEvent',
-        'start': '2021-12-03',
-        'end': '',
-        'url': 'https://youtube.com'
-    },
-    {
-        'title': 'Another TestEvent',
-        'start': '2021-12-04',
-        'end': '2021-12-04',
-        'url': 'https://google.com'
-    },
-
-]
 
 
 @app.route('/add_calendevent', methods=['GET', "POST"])
@@ -455,14 +445,11 @@ def add_calendar_event():
         start = request.form['start']
         end = request.form['end']
         url = request.form['url']
+
+        events = Events(title=title, start=start, end=end, url=url, user_id=current_user.id)
+        database.session.add(events)
+        database.session.commit()
+
         flash('Event added successfully', 'success')
-        if end == '':
-            end = start
-        events.append({
-            'title': title,
-            'start': start,
-            'end': end,
-            'url': url,
-        },
-        )
+
     return render_template("timing/add_event.html", title='Calendar')
