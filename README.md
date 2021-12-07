@@ -9,8 +9,8 @@ Features Implemented up to date:
   * Reset Password (done)
 - Memorizing:
   * **Input a markdown file and output flash cards.** (done)
-  * **Share flashcards (add to their account)** (in progress)
-  * Create pdf of flash cards to print (in progress)
+  * **Share flashcards (add to their account)** (done)
+  * Create pdf of flash cards to print (done)
   * Change Order of Cards Based Off Accuracy  (in progress)
   * Render Flashcard Data Manually (done)
 - Notes:
