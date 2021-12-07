@@ -149,7 +149,9 @@ def show_flashcard(flashcard_id):
 @app.route('/memorize')
 @login_required
 def memorize():
-    return render_template('flashcardz/memorize.html', flashcards=flashcards, title="Memorize")
+    user = User.query.filter_by(username=current_user.username).first()
+    flashcards = Flashcard.query.filter_by(user_id=user.id).first()
+    return render_template('flashcardz/memorize.html', flashcard=flashcards, title="Memorize")
 
 
 @app.route("/flashcards/add", methods=['POST', 'GET'])
