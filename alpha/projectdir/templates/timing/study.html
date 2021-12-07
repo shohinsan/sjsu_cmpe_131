@@ -3,21 +3,19 @@
 {% block content %}
 
     <div class="container justify-content-center">
-        <h2 class="heading">Study</h2>
+        <h2 class="heading pb-3">Study</h2>
+        <div id="work-timer" style="font-max-size: 50px" class="timer">
+            <a id="study">{{ study }}</a>
+            <a id="semicolon" style="text-decoration: none">:</a>
+            <a id="w_seconds">00</a>
+        </div>
+
+    </div>
+    <div class="container pt-3">
+        <button id="start" class="btn btn-secondary">Resume</button>
+        <button id="stop" class="btn btn-primary">Pause</button>
     </div>
 
-<body>
-
-        <div id="work-timer" class="timer">
-            <p id="study">{{ study }}</p><p class="semicolon">:</p><p id="w_seconds">00</p>
-        </div>
-
-        </div>
-        <button id="start" class="btn">Start</button>
-        <button id="stop" class="btn">Pause</button>
-        </div>
-
-</body>
 
     <script type="application/javascript">
 
@@ -30,34 +28,34 @@
         var startTimer;
         startTimer = setInterval(timer, 100)
 
-        start.addEventListener('click', function(){
-            if(startTimer === undefined){
+        start.addEventListener('click', function () {
+            if (startTimer === undefined) {
                 startTimer = setInterval(timer, 100)
             } else {
                 alert("Timer is already running");
             }
         })
 
-        stop.addEventListener('click', function(){
+        stop.addEventListener('click', function () {
             stopInterval()
             startTimer = undefined;
         })
 
-        function timer(){
+        function timer() {
 
             if (studyMinutes.innerText == 0 && studySeconds.innerText == 0) {
                 window.location.href = "{{ url_for('rest') }}";
                 {#clearInterval(interval);#}
             }
 
-            if(studySeconds.innerText != 0){
+            if (studySeconds.innerText != 0) {
                 studySeconds.innerText--;
-            } else if(studyMinutes.innerText != 0 && studySeconds.innerText == 0){
+            } else if (studyMinutes.innerText != 0 && studySeconds.innerText == 0) {
                 studySeconds.innerText = 59;
                 studyMinutes.innerText--;
             }
 
-            if(studyMinutes.innerText == 0 && studySeconds.innerText == 0 && restMinutes.innerText == 0 && restSeconds.innerText == 0){
+            if (studyMinutes.innerText == 0 && studySeconds.innerText == 0 && restMinutes.innerText == 0 && restSeconds.innerText == 0) {
                 studyMinutes.innerText = studyMinutes;
                 studySeconds.innerText = "00";
 
@@ -67,8 +65,8 @@
 
         }
 
-        function stopInterval(){
-           clearInterval(startTimer);
+        function stopInterval() {
+            clearInterval(startTimer);
         }
 
     </script>

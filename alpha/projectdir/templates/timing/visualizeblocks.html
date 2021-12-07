@@ -7,25 +7,25 @@
             {{ study_counter * study }} seconds tracked <br> while studying with Pomodoro</span>
         </h1>
     </div>
-    <center>
-        <table>
-            <tr>
-                <th>Date</th>
-                <th>Time Worked</th>
-            </tr>
 
+
+        <table class="table-bordered container" style="width: 300px">
+            <thead style="text-align: center">
+            <th>Date</th>
+            <th>Time Worked</th>
+            </thead>
+
+            <tbody style="text-align: center">
             {% for tracker in blocks %}
-                <tr>
-                    <td>
-                        {{ tracker.date }}
-                    </td>
-                    <td>
-                        {{ tracker.time }}s
-                    </td>
-                </tr>
+                <td style="text-align: center">
+                    {{ tracker.date }}
+                </td>
+                <td style="text-align: center">
+                    {{ tracker.time }}s
+                </td>
+                </tbody>
             {% endfor %}
 
         </table>
-    </center>
 
 {% endblock %} 
