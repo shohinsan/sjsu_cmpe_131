@@ -19,7 +19,7 @@
 
 
 <!-- Multipurpose Navbar -->
-<header class="p-3 bg-dark text-white">
+<header class="m-1 p-3 bg-dark text-white rounded-3">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <!-- Navbar Logo -->
@@ -51,7 +51,7 @@
                         <button type="button" class="btn btn-outline-light me-2">Settings</button>
                     </a>
                     <a href="{{ url_for('logout') }}" style="text-decoration: none">
-                        <button type="button" class="btn btn-outline-light me-2 ">Logout</button>
+                        <button type="button" class="btn btn-danger me-2 ">Logout</button>
                     </a>
 
                 {% else %}

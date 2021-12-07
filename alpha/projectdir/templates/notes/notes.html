@@ -1,56 +1,44 @@
 {% extends "layouts.html" %}
 {% block content %}
 
+    <div class="jumbotron jumbotron-fluid">
+        <h1 align="center" class="display-3 mb-3"> Notes </h1>
+        <div class="container">
 
-
-
-    <div class="jumbotron jumbotron-fluid"  style="background-color: gainsboro">
-        <h1 align="center"  class="display-3"> Notes </h1>
-        <div class="container" >
             {% if current_user.is_authenticated %}
                 <!-- SearchBar Form -->
-                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 pb-3 " method="GET"
+                <form class="col-12 col-lg-auto mb-3 mb-lg-1 me-lg-3 pb-3 col-lg-12" method="GET"
                       action="{{ url_for('n_search') }}">
-                    <label>
-                        <input type="search"
-                               class="form-control form-control-dark  "
-                               placeholder="Search for notes" name="q">
-                    </label>
+                    <input type="search" class="form-control form-control-dark" placeholder="Search for notes" name="q">
                 </form>
             {% endif %}
 
-            <h1 class="display-4"> Upload Markdown File
-                <a class='btn btn-primary btn-sm mt-1 mb-1 m-3 p-3 btn-block' href="http://127.0.0.1:5000/notes/upload">
+            <h1 class="display-5 mt-lg-3"> Upload Markdown File
+                <a class='btn btn-secondary btn-lg mt-1 mb-1 m-3 p-3' href="http://127.0.0.1:5000/notes/upload">
                     Add</a></h1>
-            <h1 class="display-4"> Create New Note
-                <a class="btn btn-primary btn-sm mt-1 mb-1 m-3 p-3 btn-block" href="http://127.0.0.1:5000/notes/add">New</a></h1>
-
-
+            <h1 class="display-5"> Create New Note
+                <a class="btn btn-warning btn-lg mt-1 mb-1 m-3 p-3" href="http://127.0.0.1:5000/notes/add">New</a></h1>
         </div>
     </div>
 
-    {% for note in notes %}
-        <article class="media content-section">
-            <li class="list-group-item m-3 p-3 card">
-                <img class="rounded-circle article-img "
-                     style="width: 3%"
-                     src="{{ url_for('static', filename='profile_pics/' + note.author.image_file) }}" alt="">
-                <div class="media-body ">
-                    <div class="article-metadata">
-                        <a class="mr-2" href="#">{{ note.author.username }}</a>
-                        <small class="text-muted">{{ note.date.strftime('%Y-%m-%d') }}</small>
+    <div class="container"><br>
+        {% for note in notes %}
+            <article class="media content-section m-3 pb-lg-3">
+                <img class="card-title rounded-circle article-img mt-lg-2 "
+                     style="width: 3%" src="{{ url_for('static', filename='profile_pics/' + note.author.image_file) }}"
+                     alt="">
+                <a class="mr-2" href="#">{{ note.author.username }}</a>
+                <li class="card p-3">
+                    <div class="card-title">
+                        <h2><a class="article-title card-title" href="{{ url_for('note', note_id=note.id) }}">{{ note.title }}</a></h2>
+                        <p class="article-content mt-3">{{ note.content }}</p>
                     </div>
-                    <h2><a class="article-title" href="{{ url_for('note', note_id=note.id) }}">{{ note.title }}</a></h2>
-                    <p class="article-content">{{ note.content }}</p>
-                </div>
-            </li>
-        </article>
-    {% endfor %}
+                    <small class="text-muted">Date added: {{ note.date.strftime('%Y-%m-%d') }}</small>
 
-    </br>
+                </li>
 
+            </article>
+        {% endfor %}
 
-
-
-
+    </div>
 {% endblock content %}

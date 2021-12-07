@@ -3,7 +3,7 @@
 {% block content %}
     <link rel="stylesheet" href="{{ url_for('static',filename='css/timexx.css') }}">
 
-    <h1 style='text-align: center;'>Pomodoro Timer</h1>
+    <h1 class="mb-lg-4" style='text-align: center;'>Pomodoro Timer</h1>
 
     <main class="main">
 
@@ -23,12 +23,12 @@
                 <input class="fixed_form" type="number" name="blocks" id="blocks" value="2"/>
                 <span class="units"></span>
 
-                <div class="fixed_button_center_justified">
-                    <button class="btn btn-primary" type="submit">Start</button>
+                <div class="fixed_button_center_justified container">
+                    <button class="btn btn-primary" type="submit" style="width: 200px">Start</button>
+                    <br>
                     <a class="btn btn-primary  mt-1" href="{{ url_for('visualize_blocks') }}">
                         Tracker </a>
                 </div>
-
             </form>
         </div>
 

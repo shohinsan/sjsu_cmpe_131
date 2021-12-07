@@ -1,34 +1,44 @@
 {% extends "layouts.html" %}
 
+
 {% block content %}
-    <h1 align="center"> Flashcards </h1>
+<div class="jumbotron jumbotron-fluid">
+    <h1 align="center" class="display-3 mb-3"> Flashcards </h1>
+    <div class="container">
 
-    </br>
-    </br>
+        {% if current_user.is_authenticated %}
 
-    {% for flashcard in flashcards %}
-        <div class='wrapper'
-             style='border: solid black 3px; width: 90%; position: relative; left: 5%; font-size: 25px; display: flex;'>
-            <div style='float: left; width: 50%; height: 100%;'>
-                <a href="{{ url_for('show_flashcard', flashcard_id=flashcard.id) }}">{{ flashcard.front }}</a>
-            </div>
-            <div style="float: right; width: 50%; height: 100%; border-left: solid black 3px; padding-left: 1%;">
-                <p>{{ flashcard.back }}</p>
-            </div>
+            <!-- SearchBar Form -->
+{#            <form class="col-12 col-lg-auto mb-3 mb-lg-1 me-lg-3 pb-3 col-lg-12" method="GET"#}
+{#                  action="{{ url_for('n_search') }}">#}
+{#                <input type="search" class="form-control form-control-dark" placeholder="Search for notes" name="q">#}
+{#            </form>#}
+
+        {% endif %}
+
+        <h1 class="display-5 mt-lg-3"> Upload Markdown File
+            <a class='btn btn-secondary btn-lg mt-1 mb-1 m-3 p-3' href="{{ url_for('add_flashcard') }}"> Add </a></h1>
+        <h1 class="display-5"> Create New Flashcard
+            <a class="btn btn-warning btn-lg mt-1 mb-1 m-3 p-3" href="{{ url_for('create_flashcard') }}"> New </a></h1>
+    </div>
+</div>
+
+
+
+
+
+{% for flashcard in flashcards %}
+    <div class='wrapper'
+         style='border: solid black 3px; width: 90%; position: relative; left: 5%; font-size: 25px; display: flex;'>
+        <div style='float: left; width: 50%; height: 100%;'>
+            <a href="{{ url_for('show_flashcard', flashcard_id=flashcard.id) }}">{{ flashcard.front }}</a>
         </div>
-        </br>
-    {% endfor %}
-
-    </br>
-    </br>
-
-    <center>
-        <div>
-            <a class="btn btn-primary btn-sm mt-1 mb-1 m-3 p-3" href="{{ url_for('create_flashcard') }}"> Add New
-                Flashcard </a>
-            <a class='btn btn-primary btn-sm mt-1 mb-1 m-3 p-3' href="{{ url_for('add_flashcard') }}"> Upload a Markdown
-                File </a>
-            <a class='btn-primary btn btn-sm mt-1 mb-1 m-3 p-3' href=''> Memorize </a>
+        <div style="float: right; width: 50%; height: 100%; border-left: solid black 3px; padding-left: 1%;">
+            <p>{{ flashcard.back }}</p>
         </div>
-    </center>
+    </div>
+    </br>
+{% endfor %}
+
+
 {% endblock content %} 

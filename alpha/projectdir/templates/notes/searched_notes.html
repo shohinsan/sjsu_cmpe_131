@@ -4,21 +4,22 @@
 
     <h1 align="center"> Notes </h1>
     {% for note in current_user.notes %}
-        <article class="media content-section">
-            <li class="list-group-item m-3 p-3 card">
-                <img class="rounded-circle article-img "
-                     style="width: 3%"
-                     src="{{ url_for('static', filename='profile_pics/' + note.author.image_file) }}" alt="">
-                <div class="media-body ">
-                    <div class="article-metadata">
-                        <a class="mr-2" href="#">{{ note.author.username }}</a>
-                        <small class="text-muted">{{ note.date.strftime('%Y-%m-%d') }}</small>
+  <article class="media content-section m-3 pb-lg-3">
+                <img class="card-title rounded-circle article-img mt-lg-2 "
+                     style="width: 3%" src="{{ url_for('static', filename='profile_pics/' + note.author.image_file) }}"
+                     alt="">
+                <a class="mr-2" href="#">{{ note.author.username }}</a>
+                <li class="card p-3">
+                    <div class="card-title">
+                        <h2><a class="article-title card-title" href="{{ url_for('note', note_id=note.id) }}">{{ note.title }}</a></h2>
+                        <p class="article-content mt-3">{{ note.content }}</p>
                     </div>
-                    <h2><a class="article-title" href="{{ url_for('note', note_id=note.id) }}">{{ note.title }}</a></h2>
-                    <p class="article-content">{{ note.content }}</p>
-                </div>
-            </li>
-        </article>
+                    <small class="text-muted">Date added: {{ note.date.strftime('%Y-%m-%d') }}</small>
+
+                </li>
+
+            </article>
+
     {% endfor %}
 
 

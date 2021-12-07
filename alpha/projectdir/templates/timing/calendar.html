@@ -32,11 +32,13 @@
         });
     </script>
     {# -------------------------- #}
-    <div class="container mt-3">
-        <a class="btn btn-primary btn-sm mt-1 mb-1 m-3 p-3" href="{{ url_for('add_calendar_event') }}"> Add Event </a>
-    </div>
+
     {# -------------------------- #}
-    <h1 align="center"> Calendar </h1>
+    <h1 align="center"> Calendar <a class="btn btn-warning btn-sm mt-1 mb-1 m-3 p-3"
+                                    href="{{ url_for('add_calendar_event') }}"> Add Event </a>
+    </h1>
+
+
     <div class="container">
         <div id="calendar">
         </div>
