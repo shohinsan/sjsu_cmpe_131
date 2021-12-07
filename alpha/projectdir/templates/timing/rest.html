@@ -4,14 +4,18 @@
 
     <div class="container justify-content-center">
         <h2 class="heading pb-3">Rest</h2>
-        <div id="work-timer" class="timer">
-            <a id="rest">{{ rest }}</a>
-            <a id="semicolon" style="text-decoration: none">:</a>
-            <a id="b_seconds">00</a>
-        </div>
-
+        <fieldset>
+            <legend>
+                <div id="work-timer" style="font-max-size: 50px" class="timer">
+                    <a id="rest">{{ rest }}</a>
+                    <a id="semicolon" style="text-decoration: none">:</a>
+                    <a id="b_seconds">00</a>
+                </div>
+            </legend>
+        </fieldset>
     </div>
-    <div class="container mt-3 pt-3">
+
+    <div class="container pt-3">
         <button id="start" class="btn btn-secondary">Resume</button>
         <button id="stop" class="btn btn-primary">Pause</button>
     </div>
