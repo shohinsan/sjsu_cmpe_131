@@ -4,26 +4,72 @@
 
     <div class="container justify-content-center">
         <h2 class="heading">Rest</h2>
-        <span class="timer" id="timer">{{ rest }}s</span>
-        <progress max="{{ rest }}" value="{{ rest }}" class="progress rest-progress" id="progressBar"></progress>
     </div>
 
+<body>
+
+        <div id="work-timer" class="timer">
+            <p id="rest">{{ rest }}</p><p class="semicolon">:</p><p id="b_seconds">00</p>
+        </div>
+
+        </div>
+        <button id="start" class="btn">Start</button>
+        <button id="stop" class="btn">Pause</button>
+        </div>
+
+</body>
 
     <script type="application/javascript">
-        const timerElement = document.getElementById("timer");
-        const progressBar = document.getElementById("progressBar")
-        var timerCounter = progressBar.max;
-        const interval = setInterval(() => {
-            if (timerCounter <= 1) {
-                window.location.href = "{{ url_for('study') }}";
-                clearInterval(interval);
-            }
-            timerCounter = timerCounter - 1;
 
-            timerElement.innerText = timerCounter + "s";
-            timerElement.innerText = Math.floor(timerCounter / 60) + ":" + (timerCounter % 60 ? timerCounter % 60 : '00') + "s";
-            progressBar.value = timerCounter;
-        }, 1000);
+        var start = document.getElementById('start');
+        var stop = document.getElementById('stop');
+
+        var restMinutes = document.getElementById('rest');
+        var restSeconds = document.getElementById('b_seconds');
+
+        var startTimer;
+        startTimer = setInterval(timer, 100)
+
+        start.addEventListener('click', function(){
+            if(startTimer === undefined){
+                startTimer = setInterval(timer, 100)
+            } else {
+                alert("Timer is already running");
+            }
+        })
+
+        stop.addEventListener('click', function(){
+            stopInterval()
+            startTimer = undefined;
+        })
+
+        function timer(){
+
+            if (restMinutes.innerText == 0 && restSeconds.innerText == 0) {
+                window.location.href = "{{ url_for('study') }}";
+                {#clearInterval(interval);#}
+            }
+
+            if(restSeconds.innerText != 0){
+                    restSeconds.innerText--;
+                } else if(restMinutes.innerText != 0 && restSeconds.innerText == 0){
+                    restSeconds.innerText = 59;
+                    restMinutes.innerText--;
+                }
+
+            if(studyMinutes.innerText == 0 && studySeconds.innerText == 0 && restMinutes.innerText == 0 && restSeconds.innerText == 0) {
+                restMinutes.innerText = restMinutes;
+                restSeconds.innerText = "00";
+
+                document.getElementById('counter').innerText++;
+
+            }
+        }
+
+        function stopInterval(){
+            clearInterval(startTimer);
+        }
 
     </script>
+
 {% endblock %}
