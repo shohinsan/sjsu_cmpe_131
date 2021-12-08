@@ -54,6 +54,7 @@ Required apps to install:
                     flashcards.html
                     memorize.html
                     searched_flashcards.html
+                    selectcard.html
                 /general
                     account.html
                     change_password.html
