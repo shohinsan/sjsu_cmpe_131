@@ -1,0 +1,18 @@
+{% extends "layouts.html" %}
+
+{% block content %}
+    <center>
+        <form method='GET' action='{{ url_for('memorize') }}'>
+            <input type='search_flash' style='text-align:center' placeholder='Title of flashcard' name='input'>
+        </form>
+        <div style='height: 5%; width: 100%; padding: 5%;'>
+        <h3>List of your flashcards</h3>   
+        {% for flashcard in flashcards %}
+            <p>
+                {{ flashcard.front }}
+            </p>
+        {% endfor %}
+        <a class="btn btn-success btn-sm mt-1 mb-1 m-3" href="{{ url_for('flashcards') }}"> Close </a>
+
+    </center>
+{% endblock %}

@@ -66,4 +66,3 @@ class ShareForm(FlaskForm):
     username = StringField(label='Username', validators=[DataRequired(), Length(min=3, max=20)])
     email = StringField(label='Email', validators=[DataRequired(), Email()])
     submit = SubmitField(label="Submit")
-
