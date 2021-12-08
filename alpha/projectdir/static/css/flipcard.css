@@ -1,0 +1,38 @@
+/* Visit https://nicolaskadis.info/posts/pure-css-flip-cards-using-bootstrap-4-and-css-grid-no-js for an explanation */
+
+/* for demo purposes */
+.card {
+  margin: 10px 10px;
+}
+
+/* Flip Cards CSS */
+.card-container {
+  display: grid;
+  perspective: 700px;
+}
+
+.card-flip {
+  display: grid;
+  grid-template: 1fr / 1fr;
+  grid-template-areas: "frontAndBack";
+  transform-style: preserve-3d;
+  transition: all 0.7s ease;
+}
+
+.card-flip div {
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.front {
+  grid-area: frontAndBack;
+}
+
+.back {
+  grid-area: frontAndBack;
+  transform: rotateY(-180deg);
+}
+
+.card-container:hover .card-flip {
+  transform: rotateY(180deg);
+}

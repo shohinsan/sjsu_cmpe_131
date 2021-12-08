@@ -1,16 +1,18 @@
 {% extends "layouts.html" %}
 {% block content %}
-<form action="" method="POST" novalidate>
+
+    <form class="container" action="" method="POST" novalidate>
         {{ form.hidden_tag() }}
-    <div class="form-control">
-        <h1>Add Flashcard</h1>
-        <p> {{ form.front.label }}
-        {{ form.front(size=32) }}</p>
-        <p>{{form.back.label}}
-        {{form.back()}}</p>
-        <p> {{ form.submit.label }}
-        {{ form.submit() }}</p>
-    </div>
-</form> 
-<a class='btn btn-primary btn-sm mt-1 mb-1 m-3 p-3' href='/flashcards'> Back </a>
-{% endblock content %} 
+        <div class="form-control">
+            <h1>Add Flashcard</h1>
+            <p> {{ form.front.label }}
+                {{ form.front(size=32) }}</p>
+            <p>{{ form.back.label }}
+                {{ form.back() }}</p>
+            <p> {{ form.submit.label }}
+                {{ form.submit() }}</p>
+        </div>
+        <a class='btn btn-primary btn-lg mt-1 mb-1 m-3 p-3' href='/flashcards'> Back </a>
+
+    </form>
+{% endblock content %}

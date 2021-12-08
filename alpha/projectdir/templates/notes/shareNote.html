@@ -1,16 +1,18 @@
 {% extends "layouts.html" %}
 {% block content %}
+    <div class="container">
     <h1 align="center"> Enter the information of the person you want to share.</h1>
-    <form action="" method="POST" novalidate>
+    <form  class="container" action="" method="POST" novalidate>
         {{ form.hidden_tag() }}
         <p> &nbsp {{ form.username.label }} </br>
             &nbsp{{ form.username(size=32) }}</p>
         <p> &nbsp {{ form.email.label }} </br>
             &nbsp{{ form.email(size=32) }}</p>
-        <p> &nbsp {{ form.submit.label }} </br>
+        <p class="pt-3">
             &nbsp{{ form.submit() }}</p>
+
     </form>
 
-
+</div>
 
 {% endblock content %}

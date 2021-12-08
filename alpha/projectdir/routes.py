@@ -144,7 +144,9 @@ def show_flashcard(flashcard_id):
 @app.route('/memorize')
 @login_required
 def memorize():
-    return render_template('flashcardz/memorize.html', flashcards=flashcards, title="Memorize")
+    user = User.query.filter_by(username=current_user.username).first()
+    flashcards = Flashcard.query.filter_by(user_id=user.id).first()
+    return render_template('flashcardz/memorize.html', flashcard=flashcards, title="Memorize")
 
 
 @app.route("/flashcards/<int:flashcard_id>/update", methods=['GET', 'POST'])
@@ -281,6 +283,17 @@ def n_search():
     else:
         notes = Note.query.all()
     return render_template('notes/searched_notes.html', notes=notes, title='Notes')
+
+
+@app.route('/search_flash')
+@login_required
+def f_search():
+    q = request.args.get('q')
+    if q:
+        flashcards = Flashcard.query.filter(Flashcard.front.contains(q) | Flashcard.back.contains(q))
+    else:
+        flashcards = Flashcard.query.all()
+    return render_template('flashcardz/searched_flashcards.html', flashcards=flashcards, title='Flashcards')
 
 
 @app.route('/notes/<int:note_id>')

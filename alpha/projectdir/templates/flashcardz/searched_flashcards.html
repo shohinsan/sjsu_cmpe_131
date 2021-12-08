@@ -1,45 +1,12 @@
 {% extends "layouts.html" %}
-
-
 {% block content %}
     <link rel="stylesheet" href="{{ url_for('static',filename='css/flipcard.css') }}">
-
-    <div class="jumbotron jumbotron-fluid">
-        <h1 align="center" class="display-3 mb-3"> Flashcards </h1>
-        <div class="container">
-
-            {% if current_user.is_authenticated %}
-                <!-- SearchBar Form -->
-                <form class="col-12 col-lg-auto mb-3 mb-lg-1 me-lg-3 pb-3 col-lg-12" method="GET"
-                      action="{{ url_for('f_search') }}">
-                    <input type="search_flash" class="form-control form-control-dark" placeholder="Search for flashcard"
-                           name="q">
-                </form>
-            {% endif %}
-
-            <h1 class="display-5 mt-lg-3"> Upload Markdown File
-                <a class='btn btn-secondary btn-lg mt-1 mb-1 m-3 p-3 ' href="{{ url_for('add_flashcard') }}"> Add </a>
-            </h1>
-            <h1 class="display-5"> Create New Flashcard
-                <a class="btn btn-warning btn-lg mt-1 mb-1 m-3 p-3" href="{{ url_for('create_flashcard') }}"> New </a>
-            </h1>
-
-            <h1 class="display-5"> Study a Flashcard
-                <a class='btn-primary btn btn-lg mt-1 mb-1 m-3 p-3' href='{{ url_for('memorize') }}'> Memorize </a>
-            </h1>
-
-        </div>
-    </div>
-
-    <hr class=" container divider">
+    <h1 align="center" class="display-3 mb-3"> Flashcards </h1>
 
     {% for flashcard in flashcards %}
-
         <div class="container">
-
             <div class="row justify-content-center">
                 <!-- Card 1 -->
-
                 <div class="col-md-8 card-container">
                     <div class="card-flip">
                         <!-- Card 1 Front -->
@@ -50,9 +17,7 @@
 
                                 <h4 class="card-title text-center">
                                     <p class="card-text">{{ flashcard.front }}</p>
-
                                 </h4>
-
                             </div>
                         </div>
                         <!-- End Card 1 Front -->
@@ -61,7 +26,6 @@
                             <div class="card-block">
                                 <p class="card-text">{{ flashcard.back }}</p>
                                 <a href="{{ url_for('show_flashcard', flashcard_id=flashcard.id) }}">Link</a>
-
                             </div>
                         </div>
                         <!-- End Card 1 Back -->
@@ -72,4 +36,10 @@
         </div>
     {% endfor %}
 
-{% endblock content %} 
+    <div class="container centered pb-lg-5">
+        <a class="btn btn-primary btn-lg mt-1 mb-1 m-3 p-3" href="{{ url_for('flashcards') }}"> Return </a>
+    </div>
+
+
+
+{% endblock content %}
