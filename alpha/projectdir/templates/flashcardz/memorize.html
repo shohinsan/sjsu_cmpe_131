@@ -24,9 +24,13 @@
             test = get("test");
             back = get('return');
             if (pos >= questions.length) {
-                test.innerHTML = "<h2>You got " + correct + " of " + questions.length + " questions correct</h2>";
+                if (correct==1){
+                    test.innerHTML = "<h2>You got it correct</h2>";
+                }
+                else 
+                test.innerHTML = "<h2>You got it wrong</h2>";
                 get("test_status").innerHTML = "Test completed";
-                back.innerHTML = '<a class="btn btn-success btn-sm mt-1 mb-1 m-3" href="{{ url_for("flashcards") }}"> Back </a> <a class="btn btn-success btn-sm mt-1 mb-1 m-3" href="{{ url_for("memorize") }}"> Retake </a>'
+                back.innerHTML = '<a class="btn btn-success btn-sm mt-1 mb-1 m-3" href="{{ url_for("choose") }}"> Back </a>'
                 // resets the variable to allow users to restart the test
                 pos = 0;
                 correct = 0;

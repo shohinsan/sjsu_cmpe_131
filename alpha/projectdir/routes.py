@@ -140,13 +140,32 @@ def show_flashcard(flashcard_id):
     flashcard = Flashcard.query.get_or_404(flashcard_id)
     return render_template('flashcardz/flashcard.html', flashcard=flashcard, title='Flashcard')
 
+@app.route('/memorize/choose', methods=['GET', 'POST'])
+@login_required
+def choose():
+    user = User.query.filter_by(username=current_user.username).first()
+    flashcards = Flashcard.query.filter_by(user_id=user.id).all()
+    return render_template('flashcardz/selectcard.html', flashcards=flashcards, title='Choose your flashcard')
 
 @app.route('/memorize')
 @login_required
 def memorize():
     user = User.query.filter_by(username=current_user.username).first()
-    flashcards = Flashcard.query.filter_by(user_id=user.id).first()
-    return render_template('flashcardz/memorize.html', flashcard=flashcards, title="Memorize")
+    title = request.args.get('input')
+    flashcards = Flashcard.query.filter_by(user_id=user.id).all()
+    found = False
+    i=0
+    for row in flashcards:
+        if title == row.front:
+            found = True
+            break
+        i+=1
+    if found:
+        flashcard=flashcards[i]
+        return render_template('flashcardz/memorize.html', flashcard=flashcard, title="Memorize")
+    else: 
+        flash(f'Card {title} not found')
+        return redirect(url_for('choose'))
 
 
 @app.route("/flashcards/<int:flashcard_id>/update", methods=['GET', 'POST'])
