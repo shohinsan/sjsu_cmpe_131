@@ -43,6 +43,7 @@ Required apps to install:
                     main.css
                     registration.css  
                     timexx.css
+                    flipcard.css
                 /profile_pics
                     .jpg/.png (uploaded picture profile 200x200)
             /templates
@@ -52,6 +53,7 @@ Required apps to install:
                     flashcard.html
                     flashcards.html
                     memorize.html
+                    searched_flashcards.html
                 /general
                     account.html
                     change_password.html

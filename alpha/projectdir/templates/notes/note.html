@@ -1,5 +1,6 @@
 {% extends "layouts.html" %}
 {% block content %}
+    <div class="container">
     <article class="media content-section">
         <img class="rounded-circle article-img m-3"
              style="width: 3%"
@@ -20,8 +21,8 @@
                     </div>
                 {% endif %}
             </div>
-            <h2 style="width: 50rem" class="article-title m-3 p-3 card">{{ note.title }}</h2>
-            <p style="width: 50rem" class="article-content m-3 p-3 card card-body">{{ note.content }}</p>
+            <h2 style="width: 50rem" class="article-title m-3 p-3 card container">{{ note.title }}</h2>
+            <p style="width: 50rem" class="article-content m-3 p-3 card card-body container">{{ note.content }}</p>
         </div>
     </article>
 
@@ -30,5 +31,5 @@
 
 
     <a class="btn btn-success btn-sm mt-1 mb-1 m-3" href="{{ url_for('pdf', note_id=note.id) }}"> Save as PDF </a>
-
+</div>
 {% endblock content %}
