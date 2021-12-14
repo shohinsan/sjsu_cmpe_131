@@ -11,7 +11,7 @@
 
 - `Date:` September 16, 2021
 
-- `Product Name:` Labiso ScholarRabbit
+- `Product Name:` ScholarRabbit
 
 - `Problem Statement:` Cross-platform web app for students to access from all devices to study more effectively through 
 memorizing, searching notes, and managing time to avoid distractions over period of their school time
