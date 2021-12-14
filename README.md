@@ -1,3 +1,6 @@
+![image](https://user-images.githubusercontent.com/22685770/145909479-8d94be6a-9f85-4d41-befc-5fe0339606e2.png)
+
+
 # sjsu_cmpe_131
 My team and I are building student portal to help them study effectively using Python, Flask as part of our San Jose State University CMPE-131 course
 
