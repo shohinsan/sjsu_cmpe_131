@@ -1,5 +1,3 @@
-# CMPE 131 | San Jose State University | Team 9
-
 | Members | Position | [GitHub](https://github.com/shohinsan/sjsu_cmpe_131) |
 | ----------- | ----------- | ----------- |
 | Shohin Abdulkhamidov | Lead Software Engineer | [shohinsan](https://github.com/shohinsan) | 
