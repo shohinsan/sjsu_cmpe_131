@@ -11,6 +11,7 @@ Features Implemented up to date:
   * **Be able to delete Account** (done)
   * Reset Password (done)
 ![image](https://user-images.githubusercontent.com/22685770/145910019-bf2c9268-d11a-4f91-86d6-52ef50db9fa2.png)
+![image](https://user-images.githubusercontent.com/22685770/145910446-03313d63-fbf9-404a-b1e9-24d295988043.png)
 
 - Memorizing:
   * **Input a markdown file and output flash cards.** (done)
@@ -26,6 +27,7 @@ Features Implemented up to date:
   * Find text in files (done)
   * Quickly rename files using regular expressions (done)
   * Upload Markdown file and render as html (done)
+![image](https://user-images.githubusercontent.com/22685770/145910411-c65f1a87-aeb7-460f-aa1f-732d0bd57803.png)
 
 - Time Management: 
   * **Create Time Blocks** (done)
